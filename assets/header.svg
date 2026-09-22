@@ -3,10 +3,10 @@
   <circle cx="24" cy="24" r="5" fill="#2d2b55" />
   <circle cx="42" cy="24" r="5" fill="#2d2b55" />
   <circle cx="60" cy="24" r="5" fill="#2d2b55" />
-  <text x="320.0" y="28" font-size="12" fill="#8b88b8" text-anchor="middle">mike@herakles-dev: ~</text>
+  <text x="320.0" y="28" font-size="12" fill="#8b88b8" text-anchor="middle">michael@herakles-dev: ~</text>
   <line x1="0" y1="40" x2="640" y2="40" stroke="#2d2b55" />
   <text x="24" y="66" font-size="15" fill="#8b88b8">$ whoami</text>
-  <text x="24" y="92" font-size="15" fill="#c9c6f2">mike — telecom by day, AI orchestrator by night</text>
+  <text x="24" y="92" font-size="15" fill="#c9c6f2">michael — telecom by day, AI orchestrator by night</text>
   <text x="24" y="144" font-size="15" fill="#8b88b8">$ history | tail -1</text>
   <text x="24" y="170" font-size="15" fill="#c9c6f2">The engineering mindset stuck. The credential didn't.</text>
   <text x="24" y="196" font-size="15" fill="#8b88b8">$</text>

@@ -1,7 +1,7 @@
 <div align="center">
 
 <a href="https://herakles.dev">
-  <img src="assets/header.svg" alt="terminal: mike@herakles-dev" />
+  <img src="assets/header.svg" alt="terminal: michael@herakles-dev" />
 </a>
 
 # Michael Piscitelli · `herakles-dev`
@@ -19,7 +19,7 @@
 
 <p align="center"><img src="assets/divider.svg" alt="" width="100%" height="12" /></p>
 
-I'm Mike. Fiber-optic network designer by day, and since mid-2025 a self-taught AI-agentic
+I'm Michael — Herakles. Fiber-optic network designer by day, and since mid-2025 a self-taught AI-agentic
 engineer by night — building my own orchestration engine one 3am session at a time. The
 engineering mindset stuck. The credential didn't.
 
@@ -84,6 +84,20 @@ production SaaS with a real customer. Not a one-trick stack.
 - **keymakers.ai** — what I'm launching, now split into an org: `keymakers-core` (key duplication
   by mail, computer vision doing the matching) and `keymakers-club` (membership platform for
   agentic engineers). Work in progress, built the same way as everything else here.
+
+## 🖥️ Zeus Terminal — how all of this gets built
+
+I'm talking to Claude through it right now. Zeus Terminal is a self-hosted, mobile-first web
+terminal I built to replace Termux: tmux persistence, WebSocket transport, 804 tests, continue a
+session from my phone to my laptop without losing state. It's a
+session multiplexer — every project gets its own window, several Claude Code agents run in
+parallel, and a `/handoff` command lets me spin up a fresh session mid-task without losing
+context. My daily driver, not a side project.
+
+<p align="center"><img src="assets/sessions.svg" alt="Zeus Terminal: four parallel sessions" /></p>
+
+<sub><i>This README, the Actions that keep it updated, and everything else on this page were
+built from inside it.</i></sub>
 
 ## A few things that don't fit on a résumé
 

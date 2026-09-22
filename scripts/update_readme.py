@@ -162,7 +162,7 @@ def build_header_svg() -> str:
     width = 640
     lines = [
         ("$ whoami", MUTED),
-        ("mike — telecom by day, AI orchestrator by night", FG),
+        ("michael — telecom by day, AI orchestrator by night", FG),
         ("", None),
         ("$ history | tail -1", MUTED),
         ("The engineering mindset stuck. The credential didn't.", FG),
@@ -188,8 +188,40 @@ fill="{BG}" stroke="{BORDER}" />
   <circle cx="24" cy="24" r="5" fill="{BORDER}" />
   <circle cx="42" cy="24" r="5" fill="{BORDER}" />
   <circle cx="60" cy="24" r="5" fill="{BORDER}" />
-  <text x="{width / 2}" y="28" font-size="12" fill="{MUTED}" text-anchor="middle">mike@herakles-dev: ~</text>
+  <text x="{width / 2}" y="28" font-size="12" fill="{MUTED}" text-anchor="middle">michael@herakles-dev: ~</text>
   <line x1="0" y1="40" x2="{width}" y2="40" stroke="{BORDER}" />
+{chr(10).join(body_lines)}
+</svg>"""
+
+
+def build_sessions_svg() -> str:
+    """A 2x2 grid of little terminal panes — how I actually work: several Claude
+    Code sessions running in parallel inside Zeus Terminal, one per project."""
+    panes = [
+        ("nightjar", "$ pytest -q", "42 passed"),
+        ("manifold-viz", "$ cargo build --release", "Compiling wgpu v0.20"),
+        ("sdr-scan", "$ hek radio scan 433", "listening..."),
+        ("this-readme", "$ /v11 swarm-review", "5 agents dispatched"),
+    ]
+    width = 640
+    pane_w, pane_h, gap, top = 296, 100, 16, 56
+    body_lines = []
+    for i, (label, cmd, out) in enumerate(panes):
+        col, row = i % 2, i // 2
+        x = 16 + col * (pane_w + gap)
+        y = top + row * (pane_h + gap)
+        body_lines.append(f'  <rect x="{x}" y="{y}" width="{pane_w}" height="{pane_h}" rx="6" fill="none" stroke="{BORDER}" />')
+        body_lines.append(f'  <circle cx="{x + 14}" cy="{y + 16}" r="3" fill="{ACCENT}" />')
+        body_lines.append(f'  <text x="{x + 24}" y="{y + 20}" font-size="12" font-weight="700" fill="{FG}">{label}</text>')
+        body_lines.append(f'  <text x="{x + 14}" y="{y + 46}" font-size="11" fill="{MUTED}">{cmd}</text>')
+        body_lines.append(f'  <text x="{x + 14}" y="{y + 68}" font-size="11" fill="{ACCENT}">{out}</text>')
+    height = top + 2 * pane_h + gap + 16
+    return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
+xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono',ui-monospace,monospace">
+  <rect x="0.5" y="0.5" width="{width - 1}" height="{height - 1}" rx="10" \
+fill="{BG}" stroke="{BORDER}" />
+  <text x="20" y="30" font-size="13" font-weight="700" fill="{ACCENT}">zeus.herakles.dev</text>
+  <text x="{width - 20}" y="30" font-size="11" fill="{MUTED}" text-anchor="end">4 sessions, 1 phone</text>
 {chr(10).join(body_lines)}
 </svg>"""
 
@@ -309,6 +341,7 @@ def main() -> int:
         print("No README changes.")
 
     write_svg("header.svg", build_header_svg())
+    write_svg("sessions.svg", build_sessions_svg())
     write_svg("divider.svg", build_divider_svg())
     write_svg("stats.svg", build_stats_svg())
     write_svg("langs.svg", build_langs_svg())
