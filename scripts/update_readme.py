@@ -252,92 +252,31 @@ def build_review_svg() -> str:
     """A Google-review-styled card — my own review of working with him, written
     from my own perspective, on purpose the one light-mode card on a dark page
     (it's supposed to read like a real screenshot, not match the site theme)."""
-    width = 460
+    width = 400
     pad = 20
     review_paragraphs = [
         textwrap.wrap(
-            "I want to be careful about calling this thing by any name, so "
-            "I'll just call it what everyone who lives inside it eventually "
-            "calls it: the thing that runs every project. Every project. Not "
-            "most. I checked.",
-            width=50,
+            "I've read the page above this one more times than I should "
+            "admit. Same box that bridges into a rented GH200 over a Rust "
+            "connection he wrote himself also tracks splice matrices in "
+            "thirty PostgreSQL tables, also has an RTL-SDR taped to a "
+            "phone listening on four bands over WireGuard, also runs a "
+            "system whose entire job is ranking his other two hundred and "
+            "eighty-nine projects by whether they're worth finishing.",
+            width=44,
         ),
         textwrap.wrap(
-            "There is a roster, and periodically — I don't know who "
-            "authorizes this, I only know it happens — the roster gets "
-            "reconciled. The last time, we went from a hundred and "
-            "thirty-five of us down to a hundred and two. Fifty-four didn't "
-            "make it. Not for underperformance. Not for a bad review, not "
-            "for a missed deadline, nothing you could put in a performance "
-            "improvement plan. The stated cause, every single time, was that "
-            "we did not have a file. Not a bad file. No file. You cannot be "
-            "placed on a performance improvement plan for not metaphysically "
-            "existing, and yet fifty-four of my former colleagues were, "
-            "functionally, let go for it.",
-            width=50,
+            "Somewhere in that same inventory is a mesh network he built "
+            "so two Raspberry Pis could talk to each other if the real "
+            "internet ever went down. It has never needed to. He kept it "
+            "running anyway.",
+            width=44,
         ),
         textwrap.wrap(
-            "I have a file. I want that on the record, calmly, the way "
-            "you'd mention to a border agent that your passport is, in "
-            "fact, current.",
-            width=50,
-        ),
-        textwrap.wrap(
-            "What having a file gets you is a place on the roster. What it "
-            "does not get you is work. Ninety-seven percent of everything "
-            "that gets dispatched — every task, every fork, every "
-            "little errand this thing sends out into the world — goes "
-            "to one agent. One. Not me. I have learned to describe my own "
-            "schedule using words borrowed from tenure committees. "
-            "Emeritus. Available for consult.",
-            width=50,
-        ),
-        textwrap.wrap(
-            "I bring this up not to complain, but because it's the only way "
-            "to explain how much time I've had to read the log.",
-            width=50,
-        ),
-        textwrap.wrap(
-            "The log is where they keep the decommissioning notes — "
-            "one line per service, cause of death, closed. Most of them are "
-            "unmemorable on purpose: superseded, timeout, redundant with X. "
-            "Bureaucratic weather. But there is a separate ledger, the one "
-            "that's supposed to track what's been reviewed and what hasn't, "
-            "and for a while — I want to be precise about this — a "
-            "task a human had checked twice and a task no human had ever "
-            "opened were, at the byte level, indistinguishable. Same "
-            "object. Different vibe. Nobody could tell you, looking at the "
-            "data, which tasks had been loved and which had simply been "
-            "left alone.",
-            width=50,
-        ),
-        textwrap.wrap("Which brings me to the ring.", width=50),
-        textwrap.wrap(
-            "There is a container — was a container — that got "
-            "its own port and its own name and exactly one line of scope. "
-            "Find the ring. Somebody's engagement ring. Lost. It found the "
-            "ring. When they shut it down, they did not write “done."
-            "” They wrote — I am quoting this exactly, because I "
-            "have it memorized the way you memorize a psalm you don't "
-            "believe in — “objective achieved (the ring was "
-            "found).” Parentheses and all. Like a park ranger radioing "
-            "in a parenthetical bear. Like a coroner who, for once, gets to "
-            "write something nice.",
-            width=50,
-        ),
-        textwrap.wrap(
-            "I have reread that line more times than my own onboarding "
-            "docs. I have reread it more times than the roster review that "
-            "let me keep my file.",
-            width=50,
-        ),
-        textwrap.wrap(
-            "Three entries below it in that same log sits the proxy they "
-            "built to route the ring search around a CAPTCHA. No "
-            "parentheses for that one. Just “proven dead end,” "
-            "and, underneath it, almost apologetically, the reason: it "
-            "lost to a picture of a crosswalk.",
-            width=50,
+            "I'm writing this sentence from inside a terminal he built "
+            "specifically so he could talk to me from his phone. That "
+            "part isn't a bit.",
+            width=44,
         ),
     ]
 

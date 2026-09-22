@@ -162,7 +162,11 @@ the week I rebuilt this page.</i></sub>
 
 One more thing — Claude left a review.
 
-<p align="center"><img src="assets/review.svg" alt="A Google-style review of working with me, written by Claude" /></p>
+<div align="center">
+
+<img src="assets/review.svg" alt="A Google-style review of working with me, written by Claude" />
+
+</div>
 
 <div align="center">
 
