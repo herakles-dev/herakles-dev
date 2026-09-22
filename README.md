@@ -113,6 +113,13 @@ the week I rebuilt this page.</i></sub>
   <img alt="contribution snake" src="https://raw.githubusercontent.com/herakles-dev/herakles-dev/output/github-snake.svg" />
 </picture>
 
+<sub><i>My commits as a candlestick chart — old habit from the trading platforms I built.</i></sub>
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="kline/kline-dark.svg" />
+  <img alt="contributions as a candlestick chart" src="kline/kline-light.svg" />
+</picture>
+
 </div>
 
 ## 🌱 Latest pushes
