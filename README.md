@@ -6,10 +6,6 @@
   <img alt="Pac-Man eating my contribution graph" src="https://raw.githubusercontent.com/herakles-dev/herakles-dev/output/pacman-contribution-graph.svg" />
 </picture>
 
-<a href="https://herakles.dev">
-  <img src="assets/header.svg" alt="terminal: michael@herakles-dev" />
-</a>
-
 # Michael Piscitelli · `herakles-dev`
 
 **Solo builder shipping production AI systems.** I run an agentic development practice at
@@ -21,9 +17,11 @@
 ![Claude Code](https://img.shields.io/badge/built%20with-Claude%20Code-D97706?style=flat-square&logo=anthropic&logoColor=white)
 ![profile views](https://komarev.com/ghpvc/?username=herakles-dev&color=7C3AED&style=flat-square&label=profile+views)
 
-</div>
+<a href="https://herakles.dev">
+  <img src="assets/header.svg" alt="terminal: michael@herakles-dev" />
+</a>
 
-<p align="center"><img src="assets/divider.svg" alt="" width="100%" height="12" /></p>
+</div>
 
 I'm Michael — Herakles. Fiber-optic network designer by day, and since mid-2025 a self-taught AI-agentic
 engineer by night — building my own orchestration engine one 3am session at a time. The
