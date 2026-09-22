@@ -57,6 +57,12 @@ workflow of mine into a 265k-star repository.
 Bare-metal infrastructure, RF hardware, telecom domain work, security research, formal math, a
 production SaaS with a real customer. Not a one-trick stack.
 
+<div align="center">
+
+<img src="assets/marquee.svg" alt="a scrolling strip of what's currently running" />
+
+</div>
+
 - **hekaton** — a Hetzner control plane driving an NVIDIA GH200 (624GB unified memory) over a
   Rust/gRPC+TLS bridge I wrote myself: AES-256-GCM encrypted reporting, NUMA-pinned deploys, 3-4
   quantized LLMs debating over ZeroMQ on one shared GPU pool. 20K lines of Rust, 2,757 passing

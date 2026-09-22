@@ -331,6 +331,81 @@ fill="#ffffff" stroke="{hair}" />
 </svg>"""
 
 
+def build_marquee_svg() -> str:
+    """An infinitely auto-scrolling strip of project cards — pure SVG, no JS.
+
+    GitHub strips <script> tags from READMEs, so this can't be a real DOM
+    carousel. What DOES survive is SMIL: a native SVG animation primitive
+    browsers still execute even through a plain <img> tag (same trick as the
+    header's blinking cursor). A <g> holding two back-to-back copies of the
+    card sequence gets translated left by exactly one sequence-width, on a
+    loop — when the first copy scrolls fully offscreen, the second is
+    already sitting in its starting position, so the seam is invisible.
+    """
+    cards = [
+        ("hekaton", "GH200 · Rust · CUDA"),
+        ("herakles-linux-opus", "runs the whole box"),
+        ("v11", "orchestration protocol"),
+        ("SDR Command Center", "RTL-SDR · WireGuard"),
+        ("CK Reynolds Tax", "real customer, real IRS"),
+        ("Reticulum", "off-grid mesh · LoRa"),
+        ("opensource-pipeline", "265k★ merge"),
+        ("math-proof", "Lean 4 · zero sorrys"),
+        ("keymakers.ai", "key duplication by mail"),
+    ]
+
+    width = 640
+    card_w, card_h, gap = 176, 92, 16
+    top = 46
+    height = top + card_h + 20
+    seq_w = (card_w + gap) * len(cards)
+
+    def render_card(name: str, tag: str, x: int) -> str:
+        name_esc = name.replace("&", "&amp;").replace("<", "&lt;")
+        tag_esc = tag.replace("&", "&amp;").replace("<", "&lt;")
+        name_lines = textwrap.wrap(name_esc, width=17)[:2]
+        parts = [
+            f'<rect x="{x}" y="0" width="{card_w}" height="{card_h}" rx="10" fill="{BG}" stroke="{BORDER}" />',
+            f'<rect x="{x}" y="0" width="4" height="{card_h}" rx="2" fill="{ACCENT}" />',
+        ]
+        ny = 30
+        for line in name_lines:
+            parts.append(f'<text x="{x + 18}" y="{ny}" font-size="13" font-weight="700" fill="{FG}">{line}</text>')
+            ny += 18
+        parts.append(f'<text x="{x + 18}" y="{card_h - 16}" font-size="11" fill="{MUTED}">{tag_esc}</text>')
+        return "\n  ".join(parts)
+
+    track = []
+    x = 0
+    for _ in range(2):  # two back-to-back copies for the seamless loop
+        for name, tag in cards:
+            track.append(render_card(name, tag, x))
+            x += card_w + gap
+
+    dur = max(18, len(cards) * 3)
+    return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
+xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono',ui-monospace,monospace">
+  <rect x="0.5" y="0.5" width="{width - 1}" height="{height - 1}" rx="12" \
+fill="{BG}" stroke="{BORDER}" />
+  <text x="20" y="28" font-size="13" font-weight="700" fill="{ACCENT}">what's running right now</text>
+  <text x="{width - 20}" y="28" font-size="11" fill="{MUTED}" text-anchor="end">auto-scrolls →</text>
+  <defs>
+    <clipPath id="marqueeClip">
+      <rect x="16" y="{top}" width="{width - 32}" height="{card_h}" rx="10" />
+    </clipPath>
+  </defs>
+  <g clip-path="url(#marqueeClip)">
+    <g transform="translate(16,{top})">
+      <g>
+        {chr(10).join(track)}
+        <animateTransform attributeName="transform" type="translate" \
+from="0,0" to="{-seq_w},0" dur="{dur}s" repeatCount="indefinite" />
+      </g>
+    </g>
+  </g>
+</svg>"""
+
+
 def build_divider_svg() -> str:
     width, height = 640, 12
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
@@ -446,6 +521,7 @@ def main() -> int:
         print("No README changes.")
 
     write_svg("header.svg", build_header_svg())
+    write_svg("marquee.svg", build_marquee_svg())
     write_svg("sessions.svg", build_sessions_svg())
     write_svg("review.svg", build_review_svg())
     write_svg("divider.svg", build_divider_svg())
