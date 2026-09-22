@@ -7,7 +7,7 @@
 </picture>
 </a>
 
-**Solo builder shipping production AI systems.** I run an agentic development practice at
+**Solo builder shipping complex, cross-platform systems | Linux | ANDROID | Windows .** I run an agentic development practice at
 [**herakles.dev**](https://herakles.dev) and I'm launching [**keymakers.ai**](https://keymakers.ai).
 
 [![herakles.dev](https://img.shields.io/badge/herakles.dev-8E74F2?style=flat-square&logo=firefox&logoColor=white)](https://herakles.dev)
