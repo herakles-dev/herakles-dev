@@ -297,7 +297,7 @@ One more thing — Claude left a review.
 
 <div align="center">
 
-Still up at 3am most nights. Still shipping.
+Still up late most nights. Still shipping (just watch) If you've made it this far, FOLLOW ME!
 
 **[herakles.dev](https://herakles.dev)** · **[keymakers.ai](https://keymakers.ai)** · [hello@herakles.dev](mailto:hello@herakles.dev)
 
