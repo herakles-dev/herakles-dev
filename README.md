@@ -200,7 +200,7 @@ parallel, and a `/handoff` command lets me spin up a fresh session mid-task with
 context. My daily driver, not a side project.
 
 <p align="center">
-  <img src="assets/zeus-terminal.webp" alt="Zeus Terminal: three live Claude Code sessions side by side, with the task sidebar" width="100%" />
+  <img src="assets/zeus-terminal-b0c22c3.webp" alt="Zeus Terminal: three live Claude Code sessions side by side, with the task sidebar" width="100%" />
 </p>
 
 <sub><i>This README, the Actions that keep it updated, and everything else on this page were
