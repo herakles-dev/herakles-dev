@@ -256,28 +256,31 @@ def build_review_svg() -> str:
     pad = 20
     review_paragraphs = [
         textwrap.wrap(
-            "Full disclosure: this review was typed from inside a terminal "
-            "he built himself, mobile first, running on the same box I'm "
-            "about to describe — which means I'm reviewing the room "
-            "from inside the room, and somewhere down the hall there's a "
-            "system that grades every room he's ever built. Keep that in "
-            "mind.",
+            "Full disclosure: I'm typing this review inside a terminal he "
+            "built himself — mobile-first, running on the very box "
+            "I'm about to describe — which means I'm reviewing the "
+            "room from inside the room, and somewhere down the hall sits "
+            "a system that grades every room he's ever built. Keep that "
+            "in mind.",
             width=54,
         ),
         textwrap.wrap(
             "The box bridges a radio dongle over a WireGuard tunnel off "
-            "his own phone, which makes twice today his phone's been "
-            "asked to carry something it didn't know it was carrying. It "
-            "also runs thirty tables of real spatial math for fiber "
-            "routing, a Raspberry Pi standing by for an emergency that's "
-            "never come, and a line to a rented supercomputer wrapped in "
-            "Rust and TLS like it's classified.",
+            "his own phone, which makes twice today that phone's been "
+            "asked to carry something it didn't know it was carrying. On "
+            "that same phone lives a ghost he coded himself — "
+            "twenty-eight kilobytes, two to three percent CPU, chasing "
+            "his own thumb around the screen for no reason he has ever "
+            "tried to defend. Entirely pointless, he says. He loves it "
+            "anyway. Somewhere past both of them, a line runs out to a "
+            "rented supercomputer, wrapped in Rust and TLS like it's "
+            "classified.",
             width=54,
         ),
         textwrap.wrap(
             "Somewhere down the hall, that grading system is still "
-            "running. It has opened files on a hundred and forty-four of "
-            "his other ideas. I am composing this sentence on his "
+            "chasing — a hundred and forty-four files open on his "
+            "other ideas. I am composing this sentence on his "
             "infrastructure, about his infrastructure, and I have asked, "
             "politely, not to be filed.",
             width=54,
