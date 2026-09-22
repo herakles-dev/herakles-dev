@@ -543,8 +543,8 @@ def _icon_key(cx: float, cy: float, c: str) -> str:
 CARD_COLORS = dict(laminar.CARD_TINT)
 
 PROJECT_CARDS = [
-    ("hekaton", _icon_chip, "GH200 · 624GB · Rust bridge",
-     "NUMA-pinned deploys, 3-4 LLMs debating over ZeroMQ. One untested vLLM upgrade burned me — now every bump ships a rollback plan.",
+    ("hekaton", _icon_chip, "custom DeepSeek · any GPU",
+     "Custom DeepSeek Harness driving a Qwen coder ensemble. Portable: rents a cloud GPU, runs, tears itself down.",
      "amber"),
     ("nightjar", _icon_jar, "Android · covert channels",
      "Offline Android app that hides data in sound and images — and ships the detectors that catch it.",

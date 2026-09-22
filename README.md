@@ -29,7 +29,7 @@
 
 <p align="left">
 <!--START_SECTION:contribs-->
-1,805 contributions in the last year
+1,810 contributions in the last year
 <!--END_SECTION:contribs-->
 </p>
 
@@ -174,9 +174,9 @@ Earned, not granted up front. A project starts at the most-supervised level and 
 <details>
 <summary><b>Hekaton</b> — the vLLM upgrade that taught me to always ship a rollback plan</summary>
 
-Hekaton bridges two machines: a local box running orchestration and a rented GH200 (624GB unified memory) running inference, talking over a Rust ZeroMQ bridge with NUMA-pinned deploys so 3-4 LLMs can actually debate each other without fighting over memory bandwidth.
+Hekaton is my autonomous coding harness: a customized [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) running my V11 hooks unmodified, driving a tiered ensemble of Qwen coder models. It's portable now — no fixed box. It rents a cloud GPU (H100 or GH200), runs a mission, and tears itself down, with every dollar logged. Latest result: a best-of-3 fan-out took a 12-task polyglot suite from 6/12 to 10/12 for about $4.
 
-I bumped vLLM by one version with no rollback path. It broke multi-model serving on the GH200 mid-session, and I had no fast way back to the last-known-good state — just a slow rebuild. Every dependency bump on that machine now ships with a tested rollback plan before it goes anywhere near the rented hardware. Expensive lesson, cheap fix.
+Back when it ran on a single rented GH200, I bumped vLLM by one version with no rollback path. It broke multi-model serving on the GH200 mid-session, and I had no fast way back to the last-known-good state — just a slow rebuild. Every dependency bump now ships with a tested rollback plan before it goes anywhere near rented hardware. Expensive lesson, cheap fix.
 
 </details>
 
