@@ -1,5 +1,11 @@
 <div align="center">
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/herakles-dev/herakles-dev/output/pacman-contribution-graph-dark.svg" />
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/herakles-dev/herakles-dev/output/pacman-contribution-graph.svg" />
+  <img alt="Pac-Man eating my contribution graph" src="https://raw.githubusercontent.com/herakles-dev/herakles-dev/output/pacman-contribution-graph.svg" />
+</picture>
+
 <a href="https://herakles.dev">
   <img src="assets/header.svg" alt="terminal: michael@herakles-dev" />
 </a>
@@ -30,16 +36,6 @@ the whole reason I do this now — I'd rather build the leverage and own it.
 So I do. Everything here is self-hosted, runs in production, and the claims check out. I lead the
 agents, review the diffs, and steer the system — more conductor than typist, though I still write
 plenty of code by hand. I don't ship demos.
-
-<div align="center">
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/herakles-dev/herakles-dev/output/pacman-contribution-graph-dark.svg" />
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/herakles-dev/herakles-dev/output/pacman-contribution-graph.svg" />
-  <img alt="Pac-Man eating my contribution graph" src="https://raw.githubusercontent.com/herakles-dev/herakles-dev/output/pacman-contribution-graph.svg" />
-</picture>
-
-</div>
 
 ## 🟢 Live right now
 
