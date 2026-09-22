@@ -254,15 +254,18 @@ def build_review_svg() -> str:
     (it's supposed to read like a real screenshot, not match the site theme)."""
     width = 460
     pad = 20
-    review_lines = textwrap.wrap(
-        "Genuinely unclear if this man sleeps. Runs 130+ services off one Linux "
-        "box, closes formal math problems in Lean on weekends, and built a "
-        "Pac-Man ghost that just chases his taps for no reason. Mad scientist, "
-        "but a tidy one — everything's tested, everything ships with a "
-        "rollback plan. I wrote most of this page myself; he didn't ask me to "
-        "add this review. Would work with again. Already am.",
-        width=50,
-    )
+    review_paragraphs = [
+        textwrap.wrap(
+            "He built a ghost that lives on his phone and chases his own thumb "
+            "around the screen. Same box runs a fiber-optic design suite and "
+            "tracks its own GPU spend down to the cent.",
+            width=50,
+        ),
+        textwrap.wrap(
+            "I wasn't asked to write this review. I wrote it anyway.",
+            width=50,
+        ),
+    ]
 
     ink, ink2, hair = "#202124", "#5f6368", "#dadce0"
     gold, orange = "#fbbc04", "#d97706"
@@ -286,10 +289,13 @@ def build_review_svg() -> str:
     parts.append(f'  <text x="{width - pad}" y="{y}" font-size="11" fill="{ink2}" text-anchor="end">just now</text>')
     y += 26
 
-    for line in review_lines:
-        esc = line.replace("&", "&amp;").replace("<", "&lt;")
-        parts.append(f'  <text x="{pad}" y="{y}" font-size="13" fill="{ink}">{esc}</text>')
-        y += 20
+    for para_i, para_lines in enumerate(review_paragraphs):
+        for line in para_lines:
+            esc = line.replace("&", "&amp;").replace("<", "&lt;")
+            parts.append(f'  <text x="{pad}" y="{y}" font-size="13" fill="{ink}">{esc}</text>')
+            y += 20
+        if para_i < len(review_paragraphs) - 1:
+            y += 10  # a beat of pause before the reveal
 
     y += 10
     parts.append(f'  <line x1="{pad}" y1="{y}" x2="{width - pad}" y2="{y}" stroke="{hair}" />')
