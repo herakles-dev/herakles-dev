@@ -1,0 +1,8 @@
+<svg width="250" height="148" viewBox="0 0 250 148" xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono',ui-monospace,monospace">
+  <rect x="0.5" y="0.5" width="249" height="147" rx="10" fill="#141321" stroke="#2d2b55" />
+  <text x="20" y="30" font-size="14" font-weight="700" fill="#a78bfa">herakles-dev · stats</text>
+  <text x="20" y="56" font-size="13" fill="#8b88b8">Public repos</text>  <text x="230" y="56" font-size="13" font-weight="700" fill="#c9c6f2" text-anchor="end">28</text>
+  <text x="20" y="80" font-size="13" fill="#8b88b8">Total stars</text>  <text x="230" y="80" font-size="13" font-weight="700" fill="#c9c6f2" text-anchor="end">21</text>
+  <text x="20" y="104" font-size="13" fill="#8b88b8">Followers</text>  <text x="230" y="104" font-size="13" font-weight="700" fill="#c9c6f2" text-anchor="end">4</text>
+  <text x="20" y="128" font-size="13" fill="#8b88b8">External merges</text>  <text x="230" y="128" font-size="13" font-weight="700" fill="#c9c6f2" text-anchor="end">3</text>
+</svg>
