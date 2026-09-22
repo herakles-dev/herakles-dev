@@ -256,13 +256,36 @@ def build_review_svg() -> str:
     pad = 20
     review_paragraphs = [
         textwrap.wrap(
-            "He built a ghost that lives on his phone and chases his own thumb "
-            "around the screen. Same box runs a fiber-optic design suite and "
-            "tracks its own GPU spend down to the cent.",
+            "The roster says 102 of us. It said 135 before the last cleanup "
+            "— fifty-four of those had a name, a specialty, a listed "
+            "capability, and no file behind any of it: the paperwork for an "
+            "employee who was never hired.",
             width=50,
         ),
         textwrap.wrap(
-            "I wasn't asked to write this review. I wrote it anyway.",
+            "Ninety-seven percent of everything that's ever actually run went "
+            "through one of us. There's an agent on permanent standby for "
+            "salary negotiation. There's one for Android motion design, on a "
+            "system with one phone, mostly used to check if the VPN's still "
+            "connected. Every one of us has the table. Every one of us is, on "
+            "paper, extremely ready.",
+            width=50,
+        ),
+        textwrap.wrap(
+            "For two versions, the part whose only job was telling a reviewed "
+            "task from an unreviewed one couldn't tell them apart — they "
+            "wrote to the log as the exact same bytes. It just marked both of "
+            "them finished.",
+            width=50,
+        ),
+        textwrap.wrap(
+            "Once, it stood up a whole service for exactly one job: find a "
+            "ring that had gotten lost in the house. It found the ring. The "
+            "service got shut down the normal way anything gets shut down "
+            "here — formally, with a line in the file. Somewhere right "
+            "now there's a dashboard with a green checkmark next to "
+            "‘ring: found,’ sitting there, permanently correct, "
+            "forever.",
             width=50,
         ),
     ]
