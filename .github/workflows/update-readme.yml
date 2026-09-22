@@ -7,7 +7,7 @@ on:
   push:
     branches: [main]
     paths:
-      - scripts/update_readme.py
+      - scripts/**
       - .github/workflows/update-readme.yml
 
 permissions:
@@ -25,6 +25,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      # Fonts are subset and embedded into every SVG (scripts/fontkit.py).
+      # Pinned to the versions this was verified with.
+      - name: Install font tooling
+        run: pip install fonttools==4.60.1 brotli==1.1.0
       - name: Refresh README sections
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -7,12 +7,14 @@ Fills two marked blocks:
   <!--START_SECTION:building--> ... <!--END_SECTION:building-->
      A few of my own repos, most recently pushed.
 
-Also renders two self-hosted SVG cards to assets/ (stats.svg, langs.svg) — replaces
-the old github-readme-stats.vercel.app cards, which go down whenever that shared
-free-tier deployment is paused. No third-party render service in the loop; the
-numbers come straight from the GitHub API and the SVG is drawn by hand below.
+Also renders every SVG on the page to assets/ — the cards (stats, langs, streak,
+neofetch, the project grid, Zeus, the header terminal, the review) plus the page
+system itself (masthead, eight section headers, stack strip, divider, coda). No
+third-party render service in the loop; the numbers come straight from the GitHub
+API and the SVG is drawn by hand. The page system lives in laminar.py.
 
-No third-party deps — standard library only. Auth via GITHUB_TOKEN (or GH_TOKEN).
+Deps: fonttools + brotli (fonts are subset and embedded into each SVG, see
+fontkit.py). Auth via GITHUB_TOKEN (or GH_TOKEN).
 """
 from __future__ import annotations
 
@@ -25,6 +27,9 @@ import textwrap
 import urllib.error
 import urllib.parse
 import urllib.request
+
+import laminar
+from fontkit import embed
 
 USER = "herakles-dev"
 ROOT = os.path.join(os.path.dirname(__file__), "..")
@@ -49,11 +54,11 @@ TOKEN = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN") or ""
 THEMES = {
     "dark": {
         "bg": "#17171b", "border": "#3a3a42", "fg": "#e4e4e7",
-        "muted": "#9a9aa5", "accent": "#7C3AED",
+        "muted": "#9a9aa5", "accent": "#8E74F2",
     },
     "light": {
         "bg": "#ffffff", "border": "#dcdce1", "fg": "#1c1c1f",
-        "muted": "#6b6b76", "accent": "#7C3AED",
+        "muted": "#6b6b76", "accent": "#8E74F2",
     },
 }
 # Back-compat module-level aliases for cards not yet theme-parameterized
@@ -64,20 +69,21 @@ BG, BORDER, FG, MUTED, ACCENT = (
     THEMES["dark"]["muted"], THEMES["dark"]["accent"],
 )
 
-# GitHub linguist colors for languages that actually show up on this account.
-# Anything not listed here falls back to ACCENT rather than guessing wrong.
+# Language bars take their colors from the page's temper scale (see laminar.py),
+# not GitHub's linguist colors — one palette for the whole page. Anything not
+# listed falls back to ACCENT.
 LANG_COLORS = {
-    "Python": "#3572A5",
-    "TypeScript": "#3178C6",
-    "JavaScript": "#f1e05a",
-    "Shell": "#89e051",
-    "Rust": "#dea584",
-    "Go": "#00ADD8",
-    "HTML": "#e34c26",
-    "CSS": "#563d7c",
-    "Dockerfile": "#384d54",
-    "Kotlin": "#A97BFF",
-    "Java": "#b07219",
+    "Python": "#8E74F2",
+    "TypeScript": "#5B8CF2",
+    "JavaScript": "#DDAA4F",
+    "Shell": "#45C2B8",
+    "Rust": "#E8CF86",
+    "Go": "#3FD0C4",
+    "HTML": "#D0834F",
+    "CSS": "#C9637E",
+    "Dockerfile": "#A85BC2",
+    "Kotlin": "#D25BC0",
+    "Java": "#EE8FB0",
 }
 
 
@@ -191,75 +197,23 @@ def build_building_block(limit: int = 5) -> str:
     return "\n".join(lines) if lines else "_No repos found._"
 
 
+# The page system. Every card frame, the section headers, masthead, divider,
+# stack strip and coda come from here; `LAM.section` tells the frame which
+# section's slice of the page gradient a card belongs to.
+LAM = laminar.Laminar(THEMES)
+
+
 def card_chrome(width: int, height: int, t: dict, *, dots: bool = False,
                  title: str | None = None, title_align: str = "center",
                  subtitle: str | None = None, divider_y: float | None = None,
                  radius: int = 10) -> list[str]:
-    """Shared outer frame for every custom card: rounded rect, optional 3-dot
-    window controls, optional title/subtitle, optional divider line. Returns
-    element strings (not a full <svg>) so callers append their own body.
-
-    Introduced to fix real drift found while unifying the page: review.svg's
-    outer frame used rx=14 while every other card used rx=10, and
-    sessions.svg had no dots while header.svg — the same "terminal window"
-    card class — did. One primitive now, so that can't happen again.
-    """
-    parts = [
-        f'<rect x="0.5" y="0.5" width="{width - 1}" height="{height - 1}" rx="{radius}" '
-        f'fill="{t["bg"]}" stroke="{t["border"]}" />'
-    ]
-    if dots:
-        for cx in (24, 42, 60):
-            parts.append(f'<circle cx="{cx}" cy="24" r="5" fill="{t["border"]}" />')
-    label_y = 28 if dots else 30
-    if title:
-        # Same char-width heuristic used to catch the header's typing-SVG
-        # clipping bug (chars * 0.6 * font-size-px). Made into an assertion
-        # here after this exact collision class bit twice in one session
-        # (sessions.svg left-aligned under the dots, then neofetch.svg
-        # centered on a card too narrow for it) — better a loud failure at
-        # generation time than a silent visual bug caught only by eyeballing.
-        if title_align == "center":
-            font_size = 12
-            text_w = len(title) * 0.6 * font_size
-            half_avail = width / 2 - (68 if dots else 12)
-            assert text_w / 2 <= half_avail, (
-                f"card_chrome: title {title!r} (~{text_w:.0f}px) likely collides with "
-                f"{'the dots' if dots else 'the card edge'} on a {width}px-wide card "
-                f"(half-available={half_avail:.0f}px) — shorten it or widen the card"
-            )
-            parts.append(
-                f'<text x="{width / 2}" y="{label_y}" font-size="{font_size}" fill="{t["muted"]}" '
-                f'text-anchor="middle">{title}</text>'
-            )
-        else:
-            # Clear the 3-dot cluster (occupies roughly x=19-65) when present.
-            font_size = 14
-            title_x = 80 if dots else 20
-            text_w = len(title) * 0.6 * font_size
-            assert title_x + text_w <= width - 12, (
-                f"card_chrome: title {title!r} (~{text_w:.0f}px from x={title_x}) likely "
-                f"overruns a {width}px-wide card — shorten it or widen the card"
-            )
-            # Neutral, not ACCENT: a left-aligned chrome title is chrome/label
-            # text, not an icon or a data value — GUIDE.md #4b's rule ("accent
-            # on icon and border only, body text stays neutral") applies here
-            # too. This one line was the single biggest source of gratuitous
-            # purple on the page: it hit every left-titled card (sessions.svg/
-            # zeus terminal, stats.svg, langs.svg, streak.svg) regardless of
-            # what that card's own content already used for color.
-            parts.append(
-                f'<text x="{title_x}" y="{label_y + 2}" font-size="{font_size}" font-weight="700" '
-                f'fill="{t["fg"]}">{title}</text>'
-            )
-    if subtitle:
-        parts.append(
-            f'<text x="{width - 20}" y="{label_y}" font-size="11" fill="{t["muted"]}" '
-            f'text-anchor="end">{subtitle}</text>'
-        )
-    if divider_y is not None:
-        parts.append(f'<line x1="0" y1="{divider_y}" x2="{width}" y2="{divider_y}" stroke="{t["border"]}" />')
-    return parts
+    """Shared outer frame for every custom card — Laminar's: hairline top edge in
+    the section's gradient slice, a corner sheen, and a small streamline glyph
+    (one particle riding it) where window dots used to be. Title placement and
+    its collision assertions are unchanged (laminar.title_parts). Returns
+    element strings, not a full <svg>, so callers append their own body."""
+    return LAM.chrome(width, height, t, dots=dots, title=title, title_align=title_align,
+                      subtitle=subtitle, divider_y=divider_y, radius=radius)
 
 
 def build_header_svg(theme: str = "dark") -> str:
@@ -390,7 +344,7 @@ def build_sessions_svg(theme: str = "dark") -> str:
         col, row = i % 2, i // 2
         x = 16 + col * (pane_w + gap)
         y = top + row * (pane_h + gap)
-        body_lines.append(f'  <rect x="{x}" y="{y}" width="{pane_w}" height="{pane_h}" rx="6" fill="none" stroke="{pane_accent}" stroke-opacity="0.55" />')
+        body_lines.append("  " + LAM.tile(x, y, pane_w, pane_h, "none", pane_accent))
         body_lines.append(f'  <circle cx="{x + 14}" cy="{y + 16}" r="3" fill="{pane_accent}" />')
         body_lines.append(f'  <text x="{x + 24}" y="{y + 20}" font-size="12" font-weight="700" fill="{t["fg"]}">{label}</text>')
         body_lines.append(f'  <text x="{x + 14}" y="{y + 46}" font-size="11" fill="{t["muted"]}">{cmd}</text>')
@@ -616,14 +570,9 @@ def _icon_key(cx: float, cy: float, c: str) -> str:
 # Purple stays the anchor for the two "core platform" projects; everything
 # else gets a color tied to what it actually is (hardware/physical =
 # amber, radio/network = teal, rigor/professional = blue, keys = gold).
-CARD_COLORS = {
-    "purple": "#7C3AED",
-    "amber": "#D97706",   # matches the existing "built with Claude Code" badge
-    "teal": "#22D3EE",
-    "blue": "#60A5FA",
-    "gold": "#FBBF24",
-    "green": "#4ade80",   # "live/ongoing" signal — matches the live card's LIVE badge
-}
+# Values come from the page's temper scale (laminar.py) so every card shares one
+# color family with the headers.
+CARD_COLORS = dict(laminar.CARD_TINT)
 
 PROJECT_CARDS = [
     ("hekaton", _icon_chip, "GH200 · 624GB · Rust bridge",
@@ -657,109 +606,25 @@ PROJECT_CARDS = [
 
 
 def build_project_cards_svg(theme: str = "dark") -> str:
-    """A grid of self-animating project cards — icon + name stay put, the
-    lower half crossfades between a one-line tag and the fuller description on
-    a staggered per-card loop. Pure SMIL, same non-interactive-but-self-
-    animating trick as the header cursor and the marquee: an <img>-loaded SVG
-    can't do :hover, but it can run its own clock forever."""
-    t = THEMES[theme]
-    cols, rows = 3, 3
-    card_w, card_h, gap, outer = 192, 170, 16, 16
-    width = outer * 2 + cols * card_w + (cols - 1) * gap
-    height = outer * 2 + rows * card_h + (rows - 1) * gap
-
-    cards_svg = []
-    for i, (name, icon_fn, tag, desc, color_key) in enumerate(PROJECT_CARDS):
-        col, row = i % cols, i // cols
-        cx0 = outer + col * (card_w + gap)
-        cy0 = outer + row * (card_h + gap)
-        mid_x = cx0 + card_w / 2
-        card_accent = CARD_COLORS[color_key]
-
-        # Border picks up each project's own color (subtle — same weight as
-        # the old neutral border, just tinted) so the grid reads as nine
-        # distinctly-themed cards instead of one color repeated nine times.
-        # Name/tag/description text stay neutral for legibility; only the
-        # icon and border carry the accent.
-        card = [f'<rect x="{cx0}" y="{cy0}" width="{card_w}" height="{card_h}" rx="10" fill="{t["bg"]}" stroke="{card_accent}" stroke-opacity="0.55" />']
-        card.append(icon_fn(mid_x, cy0 + 26, card_accent))
-        # Names are all <=20 chars by construction — single line, fixed y.
-        esc_name = name.replace("&", "&amp;").replace("<", "&lt;")
-        card.append(f'<text x="{mid_x}" y="{cy0 + 55}" font-size="12.5" font-weight="700" fill="{t["fg"]}" text-anchor="middle">{esc_name}</text>')
-
-        begin = f'{i * 0.9:.1f}s'
-        tag_esc = tag.replace("&", "&amp;").replace("<", "&lt;")
-        # calcMode="spline" + keySplines: an eased crossfade instead of a
-        # linear one — reads as designed rather than mechanical. One spline
-        # per segment (4, for 5 keyTimes points), same ease-in-out curve
-        # throughout.
-        ease = "0.42 0 0.58 1"
-        splines = ";".join([ease] * 4)
-        card.append(
-            f'<g><text x="{mid_x}" y="{cy0 + 92}" font-size="11" fill="{t["muted"]}" '
-            f'text-anchor="middle">{tag_esc}</text>'
-            f'<animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.4;0.5;0.9;1" '
-            f'calcMode="spline" keySplines="{splines}" '
-            f'dur="9s" begin="{begin}" repeatCount="indefinite" /></g>'
-        )
-        # Fixed top-anchored start regardless of line count (verified worst
-        # case: 5 lines at width=28 still lands well clear of the bottom
-        # edge) — no backward-from-bottom math that silently breaks if a
-        # description gets edited longer later.
-        desc_lines = textwrap.wrap(desc, width=28)[:5]
-        desc_group = ['<g opacity="0">']
-        dy = cy0 + 80
-        for line in desc_lines:
-            esc = line.replace("&", "&amp;").replace("<", "&lt;")
-            desc_group.append(f'<text x="{cx0 + 14}" y="{dy}" font-size="10.5" fill="{t["muted"]}">{esc}</text>')
-            dy += 13
-        desc_group.append(
-            f'<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.4;0.5;0.9;1" '
-            f'calcMode="spline" keySplines="{splines}" '
-            f'dur="9s" begin="{begin}" repeatCount="indefinite" /></g>'
-        )
-        card.append("".join(desc_group))
-        cards_svg.append("\n    ".join(card))
-
-    return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
-xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono',ui-monospace,monospace">
-  {chr(10).join(f'<g>{c}</g>' for c in cards_svg)}
-</svg>"""
+    """The 3×3 project grid, Laminar layout: centered tiles; icon + name glide up
+    as each description fades in, on a staggered per-card clock (pure SMIL)."""
+    return LAM.project_cards(theme, PROJECT_CARDS, CARD_COLORS)
 
 
+def build_divider_svg(theme: str = "dark") -> str:
+    """Liquid droplets merging and pinching apart along a stream of the page gradient."""
+    return LAM.divider(theme)
 
-def build_divider_svg() -> str:
-    """The center dot is a real feTurbulence+feDisplacementMap "liquid" blob,
-    not a flat circle — a small, contained nod to the "custom GLSL liquid
-    shaders... looked cool at 2am" line later on the page. Kept tiny and
-    subtle on purpose: one real demonstration beats a showy one that fights
-    the rest of a thin, quiet divider for attention."""
-    width, height = 640, 12
-    mid = width / 2
-    return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
-xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="fade" x1="0" x2="1">
-      <stop offset="0%" stop-color="{ACCENT}" stop-opacity="0" />
-      <stop offset="50%" stop-color="{ACCENT}" stop-opacity="0.8" />
-      <stop offset="100%" stop-color="{ACCENT}" stop-opacity="0" />
-    </linearGradient>
-    <filter id="plasma" x="-200%" y="-200%" width="500%" height="500%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="noise">
-        <animate attributeName="baseFrequency" values="0.9;1.4;0.9" dur="4s" repeatCount="indefinite" />
-      </feTurbulence>
-      <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" />
-    </filter>
-  </defs>
-  <circle cx="{mid}" cy="{height / 2}" r="3.5" fill="{ACCENT}" filter="url(#plasma)" />
-  <rect x="0" y="{height / 2 - 0.75}" width="{width}" height="1.5" fill="url(#fade)" />
-</svg>"""
+
+# The three stat cards share one height so they sit level side by side.
+STAT_CARD_H = 190
 
 
 def card_shell(width: int, height: int, title: str, body: str) -> str:
     """Data-card chrome (stats/langs/streak) — same card_chrome() primitive
     as the terminal-window cards, just without dots: this class of card
     isn't a "window," it's a stat block."""
+    height = max(height, STAT_CARD_H)
     chrome = card_chrome(width, height, THEMES["dark"], title=title, title_align="left")
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono',ui-monospace,monospace">
@@ -941,46 +806,21 @@ def _h_monogram(cx: float, cy: float, size: float, c: str) -> list[str]:
 
 
 def build_neofetch_svg() -> str:
-    """neofetch's actual convention (logo left, key:value list right) —
-    upgraded from a plain list after that flat layout drew a fair "boring"
-    call: it looked identical to stats.svg/langs.svg with nothing to
-    distinguish it. The logo is an original drawn mark, not a real distro's
-    logo (see _h_monogram)."""
-    width = 420
-    logo_col = 120
-    row_h = 22
-    top = 50
-    height = top + len(NEOFETCH_FACTS) * row_h + 14
+    """neofetch's convention (logo left, key:value list right), built at the live
+    card's height so the two sit level side by side. The logo is an original
+    drawn mark, not a real distro's (see _h_monogram)."""
+    return LAM.neofetch(NEOFETCH_FACTS, CARD_COLORS, _h_monogram, height=320)
 
-    body_lines = []
-    label_x = logo_col + 16
-    for i, (label, value, color_key) in enumerate(NEOFETCH_FACTS):
-        y = top + i * row_h
-        label_color = CARD_COLORS[color_key]
-        body_lines.append(
-            f'  <text x="{label_x}" y="{y}" font-size="12.5" font-weight="700" fill="{label_color}">{label}</text>'
-            f'  <text x="{width - 20}" y="{y}" font-size="12.5" fill="{FG}" text-anchor="end">{value}</text>'
-        )
-    logo = _h_monogram(logo_col / 2, top + (height - top) / 2 - 7, 76, ACCENT)
-    body_lines.append(f'  <line x1="{logo_col}" y1="{top - 10}" x2="{logo_col}" y2="{height - 10}" stroke="{BORDER}" />')
 
-    # Short title on purpose: at this card's width, the full
-    # "michael@herakles-dev — neofetch" label — fine on header.svg's 640px
-    # card — centers close enough to collide with the dots. Caught in preview.
-    chrome = card_chrome(width, height, THEMES["dark"], dots=True, title="neofetch", divider_y=40)
-    return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
-xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono',ui-monospace,monospace">
-  {chr(10).join(chrome)}
-  {chr(10).join(logo)}
-{chr(10).join(body_lines)}
-</svg>"""
+STACK_TOOLS = ["Python", "TypeScript", "Rust", "Lean 4", "Bash", "Docker",
+               "PostgreSQL", "FastAPI", "Next.js", "CUDA", "Kotlin", "Linux"]
 
 
 def write_svg(name: str, svg: str) -> None:
     os.makedirs(ASSETS, exist_ok=True)
     path = os.path.join(ASSETS, name)
     with open(path, "w", encoding="utf-8") as fh:
-        fh.write(svg)
+        fh.write(embed(svg))
     print(f"wrote {os.path.relpath(path, ROOT)}")
 
 
@@ -1002,8 +842,10 @@ def main() -> int:
     with open(path, encoding="utf-8") as fh:
         text = fh.read()
     original = text
-    text = replace_block(text, "merges", build_merges_block())
-    text = replace_block(text, "building", build_building_block())
+    merges = build_merges_block()
+    building = build_building_block()
+    text = replace_block(text, "merges", merges)
+    text = replace_block(text, "building", building)
     if text != original:
         with open(path, "w", encoding="utf-8") as fh:
             fh.write(text)
@@ -1011,18 +853,40 @@ def main() -> int:
     else:
         print("No README changes.")
 
+    # Header counts that come from live data; the rest are fixed page facts.
+    n_merges = sum(1 for ln in merges.splitlines() if ln.startswith("- "))
+    n_pushes = sum(1 for ln in building.splitlines() if ln.startswith("- "))
+    laminar.set_count(1, f"{n_merges} MERGE{'S' if n_merges != 1 else ''}")
+    laminar.set_count(2, f"{len(PROJECT_CARDS)} PROJECTS")
+    laminar.set_count(5, f"{len(STACK_TOOLS)} TOOLS")
+    laminar.set_count(7, f"{n_pushes} REPO{'S' if n_pushes != 1 else ''}")
+
+    # Page system: masthead, section headers, stack strip, divider, coda.
+    for theme, sfx in (("dark", ""), ("light", "-light")):
+        write_svg(f"masthead{sfx}.svg", LAM.masthead(theme))
+        for i in range(len(laminar.SECTIONS)):
+            write_svg(f"section-{i + 1:02d}{sfx}.svg", LAM.header(i, theme))
+        write_svg(f"stack{sfx}.svg", LAM.stack_strip(theme, STACK_TOOLS))
+        write_svg(f"divider{sfx}.svg", build_divider_svg(theme))
+        write_svg(f"coda{sfx}.svg", LAM.coda(theme))
+
+    # Cards. LAM.section picks which slice of the page gradient each frame takes.
+    LAM.section = -1
     write_svg("header.svg", build_header_svg("dark"))
     write_svg("header-light.svg", build_header_svg("light"))
+    LAM.section = 2
     write_svg("project-cards.svg", build_project_cards_svg("dark"))
     write_svg("project-cards-light.svg", build_project_cards_svg("light"))
+    LAM.section = 3
     write_svg("sessions.svg", build_sessions_svg("dark"))
     write_svg("sessions-light.svg", build_sessions_svg("light"))
-    write_svg("review.svg", build_review_svg())
-    write_svg("divider.svg", build_divider_svg())
+    write_svg("neofetch.svg", build_neofetch_svg())
+    LAM.section = 6
     write_svg("stats.svg", build_stats_svg())
     write_svg("langs.svg", build_langs_svg())
     write_svg("streak.svg", build_streak_svg())
-    write_svg("neofetch.svg", build_neofetch_svg())
+    LAM.section = 7
+    write_svg("review.svg", build_review_svg())
     return 0
 
 

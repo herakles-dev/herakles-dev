@@ -6,16 +6,21 @@
   <img alt="Pac-Man eating my contribution graph" src="https://raw.githubusercontent.com/herakles-dev/herakles-dev/output/pacman-contribution-graph.svg" />
 </picture>
 
-# Michael Piscitelli · `herakles-dev`
+<a href="https://herakles.dev">
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="assets/masthead-light.svg" />
+  <img src="assets/masthead.svg" alt="Michael Piscitelli — herakles.dev" width="100%" />
+</picture>
+</a>
 
 **Solo builder shipping production AI systems.** I run an agentic development practice at
 [**herakles.dev**](https://herakles.dev) and I'm launching [**keymakers.ai**](https://keymakers.ai).
 
-[![herakles.dev](https://img.shields.io/badge/herakles.dev-7C3AED?style=flat-square&logo=firefox&logoColor=white)](https://herakles.dev)
+[![herakles.dev](https://img.shields.io/badge/herakles.dev-8E74F2?style=flat-square&logo=firefox&logoColor=white)](https://herakles.dev)
 [![keymakers.ai](https://img.shields.io/badge/launching-keymakers.ai-111111?style=flat-square&logo=rocket&logoColor=white)](https://keymakers.ai)
 ![Chicago](https://img.shields.io/badge/Chicago,%20IL-1F2937?style=flat-square&logo=googlemaps&logoColor=white)
 ![Claude Code](https://img.shields.io/badge/built%20with-Claude%20Code-D97706?style=flat-square&logo=anthropic&logoColor=white)
-![profile views](https://komarev.com/ghpvc/?username=herakles-dev&color=7C3AED&style=flat-square&label=profile+views)
+![profile views](https://komarev.com/ghpvc/?username=herakles-dev&color=8E74F2&style=flat-square&label=profile+views)
 
 <a href="https://herakles.dev">
   <picture>
@@ -38,14 +43,20 @@ So I do. Everything here is self-hosted, runs in production, and the claims chec
 agents, review the diffs, and steer the system — more conductor than typist, though I still write
 plenty of code by hand. I don't ship demos.
 
-## 🟢 Live right now
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="assets/section-01-light.svg" />
+  <img src="assets/section-01.svg" alt="Live right now" width="100%" />
+</picture>
 
 - **[fine-print.org](https://fine-print.org)** — paste a Terms of Service, get back what you're
   actually agreeing to. Runs on my own multi-provider LLM gateway, not a single rented API.
 - **[subfold.pro](https://subfold.pro)** — a music-reactive visual instrument: real-time 3D
   fractals that fold to the beat.
 
-## 🔀 Merged into the wild
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="assets/section-02-light.svg" />
+  <img src="assets/section-02.svg" alt="Merged into the wild" width="100%" />
+</picture>
 
 <sub><i>Auto-updated weekly by a GitHub Action I own — external PRs that maintainers merged, newest first. No hand-editing.</i></sub>
 
@@ -59,7 +70,10 @@ Two of those are original Lean 4 proofs closing Erdős problems in Google DeepMi
 `formal-conjectures` — one of them fills a real gap in Mathlib. The third put a Claude Code
 workflow of mine into a 265k-star repository.
 
-## 🛠️ What I'm building
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="assets/section-03-light.svg" />
+  <img src="assets/section-03.svg" alt="What I'm building" width="100%" />
+</picture>
 
 Bare-metal infrastructure, RF hardware, telecom domain work, security research, formal math, a
 production SaaS with a real customer. Not a one-trick stack. Each card below sits on its own
@@ -87,15 +101,15 @@ A raw write from an agent doesn't just land — it has to clear a gate first, an
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': {
-  'primaryColor': '#1e1b3a',
+  'primaryColor': '#1f1f25',
   'primaryTextColor': '#e4e4e7',
-  'primaryBorderColor': '#7C3AED',
-  'lineColor': '#7C3AED',
+  'primaryBorderColor': '#8E74F2',
+  'lineColor': '#8E74F2',
   'secondaryColor': '#17171b',
   'tertiaryColor': '#17171b',
   'background': '#17171b',
-  'mainBkg': '#1e1b3a',
-  'nodeBorder': '#7C3AED',
+  'mainBkg': '#1f1f25',
+  'nodeBorder': '#8E74F2',
   'clusterBkg': '#17171b',
   'edgeLabelBackground': '#17171b',
   'fontFamily': 'JetBrains Mono, ui-monospace, monospace'
@@ -158,7 +172,10 @@ Formal math was new territory for me going in. `math-proof` produced 48 Lean 4 p
 
 </details>
 
-## 🖥️ Zeus Terminal — how all of this gets built
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="assets/section-04-light.svg" />
+  <img src="assets/section-04.svg" alt="Zeus Terminal — how all of this gets built" width="100%" />
+</picture>
 
 I'm talking to Claude through it right now. Zeus Terminal is a self-hosted, mobile-first web
 terminal I built to replace Termux: tmux persistence, WebSocket transport, 804 tests, continue a
@@ -186,7 +203,10 @@ unlike everything else on this page):
   <img src="https://opus.herakles.dev/api/readme/hercules-status.svg" alt="live Hercules platform activity" style="vertical-align:top" />
 </p>
 
-## 🎲 A few things that don't fit on a résumé
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="assets/section-05-light.svg" />
+  <img src="assets/section-05.svg" alt="A few things that don't fit on a résumé" width="100%" />
+</picture>
 
 - Built a **Pac-Man ghost AI** that lives on my Android homescreen and chases my taps around —
   28KB APK, runs at 2-3% CPU, entirely pointless and I love it.
@@ -197,22 +217,22 @@ unlike everything else on this page):
 - My login page has **custom GLSL liquid shaders** for no reason other than it looked cool at
   2am and I didn't undo it.
 
-## 🧰 Stack
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="assets/section-06-light.svg" />
+  <img src="assets/section-06.svg" alt="Stack" width="100%" />
+</picture>
 
-![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![Rust](https://img.shields.io/badge/Rust-000000?style=flat-square&logo=rust&logoColor=white)
-![Lean 4](https://img.shields.io/badge/Lean%204-2C2C2C?style=flat-square&logoColor=white)
-![Bash](https://img.shields.io/badge/Bash-4EAA25?style=flat-square&logo=gnubash&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
-![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white)
-![CUDA](https://img.shields.io/badge/CUDA-76B900?style=flat-square&logo=nvidia&logoColor=white)
-![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?style=flat-square&logo=kotlin&logoColor=white)
-![Linux](https://img.shields.io/badge/Linux-FCC624?style=flat-square&logo=linux&logoColor=black)
+<p align="center">
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="assets/stack-light.svg" />
+  <img src="assets/stack.svg" alt="Python, TypeScript, Rust, Lean 4, Bash, Docker, PostgreSQL, FastAPI, Next.js, CUDA, Kotlin, Linux" width="100%" />
+</picture>
+</p>
 
-## 📊 By the numbers
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="assets/section-07-light.svg" />
+  <img src="assets/section-07.svg" alt="By the numbers" width="100%" />
+</picture>
 
 <div align="center">
 
@@ -226,7 +246,10 @@ the week I rebuilt this page. Zero left now.</i></sub>
 
 </div>
 
-## 🌱 Latest pushes
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="assets/section-08-light.svg" />
+  <img src="assets/section-08.svg" alt="Latest pushes" width="100%" />
+</picture>
 
 <sub><i>Auto-updated — my own repos, most recently pushed.</i></sub>
 
@@ -238,7 +261,12 @@ the week I rebuilt this page. Zero left now.</i></sub>
 - **[claude-code-agents](https://github.com/herakles-dev/claude-code-agents)** `⭐ 1` — Curated, transferable Claude Code subagents in installable packages — orchestration, engineering, security, devops — plus a CLAUDE.md template for multi-agent projects.
 <!--END_SECTION:building-->
 
-<p align="center"><img src="assets/divider.svg" alt="" width="100%" height="12" /></p>
+<p align="center">
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="assets/divider-light.svg" />
+  <img src="assets/divider.svg" alt="" width="100%" />
+</picture>
+</p>
 
 One more thing — Claude left a review.
 
@@ -247,6 +275,13 @@ One more thing — Claude left a review.
 <img src="assets/review.svg" alt="A Google-style review of working with me, written by Claude" />
 
 </div>
+
+<p align="center">
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="assets/coda-light.svg" />
+  <img src="assets/coda.svg" alt="" width="100%" />
+</picture>
+</p>
 
 <div align="center">
 
