@@ -323,11 +323,25 @@ def build_review_svg() -> str:
     parts.append(f'  <text x="{pad}" y="{y}" font-size="11" fill="{ink2}">Was this review helpful?  <tspan fill="#1a73e8">Yes</tspan> &#183; <tspan fill="#1a73e8">No</tspan></text>')
     height = y + pad
 
-    return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
-xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif">
-  <rect x="0.5" y="0.5" width="{width - 1}" height="{height - 1}" rx="12" \
+    # Frame the white card in dark browser-chrome (matching the terminal
+    # header's 3-dot motif) instead of dropping it straight onto the page —
+    # reads as a deliberately embedded screenshot, not a jarring interruption.
+    chrome_h, margin = 34, 14
+    outer_w, outer_h = width + 2 * margin, chrome_h + height + margin
+    return f"""<svg width="{outer_w}" height="{outer_h}" viewBox="0 0 {outer_w} {outer_h}" \
+xmlns="http://www.w3.org/2000/svg">
+  <rect x="0.5" y="0.5" width="{outer_w - 1}" height="{outer_h - 1}" rx="14" \
+fill="{BG}" stroke="{BORDER}" />
+  <circle cx="24" cy="{chrome_h / 2}" r="4.5" fill="{BORDER}" />
+  <circle cx="40" cy="{chrome_h / 2}" r="4.5" fill="{BORDER}" />
+  <circle cx="56" cy="{chrome_h / 2}" r="4.5" fill="{BORDER}" />
+  <text x="{outer_w / 2}" y="{chrome_h / 2 + 4}" font-size="11" fill="{MUTED}" text-anchor="middle" \
+font-family="'JetBrains Mono',ui-monospace,monospace">reviews — hercules-platform</text>
+  <g transform="translate({margin},{chrome_h})" font-family="Arial, Helvetica, sans-serif">
+    <rect x="0.5" y="0.5" width="{width - 1}" height="{height - 1}" rx="12" \
 fill="#ffffff" stroke="{hair}" />
 {chr(10).join(parts)}
+  </g>
 </svg>"""
 
 
