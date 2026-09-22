@@ -25,8 +25,15 @@
 </a>
 </p>
 
-<p>
 <br />
+
+<p align="left">
+<!--START_SECTION:contribs-->
+1,800 contributions in the last year
+<!--END_SECTION:contribs-->
+</p>
+
+<p>
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/herakles-dev/herakles-dev/output/pacman-contribution-graph-dark.svg" />
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/herakles-dev/herakles-dev/output/pacman-contribution-graph.svg" />

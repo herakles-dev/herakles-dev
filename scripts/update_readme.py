@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Refresh the auto-updated sections of README.md from live GitHub data.
 
-Fills two marked blocks:
+Fills three marked blocks:
+  <!--START_SECTION:contribs--> ... <!--END_SECTION:contribs-->
+     Contributions in the last year, the figure GitHub shows over its calendar.
   <!--START_SECTION:merges--> ... <!--END_SECTION:merges-->
      External PRs (repos I don't own) that maintainers have merged, newest first.
   <!--START_SECTION:building--> ... <!--END_SECTION:building-->
@@ -716,6 +718,24 @@ def contribution_days() -> tuple[list[tuple[str, int]], int]:
     return days, cal["totalContributions"]
 
 
+def contributions_last_year() -> int:
+    """The exact figure GitHub prints over the profile calendar. It's read from the
+    page that calendar renders from, because the GraphQL default window differs
+    slightly (it came back one short on the day this was added). Falls back to
+    the GraphQL total if that page ever changes shape."""
+    req = urllib.request.Request(f"https://github.com/users/{USER}/contributions",
+                                 headers={"User-Agent": f"{USER}-profile-bot"})
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            page = resp.read().decode("utf-8", "replace")
+        m = re.search(r"([0-9,]+)\s+contributions?\s+in the last year", page)
+        if m:
+            return int(m.group(1).replace(",", ""))
+    except (urllib.error.URLError, TimeoutError):
+        pass
+    return contribution_days()[1]
+
+
 def compute_streaks(days: list[tuple[str, int]]) -> tuple[int, int]:
     """(current_streak, longest_streak) in days, over the trailing year the
     contribution calendar covers. Current streak walks back from the most
@@ -844,8 +864,11 @@ def main() -> int:
     original = text
     merges = build_merges_block()
     building = build_building_block()
+    contrib_total = contributions_last_year()
     text = replace_block(text, "merges", merges)
     text = replace_block(text, "building", building)
+    # Same figure (and same wording) as the header on GitHub's own contribution calendar.
+    text = replace_block(text, "contribs", f"{contrib_total:,} contributions in the last year")
     if text != original:
         with open(path, "w", encoding="utf-8") as fh:
             fh.write(text)
