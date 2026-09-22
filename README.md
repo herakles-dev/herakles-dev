@@ -1,7 +1,7 @@
 <div align="center">
 
 <a href="https://herakles.dev">
-  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=22&duration=3500&pause=800&color=7C3AED&center=true&vCenter=true&width=820&height=55&lines=4+years+of+aerospace+engineering+-%3E+telecom+by+day+-%3E+AI+orchestrator+by+night;I+self-host+everything.;If+it+compiles%2C+it's+true.+No+plausible-but-wrong.;Too+many+Docker+containers.+On+purpose." alt="typing intro" />
+  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=20&duration=3000&pause=800&color=7C3AED&center=true&vCenter=true&width=600&height=50&lines=Telecom+by+day.+AI+orchestrator+by+night.;I+self-host+everything.;If+it+compiles%2C+it's+true.;No+plausible-but-wrong.;Too+many+Docker+containers.+On+purpose." alt="typing intro" style="max-width: 100%;" />
 </a>
 
 # Michael Piscitelli · `herakles-dev`
@@ -72,17 +72,9 @@ software, security research, formal math, a production SaaS with a real customer
   [erdos672-four-squares-lean](https://github.com/herakles-dev/erdos672-four-squares-lean).
 - **hekaton** — a Rust/gRPC + CUDA system I own outright and can deploy anywhere. I love Claude, but I
   don't own Claude. I own this.
-- **[keymakers.ai](https://keymakers.ai)** — what I'm launching: key duplication by mail, computer
-  vision doing the matching (Gemini Vision + OpenCV), plus a membership platform for agentic engineers.
-
-## 🔁 Tuning it from the inside
-
-I spent two months having my own orchestration protocol grade its own runs and file tickets against
-itself — root-caused remediation, not speculative feature work. Cleared 632 phantom task entries
-across 41 projects fleet-wide. Took session-handoff quality from 0-of-15 clean to fully verified.
-Every fix ships behind a named rollback flag with a red-then-green test, checked against a
-1,973+-test regression baseline before anything goes out. The system tunes itself; I just have to
-let it.
+- **keymakers.ai** — what I'm launching, now split into an org: `keymakers-core` (key duplication by
+  mail, computer vision doing the matching) and `keymakers-club` (membership platform for agentic
+  engineers). Work in progress, built the same way as everything else here.
 
 ## A few things that don't fit on a résumé
 
