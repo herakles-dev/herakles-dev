@@ -331,79 +331,159 @@ fill="#ffffff" stroke="{hair}" />
 </svg>"""
 
 
-def build_marquee_svg() -> str:
-    """An infinitely auto-scrolling strip of project cards — pure SVG, no JS.
+def _icon_chip(cx: float, cy: float, c: str) -> str:
+    s = 11
+    parts = [f'<rect x="{cx-s}" y="{cy-s}" width="{2*s}" height="{2*s}" rx="3" fill="none" stroke="{c}" stroke-width="2" />']
+    for off in (-6, 0, 6):
+        parts.append(f'<line x1="{cx+off}" y1="{cy-s-5}" x2="{cx+off}" y2="{cy-s}" stroke="{c}" stroke-width="2" />')
+        parts.append(f'<line x1="{cx+off}" y1="{cy+s}" x2="{cx+off}" y2="{cy+s+5}" stroke="{c}" stroke-width="2" />')
+    return "".join(parts)
 
-    GitHub strips <script> tags from READMEs, so this can't be a real DOM
-    carousel. What DOES survive is SMIL: a native SVG animation primitive
-    browsers still execute even through a plain <img> tag (same trick as the
-    header's blinking cursor). A <g> holding two back-to-back copies of the
-    card sequence gets translated left by exactly one sequence-width, on a
-    loop — when the first copy scrolls fully offscreen, the second is
-    already sitting in its starting position, so the seam is invisible.
-    """
-    cards = [
-        ("hekaton", "GH200 · Rust · CUDA"),
-        ("herakles-linux-opus", "runs the whole box"),
-        ("v11", "orchestration protocol"),
-        ("SDR Command Center", "RTL-SDR · WireGuard"),
-        ("CK Reynolds Tax", "real customer, real IRS"),
-        ("Reticulum", "off-grid mesh · LoRa"),
-        ("opensource-pipeline", "265k★ merge"),
-        ("math-proof", "Lean 4 · zero sorrys"),
-        ("keymakers.ai", "key duplication by mail"),
-    ]
 
-    width = 640
-    card_w, card_h, gap = 176, 92, 16
-    top = 46
-    height = top + card_h + 20
-    seq_w = (card_w + gap) * len(cards)
+def _icon_stack(cx: float, cy: float, c: str) -> str:
+    parts = []
+    for i, dy in enumerate((-10, 0, 10)):
+        parts.append(f'<rect x="{cx-13}" y="{cy+dy-4}" width="26" height="7" rx="2" fill="none" stroke="{c}" stroke-width="1.8" />')
+    return "".join(parts)
 
-    def render_card(name: str, tag: str, x: int) -> str:
-        name_esc = name.replace("&", "&amp;").replace("<", "&lt;")
+
+def _icon_nodes(cx: float, cy: float, c: str) -> str:
+    pts = [(cx - 12, cy + 8), (cx, cy - 10), (cx + 12, cy + 8)]
+    parts = [f'<line x1="{pts[0][0]}" y1="{pts[0][1]}" x2="{pts[1][0]}" y2="{pts[1][1]}" stroke="{c}" stroke-width="1.8" />',
+             f'<line x1="{pts[1][0]}" y1="{pts[1][1]}" x2="{pts[2][0]}" y2="{pts[2][1]}" stroke="{c}" stroke-width="1.8" />']
+    for x, y in pts:
+        parts.append(f'<circle cx="{x}" cy="{y}" r="3.5" fill="{c}" />')
+    return "".join(parts)
+
+
+def _icon_rings(cx: float, cy: float, c: str) -> str:
+    parts = [f'<circle cx="{cx}" cy="{cy}" r="2" fill="{c}" />']
+    for r in (7, 12):
+        parts.append(f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="{c}" stroke-width="1.6" opacity="{1 - r / 16:.2f}" />')
+    return "".join(parts)
+
+
+def _icon_doc(cx: float, cy: float, c: str) -> str:
+    parts = [f'<rect x="{cx-9}" y="{cy-12}" width="18" height="24" rx="2" fill="none" stroke="{c}" stroke-width="1.8" />']
+    for dy in (-4, 1, 6):
+        parts.append(f'<line x1="{cx-5}" y1="{cy+dy}" x2="{cx+5}" y2="{cy+dy}" stroke="{c}" stroke-width="1.6" />')
+    return "".join(parts)
+
+
+def _icon_mesh(cx: float, cy: float, c: str) -> str:
+    pts = [(cx - 12, cy - 8), (cx + 10, cy - 10), (cx - 8, cy + 9), (cx + 12, cy + 8), (cx, cy)]
+    edges = [(0, 4), (1, 4), (2, 4), (3, 4), (0, 1)]
+    parts = []
+    for a, b in edges:
+        parts.append(f'<line x1="{pts[a][0]}" y1="{pts[a][1]}" x2="{pts[b][0]}" y2="{pts[b][1]}" stroke="{c}" stroke-width="1.4" opacity="0.7" />')
+    for x, y in pts:
+        parts.append(f'<circle cx="{x}" cy="{y}" r="3" fill="{c}" />')
+    return "".join(parts)
+
+
+def _icon_star(cx: float, cy: float, c: str) -> str:
+    return f'<polygon points="{star_points(cx, cy, 13, 5.5)}" fill="{c}" />'
+
+
+def _icon_check(cx: float, cy: float, c: str) -> str:
+    return (f'<polyline points="{cx-10},{cy} {cx-3},{cy+8} {cx+11},{cy-9}" '
+            f'fill="none" stroke="{c}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />')
+
+
+def _icon_grid(cx: float, cy: float, c: str) -> str:
+    parts = []
+    s = 8
+    for dx in (-s - 2, s + 2):
+        for dy in (-s - 2, s + 2):
+            parts.append(f'<rect x="{cx+dx-s/2}" y="{cy+dy-s/2}" width="{s}" height="{s}" rx="1.5" fill="none" stroke="{c}" stroke-width="1.6" />')
+    return "".join(parts)
+
+
+def _icon_key(cx: float, cy: float, c: str) -> str:
+    parts = [f'<circle cx="{cx-7}" cy="{cy}" r="6" fill="none" stroke="{c}" stroke-width="2" />',
+             f'<line x1="{cx-1}" y1="{cy}" x2="{cx+12}" y2="{cy}" stroke="{c}" stroke-width="2" />']
+    for dx in (7, 11):
+        parts.append(f'<line x1="{cx+dx}" y1="{cy}" x2="{cx+dx}" y2="{cy+5}" stroke="{c}" stroke-width="2" />')
+    return "".join(parts)
+
+
+PROJECT_CARDS = [
+    ("hekaton", _icon_chip, "GH200 · 624GB · Rust bridge",
+     "NUMA-pinned deploys, 3-4 LLMs debating over ZeroMQ. One untested vLLM upgrade burned me — now every bump ships a rollback plan."),
+    ("herakles-linux-opus", _icon_stack, "130+ services, 1 box",
+     "Also embeds and ranks all 144 of my own repos — a Venture Catalog telling me which are actually worth finishing."),
+    ("v11", _icon_nodes, "orchestration protocol",
+     "Task-as-truth state, write-gate hooks, adversarial review pairing. Built to survive being rebuilt on itself."),
+    ("SDR Command Center", _icon_rings, "RTL-SDR · WireGuard",
+     "Live FFT waterfall, remote scans across four ISM bands, tunneled home from a Pixel 6a."),
+    ("CK Reynolds Tax", _icon_doc, "real customer, real IRS",
+     "Stripe, 2FA, IRS Pub 4557 compliance. Not a demo — daily-use production software."),
+    ("Reticulum", _icon_mesh, "off-grid mesh · LoRa",
+     "A Raspberry Pi node running 24/7 for an emergency that's never come. Nobody assigned this one."),
+    ("Fiber Tree v2", _icon_grid, "PostGIS · 30 tables",
+     "Spatial pathfinding and loss-budget calculations for real fiber builds. Ten years of telecom work, encoded."),
+    ("math-proof", _icon_check, "Lean 4 · zero sorrys",
+     "48 machine-checked proofs in 8 days. Closed two Erdős problems in DeepMind's own repo."),
+    ("keymakers.ai", _icon_key, "launching",
+     "Key duplication by mail, computer vision doing the matching. keymakers-core + keymakers-club, genuinely early."),
+]
+
+
+def build_project_cards_svg() -> str:
+    """A grid of self-animating project cards — icon + name stay put, the
+    lower half crossfades between a one-line tag and the fuller description on
+    a staggered per-card loop. Pure SMIL, same non-interactive-but-self-
+    animating trick as the header cursor and the marquee: an <img>-loaded SVG
+    can't do :hover, but it can run its own clock forever."""
+    cols, rows = 3, 3
+    card_w, card_h, gap, outer = 192, 170, 16, 16
+    width = outer * 2 + cols * card_w + (cols - 1) * gap
+    height = outer * 2 + rows * card_h + (rows - 1) * gap
+
+    cards_svg = []
+    for i, (name, icon_fn, tag, desc) in enumerate(PROJECT_CARDS):
+        col, row = i % cols, i // cols
+        cx0 = outer + col * (card_w + gap)
+        cy0 = outer + row * (card_h + gap)
+        mid_x = cx0 + card_w / 2
+
+        card = [f'<rect x="{cx0}" y="{cy0}" width="{card_w}" height="{card_h}" rx="10" fill="{BG}" stroke="{BORDER}" />']
+        card.append(icon_fn(mid_x, cy0 + 26, ACCENT))
+        # Names are all <=20 chars by construction — single line, fixed y.
+        esc_name = name.replace("&", "&amp;").replace("<", "&lt;")
+        card.append(f'<text x="{mid_x}" y="{cy0 + 55}" font-size="12.5" font-weight="700" fill="{FG}" text-anchor="middle">{esc_name}</text>')
+
+        begin = f'{i * 0.9:.1f}s'
         tag_esc = tag.replace("&", "&amp;").replace("<", "&lt;")
-        name_lines = textwrap.wrap(name_esc, width=17)[:2]
-        parts = [
-            f'<rect x="{x}" y="0" width="{card_w}" height="{card_h}" rx="10" fill="{BG}" stroke="{BORDER}" />',
-            f'<rect x="{x}" y="0" width="4" height="{card_h}" rx="2" fill="{ACCENT}" />',
-        ]
-        ny = 30
-        for line in name_lines:
-            parts.append(f'<text x="{x + 18}" y="{ny}" font-size="13" font-weight="700" fill="{FG}">{line}</text>')
-            ny += 18
-        parts.append(f'<text x="{x + 18}" y="{card_h - 16}" font-size="11" fill="{MUTED}">{tag_esc}</text>')
-        return "\n  ".join(parts)
+        card.append(
+            f'<g><text x="{mid_x}" y="{cy0 + 92}" font-size="11" fill="{MUTED}" '
+            f'text-anchor="middle">{tag_esc}</text>'
+            f'<animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.4;0.5;0.9;1" '
+            f'dur="9s" begin="{begin}" repeatCount="indefinite" /></g>'
+        )
+        # Fixed top-anchored start regardless of line count (verified worst
+        # case: 5 lines at width=28 still lands well clear of the bottom
+        # edge) — no backward-from-bottom math that silently breaks if a
+        # description gets edited longer later.
+        desc_lines = textwrap.wrap(desc, width=28)[:5]
+        desc_group = ['<g opacity="0">']
+        dy = cy0 + 80
+        for line in desc_lines:
+            esc = line.replace("&", "&amp;").replace("<", "&lt;")
+            desc_group.append(f'<text x="{cx0 + 14}" y="{dy}" font-size="10.5" fill="{MUTED}">{esc}</text>')
+            dy += 13
+        desc_group.append(
+            f'<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.4;0.5;0.9;1" '
+            f'dur="9s" begin="{begin}" repeatCount="indefinite" /></g>'
+        )
+        card.append("".join(desc_group))
+        cards_svg.append("\n    ".join(card))
 
-    track = []
-    x = 0
-    for _ in range(2):  # two back-to-back copies for the seamless loop
-        for name, tag in cards:
-            track.append(render_card(name, tag, x))
-            x += card_w + gap
-
-    dur = max(18, len(cards) * 3)
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono',ui-monospace,monospace">
-  <rect x="0.5" y="0.5" width="{width - 1}" height="{height - 1}" rx="12" \
-fill="{BG}" stroke="{BORDER}" />
-  <text x="20" y="28" font-size="13" font-weight="700" fill="{ACCENT}">what's running right now</text>
-  <text x="{width - 20}" y="28" font-size="11" fill="{MUTED}" text-anchor="end">auto-scrolls →</text>
-  <defs>
-    <clipPath id="marqueeClip">
-      <rect x="16" y="{top}" width="{width - 32}" height="{card_h}" rx="10" />
-    </clipPath>
-  </defs>
-  <g clip-path="url(#marqueeClip)">
-    <g transform="translate(16,{top})">
-      <g>
-        {chr(10).join(track)}
-        <animateTransform attributeName="transform" type="translate" \
-from="0,0" to="{-seq_w},0" dur="{dur}s" repeatCount="indefinite" />
-      </g>
-    </g>
-  </g>
+  {chr(10).join(f'<g>{c}</g>' for c in cards_svg)}
 </svg>"""
+
 
 
 def build_divider_svg() -> str:
@@ -521,7 +601,7 @@ def main() -> int:
         print("No README changes.")
 
     write_svg("header.svg", build_header_svg())
-    write_svg("marquee.svg", build_marquee_svg())
+    write_svg("project-cards.svg", build_project_cards_svg())
     write_svg("sessions.svg", build_sessions_svg())
     write_svg("review.svg", build_review_svg())
     write_svg("divider.svg", build_divider_svg())
