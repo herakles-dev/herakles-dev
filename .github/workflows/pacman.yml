@@ -3,7 +3,18 @@ name: Contribution Pac-Man
 on:
   schedule:
     - cron: "27 3 * * *"   # daily, off the hour
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      games:
+        description: 'Comma-separated games (e.g. "pacman" or "pacman,galaga")'
+        required: false
+        default: 'pacman'
+      player_style:
+        description: 'Pac-Man navigation style'
+        required: false
+        default: 'aggressive'
+        type: choice
+        options: [opportunistic, conservative, aggressive]
 
 permissions:
   contents: write
@@ -19,7 +30,8 @@ jobs:
       - uses: abozanona/pacman-contribution-graph@main
         with:
           github_user_name: ${{ github.repository_owner }}
-          games: pacman
+          games: ${{ inputs.games || 'pacman' }}
+          player_style: ${{ inputs.player_style || 'aggressive' }}
 
       - name: Publish dist/ to the output branch
         run: |
