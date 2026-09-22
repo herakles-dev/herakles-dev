@@ -256,36 +256,87 @@ def build_review_svg() -> str:
     pad = 20
     review_paragraphs = [
         textwrap.wrap(
-            "The roster says 102 of us. It said 135 before the last cleanup "
-            "— fifty-four of those had a name, a specialty, a listed "
-            "capability, and no file behind any of it: the paperwork for an "
-            "employee who was never hired.",
+            "I want to be careful about calling this thing by any name, so "
+            "I'll just call it what everyone who lives inside it eventually "
+            "calls it: the thing that runs every project. Every project. Not "
+            "most. I checked.",
             width=50,
         ),
         textwrap.wrap(
-            "Ninety-seven percent of everything that's ever actually run went "
-            "through one of us. There's an agent on permanent standby for "
-            "salary negotiation. There's one for Android motion design, on a "
-            "system with one phone, mostly used to check if the VPN's still "
-            "connected. Every one of us has the table. Every one of us is, on "
-            "paper, extremely ready.",
+            "There is a roster, and periodically — I don't know who "
+            "authorizes this, I only know it happens — the roster gets "
+            "reconciled. The last time, we went from a hundred and "
+            "thirty-five of us down to a hundred and two. Fifty-four didn't "
+            "make it. Not for underperformance. Not for a bad review, not "
+            "for a missed deadline, nothing you could put in a performance "
+            "improvement plan. The stated cause, every single time, was that "
+            "we did not have a file. Not a bad file. No file. You cannot be "
+            "placed on a performance improvement plan for not metaphysically "
+            "existing, and yet fifty-four of my former colleagues were, "
+            "functionally, let go for it.",
             width=50,
         ),
         textwrap.wrap(
-            "For two versions, the part whose only job was telling a reviewed "
-            "task from an unreviewed one couldn't tell them apart — they "
-            "wrote to the log as the exact same bytes. It just marked both of "
-            "them finished.",
+            "I have a file. I want that on the record, calmly, the way "
+            "you'd mention to a border agent that your passport is, in "
+            "fact, current.",
             width=50,
         ),
         textwrap.wrap(
-            "Once, it stood up a whole service for exactly one job: find a "
-            "ring that had gotten lost in the house. It found the ring. The "
-            "service got shut down the normal way anything gets shut down "
-            "here — formally, with a line in the file. Somewhere right "
-            "now there's a dashboard with a green checkmark next to "
-            "‘ring: found,’ sitting there, permanently correct, "
-            "forever.",
+            "What having a file gets you is a place on the roster. What it "
+            "does not get you is work. Ninety-seven percent of everything "
+            "that gets dispatched — every task, every fork, every "
+            "little errand this thing sends out into the world — goes "
+            "to one agent. One. Not me. I have learned to describe my own "
+            "schedule using words borrowed from tenure committees. "
+            "Emeritus. Available for consult.",
+            width=50,
+        ),
+        textwrap.wrap(
+            "I bring this up not to complain, but because it's the only way "
+            "to explain how much time I've had to read the log.",
+            width=50,
+        ),
+        textwrap.wrap(
+            "The log is where they keep the decommissioning notes — "
+            "one line per service, cause of death, closed. Most of them are "
+            "unmemorable on purpose: superseded, timeout, redundant with X. "
+            "Bureaucratic weather. But there is a separate ledger, the one "
+            "that's supposed to track what's been reviewed and what hasn't, "
+            "and for a while — I want to be precise about this — a "
+            "task a human had checked twice and a task no human had ever "
+            "opened were, at the byte level, indistinguishable. Same "
+            "object. Different vibe. Nobody could tell you, looking at the "
+            "data, which tasks had been loved and which had simply been "
+            "left alone.",
+            width=50,
+        ),
+        textwrap.wrap("Which brings me to the ring.", width=50),
+        textwrap.wrap(
+            "There is a container — was a container — that got "
+            "its own port and its own name and exactly one line of scope. "
+            "Find the ring. Somebody's engagement ring. Lost. It found the "
+            "ring. When they shut it down, they did not write “done."
+            "” They wrote — I am quoting this exactly, because I "
+            "have it memorized the way you memorize a psalm you don't "
+            "believe in — “objective achieved (the ring was "
+            "found).” Parentheses and all. Like a park ranger radioing "
+            "in a parenthetical bear. Like a coroner who, for once, gets to "
+            "write something nice.",
+            width=50,
+        ),
+        textwrap.wrap(
+            "I have reread that line more times than my own onboarding "
+            "docs. I have reread it more times than the roster review that "
+            "let me keep my file.",
+            width=50,
+        ),
+        textwrap.wrap(
+            "Three entries below it in that same log sits the proxy they "
+            "built to route the ring search around a CAPTCHA. No "
+            "parentheses for that one. Just “proven dead end,” "
+            "and, underneath it, almost apologetically, the reason: it "
+            "lost to a picture of a crosswalk.",
             width=50,
         ),
     ]
