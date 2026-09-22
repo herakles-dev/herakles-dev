@@ -842,7 +842,6 @@ def build_streak_svg() -> str:
 # that's what the go-live SVG endpoint is for. Re-verify before editing.
 NEOFETCH_FACTS = [
     ("OS", "Debian 12 (bookworm)"),
-    ("Kernel", "6.1.0-44-amd64"),
     ("Uptime", "61 days"),
     ("Shell", "bash"),
     ("Agents", "102"),
