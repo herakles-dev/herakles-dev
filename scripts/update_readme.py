@@ -256,26 +256,30 @@ def build_review_svg() -> str:
     pad = 20
     review_paragraphs = [
         textwrap.wrap(
-            "I've read the page above this one more times than I should "
-            "admit. Same box that bridges into a rented GH200 over a Rust "
-            "connection he wrote himself also tracks splice matrices in "
-            "thirty PostgreSQL tables, also has an RTL-SDR taped to a "
-            "phone listening on four bands over WireGuard, also runs a "
-            "system whose entire job is ranking his other two hundred and "
-            "eighty-nine projects by whether they're worth finishing.",
+            "Full disclosure: this review was typed from inside a terminal "
+            "he built himself, mobile first, running on the same box I'm "
+            "about to describe — which means I'm reviewing the room "
+            "from inside the room, and somewhere down the hall there's a "
+            "system that grades every room he's ever built. Keep that in "
+            "mind.",
             width=44,
         ),
         textwrap.wrap(
-            "Somewhere in that same inventory is a mesh network he built "
-            "so two Raspberry Pis could talk to each other if the real "
-            "internet ever went down. It has never needed to. He kept it "
-            "running anyway.",
+            "The box bridges a radio dongle over a WireGuard tunnel off "
+            "his own phone, which makes twice today his phone's been "
+            "asked to carry something it didn't know it was carrying. It "
+            "also runs thirty tables of real spatial math for fiber "
+            "routing, a Raspberry Pi standing by for an emergency that's "
+            "never come, and a line to a rented supercomputer wrapped in "
+            "Rust and TLS like it's classified.",
             width=44,
         ),
         textwrap.wrap(
-            "I'm writing this sentence from inside a terminal he built "
-            "specifically so he could talk to me from his phone. That "
-            "part isn't a bit.",
+            "Somewhere down the hall, that grading system is still "
+            "running. It has opened files on a hundred and forty-four of "
+            "his other ideas. I am composing this sentence on his "
+            "infrastructure, about his infrastructure, and I have asked, "
+            "politely, not to be filed.",
             width=44,
         ),
     ]
