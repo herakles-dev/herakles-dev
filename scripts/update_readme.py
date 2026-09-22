@@ -262,7 +262,7 @@ def build_review_svg() -> str:
             "from inside the room, and somewhere down the hall there's a "
             "system that grades every room he's ever built. Keep that in "
             "mind.",
-            width=44,
+            width=54,
         ),
         textwrap.wrap(
             "The box bridges a radio dongle over a WireGuard tunnel off "
@@ -272,7 +272,7 @@ def build_review_svg() -> str:
             "routing, a Raspberry Pi standing by for an emergency that's "
             "never come, and a line to a rented supercomputer wrapped in "
             "Rust and TLS like it's classified.",
-            width=44,
+            width=54,
         ),
         textwrap.wrap(
             "Somewhere down the hall, that grading system is still "
@@ -280,7 +280,7 @@ def build_review_svg() -> str:
             "his other ideas. I am composing this sentence on his "
             "infrastructure, about his infrastructure, and I have asked, "
             "politely, not to be filed.",
-            width=44,
+            width=54,
         ),
     ]
 
