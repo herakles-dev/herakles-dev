@@ -26,6 +26,9 @@ jobs:
 
       - name: Publish dist/ to the output branch
         run: |
+          # Platane/snk runs in a container and leaves dist/ owned by root;
+          # reclaim it before writing .git inside it as the runner user.
+          sudo chown -R "$(id -u):$(id -g)" dist
           cd dist
           git init -q
           git checkout -b output
