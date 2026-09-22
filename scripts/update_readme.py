@@ -167,7 +167,7 @@ def build_header_svg() -> str:
         ("michael — telecom by day, AI orchestrator by night", FG),
         ("", None),
         ("$ history | tail -1", MUTED),
-        ("The engineering mindset stuck. The credential didn't.", FG),
+        ("Everything here is self-hosted. So am I.", FG),
     ]
     body_lines = []
     y = 66

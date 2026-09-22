@@ -31,6 +31,16 @@ So I do. Everything here is self-hosted, runs in production, and the claims chec
 agents, review the diffs, and steer the system — more conductor than typist, though I still write
 plenty of code by hand. I don't ship demos.
 
+<div align="center">
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/herakles-dev/herakles-dev/output/pacman-contribution-graph-dark.svg" />
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/herakles-dev/herakles-dev/output/pacman-contribution-graph.svg" />
+  <img alt="Pac-Man eating my contribution graph" src="https://raw.githubusercontent.com/herakles-dev/herakles-dev/output/pacman-contribution-graph.svg" />
+</picture>
+
+</div>
+
 ## 🟢 Live right now
 
 - **[fine-print.org](https://fine-print.org)** — paste a Terms of Service, get back what you're
@@ -121,12 +131,6 @@ the week I rebuilt this page.</i></sub>
 <img src="assets/stats.svg" alt="stats" />
 <img src="assets/langs.svg" alt="top languages" />
 <img height="165" src="https://streak-stats.demolab.com?user=herakles-dev&theme=tokyonight&hide_border=true&ring=7C3AED&fire=7C3AED&currStreakLabel=7C3AED" alt="streak" />
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/herakles-dev/herakles-dev/output/pacman-contribution-graph-dark.svg" />
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/herakles-dev/herakles-dev/output/pacman-contribution-graph.svg" />
-  <img alt="Pac-Man eating my contribution graph" src="https://raw.githubusercontent.com/herakles-dev/herakles-dev/output/pacman-contribution-graph.svg" />
-</picture>
 
 </div>
 
