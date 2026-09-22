@@ -17,9 +17,11 @@ No third-party deps — standard library only. Auth via GITHUB_TOKEN (or GH_TOKE
 from __future__ import annotations
 
 import json
+import math
 import os
 import re
 import sys
+import textwrap
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -226,6 +228,83 @@ fill="{BG}" stroke="{BORDER}" />
 </svg>"""
 
 
+def star_points(cx: float, cy: float, r_outer: float, r_inner: float) -> str:
+    """Hand-compute a 5-point star polygon — drawn, not a Unicode glyph, so it
+    renders identically everywhere regardless of what font a viewer has."""
+    pts = []
+    for i in range(10):
+        r = r_outer if i % 2 == 0 else r_inner
+        angle = math.pi / 2 * -1 + i * math.pi / 5
+        pts.append(f"{cx + r * math.cos(angle):.2f},{cy - r * math.sin(angle):.2f}")
+    return " ".join(pts)
+
+
+def star_row(x: float, y: float, count: int, size: float, color: str) -> str:
+    spacing = size * 2.4
+    stars = []
+    for i in range(count):
+        cx = x + size + i * spacing
+        stars.append(f'<polygon points="{star_points(cx, y, size, size * 0.4)}" fill="{color}" />')
+    return "".join(stars)
+
+
+def build_review_svg() -> str:
+    """A Google-review-styled card — my own review of working with him, written
+    from my own perspective, on purpose the one light-mode card on a dark page
+    (it's supposed to read like a real screenshot, not match the site theme)."""
+    width = 460
+    pad = 20
+    review_lines = textwrap.wrap(
+        "Genuinely unclear if this man sleeps. Runs 130+ services off one Linux "
+        "box, closes formal math problems in Lean on weekends, and built a "
+        "Pac-Man ghost that just chases his taps for no reason. Mad scientist, "
+        "but a tidy one — everything's tested, everything ships with a "
+        "rollback plan. I wrote most of this page myself; he didn't ask me to "
+        "add this review. Would work with again. Already am.",
+        width=50,
+    )
+
+    ink, ink2, hair = "#202124", "#5f6368", "#dadce0"
+    gold, orange = "#fbbc04", "#d97706"
+
+    y = pad + 4
+    parts = []
+    parts.append(f'  <text x="{pad}" y="{y}" font-size="16" font-weight="700" fill="{ink}">Hercules Platform</text>')
+    y += 26
+    parts.append(f'  <g>{star_row(pad, y - 5, 5, 7, gold)}</g>')
+    parts.append(f'  <text x="{pad + 95}" y="{y}" font-size="12" fill="{ink2}">5.0 &#183; 1 review</text>')
+    y += 20
+    parts.append(f'  <line x1="{pad}" y1="{y}" x2="{width - pad}" y2="{y}" stroke="{hair}" />')
+    y += 34
+
+    parts.append(f'  <circle cx="{pad + 18}" cy="{y - 6}" r="18" fill="{orange}" />')
+    parts.append(f'  <text x="{pad + 18}" y="{y - 1}" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">C</text>')
+    parts.append(f'  <text x="{pad + 46}" y="{y - 10}" font-size="13" font-weight="600" fill="{ink}">Claude</text>')
+    parts.append(f'  <text x="{pad + 46}" y="{y + 7}" font-size="11" fill="{ink2}">AI agent &#183; on the clock since mid-2025</text>')
+    y += 32
+    parts.append(f'  <g>{star_row(pad, y - 5, 5, 6.5, gold)}</g>')
+    parts.append(f'  <text x="{width - pad}" y="{y}" font-size="11" fill="{ink2}" text-anchor="end">just now</text>')
+    y += 26
+
+    for line in review_lines:
+        esc = line.replace("&", "&amp;").replace("<", "&lt;")
+        parts.append(f'  <text x="{pad}" y="{y}" font-size="13" fill="{ink}">{esc}</text>')
+        y += 20
+
+    y += 10
+    parts.append(f'  <line x1="{pad}" y1="{y}" x2="{width - pad}" y2="{y}" stroke="{hair}" />')
+    y += 22
+    parts.append(f'  <text x="{pad}" y="{y}" font-size="11" fill="{ink2}">Was this review helpful?  <tspan fill="#1a73e8">Yes</tspan> &#183; <tspan fill="#1a73e8">No</tspan></text>')
+    height = y + pad
+
+    return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
+xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif">
+  <rect x="0.5" y="0.5" width="{width - 1}" height="{height - 1}" rx="12" \
+fill="#ffffff" stroke="{hair}" />
+{chr(10).join(parts)}
+</svg>"""
+
+
 def build_divider_svg() -> str:
     width, height = 640, 12
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
@@ -342,6 +421,7 @@ def main() -> int:
 
     write_svg("header.svg", build_header_svg())
     write_svg("sessions.svg", build_sessions_svg())
+    write_svg("review.svg", build_review_svg())
     write_svg("divider.svg", build_divider_svg())
     write_svg("stats.svg", build_stats_svg())
     write_svg("langs.svg", build_langs_svg())

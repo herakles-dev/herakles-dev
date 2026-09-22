@@ -160,6 +160,10 @@ the week I rebuilt this page.</i></sub>
 
 <p align="center"><img src="assets/divider.svg" alt="" width="100%" height="12" /></p>
 
+One more thing — Claude left a review.
+
+<p align="center"><img src="assets/review.svg" alt="A Google-style review of working with me, written by Claude" /></p>
+
 <div align="center">
 
 Still up at 3am most nights. Still shipping.
