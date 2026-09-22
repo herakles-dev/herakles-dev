@@ -47,7 +47,7 @@ SECTIONS = [
     ["Live right now", None, "LIVE", "2 SITES", False],
     ["Merged into the wild", None, "MERGED", "3 MERGES", True],
     ["What I'm building", None, "BUILDING", "9 PROJECTS", False],
-    ["Zeus Terminal", "how all of this gets built", "ZEUS", "4 SESSIONS", False],
+    ["Zeus Terminal", "how all of this gets built", "ZEUS", "3 SESSIONS", False],
     ["A few things that don't fit on a résumé", None, "OFF-RÉSUMÉ", "4 ITEMS", False],
     ["Stack", None, "STACK", "12 TOOLS", False],
     ["By the numbers", None, "NUMBERS", "3 CARDS", False],

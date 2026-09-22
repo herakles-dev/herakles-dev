@@ -325,44 +325,6 @@ xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono',ui-monospace,mo
 </svg>"""
 
 
-def build_sessions_svg(theme: str = "dark") -> str:
-    """A 2x2 grid of little terminal panes — how I actually work: several Claude
-    Code sessions running in parallel inside Zeus Terminal, one per project."""
-    t = THEMES[theme]
-    # Same category colors as the project-cards grid: sdr-scan is literally
-    # the SDR Command Center project (teal, matching it exactly), rust/GPU
-    # build work reuses the "hardware" amber, tests reuse the "rigor" blue,
-    # and this-readme (this very page) stays brand purple.
-    panes = [
-        ("nightjar", "$ pytest -q", "42 passed", CARD_COLORS["blue"]),
-        ("manifold-viz", "$ cargo build --release", "Compiling wgpu v0.20", CARD_COLORS["amber"]),
-        ("sdr-scan", "$ hek radio scan 433", "listening...", CARD_COLORS["teal"]),
-        ("this-readme", "$ /v11 swarm-review", "5 agents dispatched", CARD_COLORS["purple"]),
-    ]
-    width = 640
-    pane_w, pane_h, gap, top = 296, 100, 16, 56
-    body_lines = []
-    for i, (label, cmd, out, pane_accent) in enumerate(panes):
-        col, row = i % 2, i // 2
-        x = 16 + col * (pane_w + gap)
-        y = top + row * (pane_h + gap)
-        body_lines.append("  " + LAM.tile(x, y, pane_w, pane_h, "none", pane_accent))
-        body_lines.append(f'  <circle cx="{x + 14}" cy="{y + 16}" r="3" fill="{pane_accent}" />')
-        body_lines.append(f'  <text x="{x + 24}" y="{y + 20}" font-size="12" font-weight="700" fill="{t["fg"]}">{label}</text>')
-        body_lines.append(f'  <text x="{x + 14}" y="{y + 46}" font-size="11" fill="{t["muted"]}">{cmd}</text>')
-        body_lines.append(f'  <text x="{x + 14}" y="{y + 68}" font-size="11" fill="{pane_accent}">{out}</text>')
-    height = top + 2 * pane_h + gap + 16
-    # Dots added on this pass — same "terminal window" card class as
-    # header.svg, which already had them; sessions.svg was the odd one out.
-    chrome = card_chrome(width, height, t, dots=True, title="zeus.herakles.dev",
-                          title_align="left", subtitle="4 sessions, 1 phone")
-    return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
-xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono',ui-monospace,monospace">
-  {chr(10).join(chrome)}
-{chr(10).join(body_lines)}
-</svg>"""
-
-
 def star_points(cx: float, cy: float, r_outer: float, r_inner: float) -> str:
     """Hand-compute a 5-point star polygon — drawn, not a Unicode glyph, so it
     renders identically everywhere regardless of what font a viewer has."""
@@ -901,8 +863,6 @@ def main() -> int:
     write_svg("project-cards.svg", build_project_cards_svg("dark"))
     write_svg("project-cards-light.svg", build_project_cards_svg("light"))
     LAM.section = 3
-    write_svg("sessions.svg", build_sessions_svg("dark"))
-    write_svg("sessions-light.svg", build_sessions_svg("light"))
     write_svg("neofetch.svg", build_neofetch_svg())
     LAM.section = 6
     write_svg("stats.svg", build_stats_svg())

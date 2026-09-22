@@ -54,7 +54,9 @@ def cap_height(family, weight, size):
 
 
 def _subset_b64(path, chars):
-    f = TTFont(path)
+    # recalcTimestamp=False: otherwise every save stamps "now" into the font,
+    # so every refresh rewrites every SVG and bloats the repo with no real change.
+    f = TTFont(path, recalcTimestamp=False)
     s = subset.Subsetter()
     s.populate(text=chars)
     s.subset(f)

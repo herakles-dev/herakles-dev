@@ -29,7 +29,7 @@
 
 <p align="left">
 <!--START_SECTION:contribs-->
-1,800 contributions in the last year
+1,801 contributions in the last year
 <!--END_SECTION:contribs-->
 </p>
 
@@ -197,10 +197,7 @@ parallel, and a `/handoff` command lets me spin up a fresh session mid-task with
 context. My daily driver, not a side project.
 
 <p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: light)" srcset="assets/sessions-light.svg" />
-    <img src="assets/sessions.svg" alt="Zeus Terminal: four parallel sessions" />
-  </picture>
+  <img src="assets/zeus-terminal.webp" alt="Zeus Terminal: three live Claude Code sessions side by side, with the task sidebar" width="100%" />
 </p>
 
 <sub><i>This README, the Actions that keep it updated, and everything else on this page were
