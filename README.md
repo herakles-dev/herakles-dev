@@ -80,8 +80,8 @@ workflow of mine into a 265k-star repository.
   <img src="assets/section-03.svg" alt="What I'm building" width="100%" />
 </picture>
 
-Bare-metal infrastructure, RF hardware, telecom domain work, security research, formal math, a
-production SaaS with a real customer. Not a one-trick stack. Each card below sits on its own
+Bare-metal infrastructure, agent orchestration, whitehat security research, formal math, GPU
+visuals, a production SaaS with a real customer. Not a one-trick stack. Each card below sits on its own
 clock — the description swaps in on a loop, staggered per card, no two flipping in sync.
 
 <div align="center">
@@ -93,9 +93,9 @@ clock — the description swaps in on a loop, staggered per card, no two flippin
 
 </div>
 
-Full writeups for two of these — [v11](https://github.com/herakles-dev/v11) and
-[opensource-pipeline](https://github.com/herakles-dev/opensource-pipeline) — are linked; the
-opensource-pipeline story is the merge in the section above. `math-proof` lives at
+[v11](https://github.com/herakles-dev/v11) and
+[typesafe-claude-kit](https://github.com/herakles-dev/typesafe-claude-kit) are public,
+[subfold.pro](https://subfold.pro) is live, and `math-proof` lives at
 [erdos672-four-squares-lean](https://github.com/herakles-dev/erdos672-four-squares-lean). The
 rest are private or local — ask if you want a look.
 

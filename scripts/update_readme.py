@@ -514,28 +514,10 @@ def _icon_nodes(cx: float, cy: float, c: str) -> str:
     return "".join(parts)
 
 
-def _icon_rings(cx: float, cy: float, c: str) -> str:
-    parts = [f'<circle cx="{cx}" cy="{cy}" r="2" fill="{c}" />']
-    for r in (7, 12):
-        parts.append(f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="{c}" stroke-width="1.6" opacity="{1 - r / 16:.2f}" />')
-    return "".join(parts)
-
-
 def _icon_doc(cx: float, cy: float, c: str) -> str:
     parts = [f'<rect x="{cx-9}" y="{cy-12}" width="18" height="24" rx="2" fill="none" stroke="{c}" stroke-width="1.8" />']
     for dy in (-4, 1, 6):
         parts.append(f'<line x1="{cx-5}" y1="{cy+dy}" x2="{cx+5}" y2="{cy+dy}" stroke="{c}" stroke-width="1.6" />')
-    return "".join(parts)
-
-
-def _icon_mesh(cx: float, cy: float, c: str) -> str:
-    pts = [(cx - 12, cy - 8), (cx + 10, cy - 10), (cx - 8, cy + 9), (cx + 12, cy + 8), (cx, cy)]
-    edges = [(0, 4), (1, 4), (2, 4), (3, 4), (0, 1)]
-    parts = []
-    for a, b in edges:
-        parts.append(f'<line x1="{pts[a][0]}" y1="{pts[a][1]}" x2="{pts[b][0]}" y2="{pts[b][1]}" stroke="{c}" stroke-width="1.4" opacity="0.7" />')
-    for x, y in pts:
-        parts.append(f'<circle cx="{x}" cy="{y}" r="3" fill="{c}" />')
     return "".join(parts)
 
 
@@ -548,12 +530,29 @@ def _icon_check(cx: float, cy: float, c: str) -> str:
             f'fill="none" stroke="{c}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />')
 
 
-def _icon_grid(cx: float, cy: float, c: str) -> str:
+def _icon_shield(cx: float, cy: float, c: str) -> str:
+    """H1 Security Lab — a shield with a check: findings only ship with evidence."""
+    d = f"M {cx},{cy-12} L {cx+10},{cy-8} L {cx+10},{cy} Q {cx+10},{cy+9} {cx},{cy+13} Q {cx-10},{cy+9} {cx-10},{cy} L {cx-10},{cy-8} Z"
+    return (f'<path d="{d}" fill="none" stroke="{c}" stroke-width="1.9" stroke-linejoin="round" />'
+            f'<polyline points="{cx-4.5},{cy+0.5} {cx-1},{cy+4} {cx+5},{cy-3.5}" fill="none" stroke="{c}" '
+            f'stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />')
+
+
+def _icon_braces(cx: float, cy: float, c: str) -> str:
+    """TypeSafe — braces around a dot: a typed value in a structure."""
+    left = f"M {cx-6},{cy-12} Q {cx-11},{cy-12} {cx-11},{cy-6} L {cx-11},{cy-3} Q {cx-11},{cy} {cx-14},{cy} Q {cx-11},{cy} {cx-11},{cy+3} L {cx-11},{cy+6} Q {cx-11},{cy+12} {cx-6},{cy+12}"
+    right = f"M {cx+6},{cy-12} Q {cx+11},{cy-12} {cx+11},{cy-6} L {cx+11},{cy-3} Q {cx+11},{cy} {cx+14},{cy} Q {cx+11},{cy} {cx+11},{cy+3} L {cx+11},{cy+6} Q {cx+11},{cy+12} {cx+6},{cy+12}"
+    return (f'<path d="{left}" fill="none" stroke="{c}" stroke-width="1.9" stroke-linecap="round" />'
+            f'<path d="{right}" fill="none" stroke="{c}" stroke-width="1.9" stroke-linecap="round" />'
+            f'<circle cx="{cx}" cy="{cy}" r="3" fill="{c}" />')
+
+
+def _icon_fold(cx: float, cy: float, c: str) -> str:
+    """Subfold — a surface folding over itself: three offset waves."""
     parts = []
-    s = 8
-    for dx in (-s - 2, s + 2):
-        for dy in (-s - 2, s + 2):
-            parts.append(f'<rect x="{cx+dx-s/2}" y="{cy+dy-s/2}" width="{s}" height="{s}" rx="1.5" fill="none" stroke="{c}" stroke-width="1.6" />')
+    for k, dy in enumerate((-8, 0, 8)):
+        d = f"M {cx-13},{cy+dy} C {cx-6},{cy+dy-9} {cx+6},{cy+dy+9} {cx+13},{cy+dy}"
+        parts.append(f'<path d="{d}" fill="none" stroke="{c}" stroke-width="1.8" stroke-linecap="round" opacity="{1 - k * 0.25:.2f}" />')
     return "".join(parts)
 
 
@@ -569,7 +568,8 @@ def _icon_key(cx: float, cy: float, c: str) -> str:
 # project's actual domain, not randomly, so the variety reads as designed.
 # Purple stays the anchor for the two "core platform" projects; everything
 # else gets a color tied to what it actually is (hardware/physical =
-# amber, radio/network = teal, rigor/professional = blue, keys = gold).
+# amber, network/security = teal, rigor/professional = blue, live = green,
+# keys = gold).
 # Values come from the page's temper scale (laminar.py) so every card shares one
 # color family with the headers.
 CARD_COLORS = dict(laminar.CARD_TINT)
@@ -584,23 +584,23 @@ PROJECT_CARDS = [
     ("v11", _icon_nodes, "orchestration protocol",
      "Task-as-truth state, write-gate hooks, adversarial review pairing. Built to survive being rebuilt on itself.",
      "purple"),
-    ("SDR Command Center", _icon_rings, "RTL-SDR · WireGuard",
-     "Live FFT waterfall, remote scans across four ISM bands, tunneled home from a Pixel 6a.",
+    ("H1 Security Lab", _icon_shield, "bug bounty · 90+ tools",
+     "CLI-first bug-bounty harness: 90+ tools with JSON output, chained by an agent. Rule one: prove it or kill it.",
      "teal"),
     ("CK Reynolds Tax", _icon_doc, "real customer, real IRS",
      "Stripe, 2FA, IRS Pub 4557 compliance. Not a demo — daily-use production software.",
      "blue"),
-    ("Reticulum", _icon_mesh, "off-grid mesh · LoRa",
-     "A Raspberry Pi node running 24/7 for an emergency that's never come. Nobody assigned this one.",
-     "teal"),
-    ("Fiber Tree v2", _icon_grid, "PostGIS · 30 tables",
-     "Spatial pathfinding and loss-budget calculations for real fiber builds. Ten years of telecom work, encoded.",
-     "amber"),
+    ("subfold.pro", _icon_fold, "WebGPU · audio-reactive",
+     "Real-time 3D fractals and 25+ manifold surfaces on WGSL compute shaders, folding to the beat.",
+     "green"),
+    ("typesafe-claude-kit", _icon_braces, "Jev decisions · Claude Code",
+     "Agents, skill and calibration tools for Jev: typed judgments with calibrated probabilities that code consumes.",
+     "purple"),
     ("math-proof", _icon_check, "Lean 4 · zero sorrys",
      "48 machine-checked proofs in 8 days. Closed two Erdős problems in DeepMind's own repo.",
      "blue"),
-    ("keymakers.ai", _icon_key, "launching",
-     "Key duplication by mail, computer vision doing the matching. keymakers-core + keymakers-club, genuinely early.",
+    ("keymakers.ai", _icon_key, "agentic engineers org",
+     "A private GitHub org for agentic engineers who own their environments. Whitehat security first. Linux is the key.",
      "gold"),
 ]
 

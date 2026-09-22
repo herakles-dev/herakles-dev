@@ -937,7 +937,8 @@ class Laminar:
                    f'<animate attributeName="opacity" values="1;1;0;0;1" {timing}/></g>']
             parts.append(f'<g transform="translate(0 {lift})">{"".join(grp)}'
                          f'<animateTransform attributeName="transform" type="translate" values="0 {lift};0 {lift};0 0;0 0;0 {lift}" {timing}/></g>')
-            lines = textwrap.wrap(desc, width=26)[:5]
+            lines = textwrap.wrap(desc, width=26)
+            assert len(lines) <= 5, f"{name}: description wraps to {len(lines)} lines (max 5) — shorten it"
             zone_top, zone_bot = y0 + 82, y0 + card_h - 10
             yy = zone_top + ((zone_bot - zone_top) - len(lines) * lead) / 2 + desc_fs
             dl = []
