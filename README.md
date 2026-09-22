@@ -31,6 +31,13 @@ So I do. Everything here is self-hosted, runs in production, and the claims chec
 agents, review the diffs, and steer the system — more conductor than typist, though I still write
 plenty of code by hand. I don't ship demos.
 
+## 🟢 Live right now
+
+- **[fine-print.org](https://fine-print.org)** — paste a Terms of Service, get back what you're
+  actually agreeing to. Runs on my own multi-provider LLM gateway, not a single rented API.
+- **[subfold.pro](https://subfold.pro)** — a music-reactive visual instrument: real-time 3D
+  fractals that fold to the beat.
+
 ## 🔀 Merged into the wild
 
 <sub><i>Auto-updated weekly by a GitHub Action I own — external PRs that maintainers merged, newest first. No hand-editing.</i></sub>
