@@ -5,22 +5,22 @@
 <circle cx="60" cy="24" r="5" fill="#2d2b55" />
 <text x="80" y="30" font-size="14" font-weight="700" fill="#7C3AED">zeus.herakles.dev</text>
 <text x="620" y="28" font-size="11" fill="#8b88b8" text-anchor="end">4 sessions, 1 phone</text>
-  <rect x="16" y="56" width="296" height="100" rx="6" fill="none" stroke="#2d2b55" />
-  <circle cx="30" cy="72" r="3" fill="#7C3AED" />
+  <rect x="16" y="56" width="296" height="100" rx="6" fill="none" stroke="#60A5FA" stroke-opacity="0.55" />
+  <circle cx="30" cy="72" r="3" fill="#60A5FA" />
   <text x="40" y="76" font-size="12" font-weight="700" fill="#c9c6f2">nightjar</text>
   <text x="30" y="102" font-size="11" fill="#8b88b8">$ pytest -q</text>
-  <text x="30" y="124" font-size="11" fill="#7C3AED">42 passed</text>
-  <rect x="328" y="56" width="296" height="100" rx="6" fill="none" stroke="#2d2b55" />
-  <circle cx="342" cy="72" r="3" fill="#7C3AED" />
+  <text x="30" y="124" font-size="11" fill="#60A5FA">42 passed</text>
+  <rect x="328" y="56" width="296" height="100" rx="6" fill="none" stroke="#D97706" stroke-opacity="0.55" />
+  <circle cx="342" cy="72" r="3" fill="#D97706" />
   <text x="352" y="76" font-size="12" font-weight="700" fill="#c9c6f2">manifold-viz</text>
   <text x="342" y="102" font-size="11" fill="#8b88b8">$ cargo build --release</text>
-  <text x="342" y="124" font-size="11" fill="#7C3AED">Compiling wgpu v0.20</text>
-  <rect x="16" y="172" width="296" height="100" rx="6" fill="none" stroke="#2d2b55" />
-  <circle cx="30" cy="188" r="3" fill="#7C3AED" />
+  <text x="342" y="124" font-size="11" fill="#D97706">Compiling wgpu v0.20</text>
+  <rect x="16" y="172" width="296" height="100" rx="6" fill="none" stroke="#22D3EE" stroke-opacity="0.55" />
+  <circle cx="30" cy="188" r="3" fill="#22D3EE" />
   <text x="40" y="192" font-size="12" font-weight="700" fill="#c9c6f2">sdr-scan</text>
   <text x="30" y="218" font-size="11" fill="#8b88b8">$ hek radio scan 433</text>
-  <text x="30" y="240" font-size="11" fill="#7C3AED">listening...</text>
-  <rect x="328" y="172" width="296" height="100" rx="6" fill="none" stroke="#2d2b55" />
+  <text x="30" y="240" font-size="11" fill="#22D3EE">listening...</text>
+  <rect x="328" y="172" width="296" height="100" rx="6" fill="none" stroke="#7C3AED" stroke-opacity="0.55" />
   <circle cx="342" cy="188" r="3" fill="#7C3AED" />
   <text x="352" y="192" font-size="12" font-weight="700" fill="#c9c6f2">this-readme</text>
   <text x="342" y="218" font-size="11" fill="#8b88b8">$ /v11 swarm-review</text>

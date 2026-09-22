@@ -260,15 +260,21 @@ def build_header_svg(theme: str = "dark") -> str:
     t = THEMES[theme]
     width = 640
     total_dur = 10.0
+    # Each command gets a color tied to what it's actually checking — same
+    # category logic as everywhere else on the page, applied to the one
+    # card that's the very first thing under the name/title (previously
+    # 100% brand purple with nothing else): identity stays purple,
+    # liveness reuses the green established by the LIVE badge/pulse icons
+    # elsewhere on the page, connectivity reuses the network teal.
     lines = [
-        ("$ whoami", True),
-        ("michael — telecom by day, AI orchestrator by night", False),
-        ("", None),
-        ("$ uptime", True),
-        ("up since mid-2025, no reboots planned", False),
-        ("", None),
-        ("$ nc -zv herakles.dev 443", True),
-        ("Connection succeeded.", False),
+        ("$ whoami", True, CARD_COLORS["purple"]),
+        ("michael — telecom by day, AI orchestrator by night", False, None),
+        ("", None, None),
+        ("$ uptime", True, CARD_COLORS["green"]),
+        ("up since mid-2025, no reboots planned", False, None),
+        ("", None, None),
+        ("$ nc -zv herakles.dev 443", True, CARD_COLORS["teal"]),
+        ("Connection succeeded.", False, None),
     ]
 
     # Pacing: a command appears, then (after a short "reading" beat) its
@@ -276,7 +282,7 @@ def build_header_svg(theme: str = "dark") -> str:
     # actual work session rather than a metronome.
     appear_times: list[float | None] = []
     clock = 0.4  # renamed from `t` — collided with the theme-dict var above
-    for text, is_cmd in lines:
+    for text, is_cmd, _color in lines:
         if text:
             appear_times.append(clock)
             clock += 0.35 if is_cmd else 1.15
@@ -295,11 +301,11 @@ def build_header_svg(theme: str = "dark") -> str:
 
     body_lines = []
     y = 66
-    for (text, is_cmd), appear in zip(lines, appear_times):
+    for (text, is_cmd, color), appear in zip(lines, appear_times):
         if text:
             esc = text.replace("&", "&amp;").replace("<", "&lt;")
             if is_cmd:
-                content = f'<tspan fill="{t["muted"]}">$ </tspan><tspan fill="{t["accent"]}">{esc[2:]}</tspan>'
+                content = f'<tspan fill="{t["muted"]}">$ </tspan><tspan fill="{color}">{esc[2:]}</tspan>'
             else:
                 content = f'<tspan fill="{t["fg"]}">{esc}</tspan>'
             body_lines.append(
@@ -314,7 +320,7 @@ def build_header_svg(theme: str = "dark") -> str:
     cursor_appear = hold_until - 0.3  # settle in just before the hold, not mid-typing
     body_lines.append(
         f'  <g opacity="0"><text x="24" y="{prompt_y}" font-size="15" fill="{t["muted"]}">$</text>'
-        f'<rect x="40" y="{prompt_y - 15}" width="9" height="15" fill="{t["accent"]}" filter="url(#glow)">'
+        f'<rect x="40" y="{prompt_y - 15}" width="9" height="15" fill="{CARD_COLORS["green"]}" filter="url(#glow)">'
         f'<animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.4;0.5;0.9;1" '
         f'dur="1.2s" repeatCount="indefinite" /></rect>'
         f'<animate attributeName="opacity" values="0;0;1;1;0;0" '
@@ -351,24 +357,28 @@ def build_sessions_svg(theme: str = "dark") -> str:
     """A 2x2 grid of little terminal panes — how I actually work: several Claude
     Code sessions running in parallel inside Zeus Terminal, one per project."""
     t = THEMES[theme]
+    # Same category colors as the project-cards grid: sdr-scan is literally
+    # the SDR Command Center project (teal, matching it exactly), rust/GPU
+    # build work reuses the "hardware" amber, tests reuse the "rigor" blue,
+    # and this-readme (this very page) stays brand purple.
     panes = [
-        ("nightjar", "$ pytest -q", "42 passed"),
-        ("manifold-viz", "$ cargo build --release", "Compiling wgpu v0.20"),
-        ("sdr-scan", "$ hek radio scan 433", "listening..."),
-        ("this-readme", "$ /v11 swarm-review", "5 agents dispatched"),
+        ("nightjar", "$ pytest -q", "42 passed", CARD_COLORS["blue"]),
+        ("manifold-viz", "$ cargo build --release", "Compiling wgpu v0.20", CARD_COLORS["amber"]),
+        ("sdr-scan", "$ hek radio scan 433", "listening...", CARD_COLORS["teal"]),
+        ("this-readme", "$ /v11 swarm-review", "5 agents dispatched", CARD_COLORS["purple"]),
     ]
     width = 640
     pane_w, pane_h, gap, top = 296, 100, 16, 56
     body_lines = []
-    for i, (label, cmd, out) in enumerate(panes):
+    for i, (label, cmd, out, pane_accent) in enumerate(panes):
         col, row = i % 2, i // 2
         x = 16 + col * (pane_w + gap)
         y = top + row * (pane_h + gap)
-        body_lines.append(f'  <rect x="{x}" y="{y}" width="{pane_w}" height="{pane_h}" rx="6" fill="none" stroke="{t["border"]}" />')
-        body_lines.append(f'  <circle cx="{x + 14}" cy="{y + 16}" r="3" fill="{t["accent"]}" />')
+        body_lines.append(f'  <rect x="{x}" y="{y}" width="{pane_w}" height="{pane_h}" rx="6" fill="none" stroke="{pane_accent}" stroke-opacity="0.55" />')
+        body_lines.append(f'  <circle cx="{x + 14}" cy="{y + 16}" r="3" fill="{pane_accent}" />')
         body_lines.append(f'  <text x="{x + 24}" y="{y + 20}" font-size="12" font-weight="700" fill="{t["fg"]}">{label}</text>')
         body_lines.append(f'  <text x="{x + 14}" y="{y + 46}" font-size="11" fill="{t["muted"]}">{cmd}</text>')
-        body_lines.append(f'  <text x="{x + 14}" y="{y + 68}" font-size="11" fill="{t["accent"]}">{out}</text>')
+        body_lines.append(f'  <text x="{x + 14}" y="{y + 68}" font-size="11" fill="{pane_accent}">{out}</text>')
     height = top + 2 * pane_h + gap + 16
     # Dots added on this pass — same "terminal window" card class as
     # header.svg, which already had them; sessions.svg was the odd one out.
@@ -596,6 +606,7 @@ CARD_COLORS = {
     "teal": "#22D3EE",
     "blue": "#60A5FA",
     "gold": "#FBBF24",
+    "green": "#4ade80",   # "live/ongoing" signal — matches the live card's LIVE badge
 }
 
 PROJECT_CARDS = [
@@ -749,18 +760,22 @@ def build_stats_svg() -> str:
     external = sum(
         1 for it in merged_prs() if it["repository_url"].split("/repos/")[-1].split("/")[0].lower() != USER.lower()
     )
+    # Value color by category, same system as everywhere else on the page:
+    # base volume stays purple, the two actual achievements (stars earned,
+    # PRs merged into other people's repos) get the milestone gold.
     rows = [
-        ("Public repos", str(user.get("public_repos", len(own)))),
-        ("Total stars", str(total_stars)),
-        ("Followers", str(user.get("followers", 0))),
-        ("External merges", str(external)),
+        ("Public repos", str(user.get("public_repos", len(own))), "purple"),
+        ("Total stars", str(total_stars), "gold"),
+        ("Followers", str(user.get("followers", 0)), "teal"),
+        ("External merges", str(external), "gold"),
     ]
     body_lines = []
-    for i, (label, value) in enumerate(rows):
+    for i, (label, value, color_key) in enumerate(rows):
         y = 56 + i * 24
+        value_color = CARD_COLORS[color_key]
         body_lines.append(
             f'  <text x="20" y="{y}" font-size="13" fill="{MUTED}">{label}</text>'
-            f'  <text x="230" y="{y}" font-size="13" font-weight="700" fill="{FG}" text-anchor="end">{value}</text>'
+            f'  <text x="230" y="{y}" font-size="13" font-weight="700" fill="{value_color}" text-anchor="end">{value}</text>'
         )
     return card_shell(250, 56 + len(rows) * 24 - 4, f"{USER} · stats", "\n".join(body_lines))
 
@@ -849,17 +864,21 @@ def build_streak_svg() -> str:
     exactly rather than inventing a fourth visual language."""
     days, total = contribution_days()
     current, longest = compute_streaks(days)
+    # Current streak gets green — it's the one "live/ongoing" figure here,
+    # same convention as the LIVE badge/pulse elsewhere. Longest streak is
+    # the actual record, so it gets the milestone gold.
     rows = [
-        ("Total contributions", f"{total:,}"),
-        ("Current streak", f"{current} day{'s' if current != 1 else ''}"),
-        ("Longest streak", f"{longest} day{'s' if longest != 1 else ''}"),
+        ("Total contributions", f"{total:,}", "purple"),
+        ("Current streak", f"{current} day{'s' if current != 1 else ''}", "green"),
+        ("Longest streak", f"{longest} day{'s' if longest != 1 else ''}", "gold"),
     ]
     body_lines = []
-    for i, (label, value) in enumerate(rows):
+    for i, (label, value, color_key) in enumerate(rows):
         y = 56 + i * 24
+        value_color = CARD_COLORS.get(color_key, color_key)
         body_lines.append(
             f'  <text x="20" y="{y}" font-size="13" fill="{MUTED}">{label}</text>'
-            f'  <text x="230" y="{y}" font-size="13" font-weight="700" fill="{FG}" text-anchor="end">{value}</text>'
+            f'  <text x="230" y="{y}" font-size="13" font-weight="700" fill="{value_color}" text-anchor="end">{value}</text>'
         )
     return card_shell(250, 56 + len(rows) * 24 - 4, f"{USER} · streak", "\n".join(body_lines))
 
@@ -868,15 +887,20 @@ def build_streak_svg() -> str:
 # over from any older doc). Static rather than recomputed on every run: this
 # card is a snapshot brag ("what the box looks like"), not a live counter —
 # that's what the go-live SVG endpoint is for. Re-verify before editing.
+# Label color by category — base system facts stay brand purple, infra
+# scale facts get teal (unused elsewhere on this card until now), and the
+# one standout fact (the Venture Catalog — flagged elsewhere as the single
+# most interesting fact about this box) gets the same gold treatment as
+# the live card's "all-time" milestone tile.
 NEOFETCH_FACTS = [
-    ("OS", "Debian 12 (bookworm)"),
-    ("Uptime", "61 days"),
-    ("Shell", "bash"),
-    ("Agents", "102"),
-    ("Services", "130+"),
-    ("Containers", "125"),
-    ("Nginx sites", "105"),
-    ("Catalog", "290 ventures ranked"),
+    ("OS", "Debian 12 (bookworm)", "purple"),
+    ("Uptime", "61 days", "purple"),
+    ("Shell", "bash", "purple"),
+    ("Agents", "102", "teal"),
+    ("Services", "130+", "teal"),
+    ("Containers", "125", "teal"),
+    ("Nginx sites", "105", "teal"),
+    ("Catalog", "290 ventures ranked", "gold"),
 ]
 
 
@@ -914,10 +938,11 @@ def build_neofetch_svg() -> str:
 
     body_lines = []
     label_x = logo_col + 16
-    for i, (label, value) in enumerate(NEOFETCH_FACTS):
+    for i, (label, value, color_key) in enumerate(NEOFETCH_FACTS):
         y = top + i * row_h
+        label_color = CARD_COLORS[color_key]
         body_lines.append(
-            f'  <text x="{label_x}" y="{y}" font-size="12.5" font-weight="700" fill="{ACCENT}">{label}</text>'
+            f'  <text x="{label_x}" y="{y}" font-size="12.5" font-weight="700" fill="{label_color}">{label}</text>'
             f'  <text x="{width - 20}" y="{y}" font-size="12.5" fill="{FG}" text-anchor="end">{value}</text>'
         )
     logo = _h_monogram(logo_col / 2, top + (height - top) / 2 - 7, 76, ACCENT)
