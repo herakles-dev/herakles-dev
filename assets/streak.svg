@@ -4,7 +4,7 @@
 <rect x="0.5" y="0.5" width="249" height="120" rx="8" fill="url(#sheen)"/>
 <rect x="8" y="0" width="234" height="1.5" fill="url(#edge)"/>
 <text x="20" y="32" font-size="14" font-weight="700" fill="#e4e4e7">herakles-dev · streak</text>
-  <text x="20" y="56" font-size="13" fill="#9a9aa5">Total contributions</text>  <text x="230" y="56" font-size="13" font-weight="700" fill="#8E74F2" text-anchor="end">1,810</text>
+  <text x="20" y="56" font-size="13" fill="#9a9aa5">Total contributions</text>  <text x="230" y="56" font-size="13" font-weight="700" fill="#8E74F2" text-anchor="end">1,812</text>
   <text x="20" y="80" font-size="13" fill="#9a9aa5">Current streak</text>  <text x="230" y="80" font-size="13" font-weight="700" fill="#6FD08C" text-anchor="end">2 days</text>
   <text x="20" y="104" font-size="13" fill="#9a9aa5">Longest streak</text>  <text x="230" y="104" font-size="13" font-weight="700" fill="#DDAA4F" text-anchor="end">20 days</text>
 </svg>
