@@ -585,25 +585,47 @@ def _icon_key(cx: float, cy: float, c: str) -> str:
     return "".join(parts)
 
 
+# A small curated palette beyond the single brand purple — assigned by each
+# project's actual domain, not randomly, so the variety reads as designed.
+# Purple stays the anchor for the two "core platform" projects; everything
+# else gets a color tied to what it actually is (hardware/physical =
+# amber, radio/network = teal, rigor/professional = blue, keys = gold).
+CARD_COLORS = {
+    "purple": "#7C3AED",
+    "amber": "#D97706",   # matches the existing "built with Claude Code" badge
+    "teal": "#22D3EE",
+    "blue": "#60A5FA",
+    "gold": "#FBBF24",
+}
+
 PROJECT_CARDS = [
     ("hekaton", _icon_chip, "GH200 · 624GB · Rust bridge",
-     "NUMA-pinned deploys, 3-4 LLMs debating over ZeroMQ. One untested vLLM upgrade burned me — now every bump ships a rollback plan."),
+     "NUMA-pinned deploys, 3-4 LLMs debating over ZeroMQ. One untested vLLM upgrade burned me — now every bump ships a rollback plan.",
+     "amber"),
     ("herakles-linux-opus", _icon_stack, "130+ services, 1 box",
-     "Also embeds and ranks all 144 of my own repos — a Venture Catalog telling me which are actually worth finishing."),
+     "Also embeds and ranks all 144 of my own repos — a Venture Catalog telling me which are actually worth finishing.",
+     "purple"),
     ("v11", _icon_nodes, "orchestration protocol",
-     "Task-as-truth state, write-gate hooks, adversarial review pairing. Built to survive being rebuilt on itself."),
+     "Task-as-truth state, write-gate hooks, adversarial review pairing. Built to survive being rebuilt on itself.",
+     "purple"),
     ("SDR Command Center", _icon_rings, "RTL-SDR · WireGuard",
-     "Live FFT waterfall, remote scans across four ISM bands, tunneled home from a Pixel 6a."),
+     "Live FFT waterfall, remote scans across four ISM bands, tunneled home from a Pixel 6a.",
+     "teal"),
     ("CK Reynolds Tax", _icon_doc, "real customer, real IRS",
-     "Stripe, 2FA, IRS Pub 4557 compliance. Not a demo — daily-use production software."),
+     "Stripe, 2FA, IRS Pub 4557 compliance. Not a demo — daily-use production software.",
+     "blue"),
     ("Reticulum", _icon_mesh, "off-grid mesh · LoRa",
-     "A Raspberry Pi node running 24/7 for an emergency that's never come. Nobody assigned this one."),
+     "A Raspberry Pi node running 24/7 for an emergency that's never come. Nobody assigned this one.",
+     "teal"),
     ("Fiber Tree v2", _icon_grid, "PostGIS · 30 tables",
-     "Spatial pathfinding and loss-budget calculations for real fiber builds. Ten years of telecom work, encoded."),
+     "Spatial pathfinding and loss-budget calculations for real fiber builds. Ten years of telecom work, encoded.",
+     "amber"),
     ("math-proof", _icon_check, "Lean 4 · zero sorrys",
-     "48 machine-checked proofs in 8 days. Closed two Erdős problems in DeepMind's own repo."),
+     "48 machine-checked proofs in 8 days. Closed two Erdős problems in DeepMind's own repo.",
+     "blue"),
     ("keymakers.ai", _icon_key, "launching",
-     "Key duplication by mail, computer vision doing the matching. keymakers-core + keymakers-club, genuinely early."),
+     "Key duplication by mail, computer vision doing the matching. keymakers-core + keymakers-club, genuinely early.",
+     "gold"),
 ]
 
 
@@ -620,14 +642,20 @@ def build_project_cards_svg(theme: str = "dark") -> str:
     height = outer * 2 + rows * card_h + (rows - 1) * gap
 
     cards_svg = []
-    for i, (name, icon_fn, tag, desc) in enumerate(PROJECT_CARDS):
+    for i, (name, icon_fn, tag, desc, color_key) in enumerate(PROJECT_CARDS):
         col, row = i % cols, i // cols
         cx0 = outer + col * (card_w + gap)
         cy0 = outer + row * (card_h + gap)
         mid_x = cx0 + card_w / 2
+        card_accent = CARD_COLORS[color_key]
 
-        card = [f'<rect x="{cx0}" y="{cy0}" width="{card_w}" height="{card_h}" rx="10" fill="{t["bg"]}" stroke="{t["border"]}" />']
-        card.append(icon_fn(mid_x, cy0 + 26, t["accent"]))
+        # Border picks up each project's own color (subtle — same weight as
+        # the old neutral border, just tinted) so the grid reads as nine
+        # distinctly-themed cards instead of one color repeated nine times.
+        # Name/tag/description text stay neutral for legibility; only the
+        # icon and border carry the accent.
+        card = [f'<rect x="{cx0}" y="{cy0}" width="{card_w}" height="{card_h}" rx="10" fill="{t["bg"]}" stroke="{card_accent}" stroke-opacity="0.55" />']
+        card.append(icon_fn(mid_x, cy0 + 26, card_accent))
         # Names are all <=20 chars by construction — single line, fixed y.
         esc_name = name.replace("&", "&amp;").replace("<", "&lt;")
         card.append(f'<text x="{mid_x}" y="{cy0 + 55}" font-size="12.5" font-weight="700" fill="{t["fg"]}" text-anchor="middle">{esc_name}</text>')

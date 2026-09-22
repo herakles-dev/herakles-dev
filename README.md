@@ -110,7 +110,35 @@ flowchart LR
     A -.->|earns trust over time| W
 ```
 
-Tasks are the single source of truth for what's actually done — not a status the agent reports about itself. The write-gate hook is what makes that real: it intercepts writes before they land and blocks anything that hasn't gone through review. Autonomy is earned, not granted up front — a project starts at the most-supervised level and only escalates after a track record.
+Four moving parts, each worth its own look:
+
+<details>
+<summary>Task-as-truth</summary>
+
+Tasks are the single source of truth for what's actually done — not a status the agent reports about itself. If it's not marked complete in the task system, it didn't happen, no matter what the agent's own summary claims.
+
+</details>
+
+<details>
+<summary>Write-gate hooks</summary>
+
+The mechanism that makes task-as-truth real, not just a stated policy: a hook intercepts every write before it lands and blocks anything that hasn't gone through review. An agent can't just skip the gate by not mentioning it.
+
+</details>
+
+<details>
+<summary>Adversarial review pairing</summary>
+
+Every non-trivial task gets paired with an independent review pass before it's allowed to complete — a second look built into the pipeline itself, not something that has to be remembered or requested.
+
+</details>
+
+<details>
+<summary>Autonomy tracking</summary>
+
+Earned, not granted up front. A project starts at the most-supervised level and only escalates to less oversight after an actual track record — the system has to watch itself work before it's trusted to work less-watched.
+
+</details>
 
 </details>
 
