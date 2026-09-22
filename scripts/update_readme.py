@@ -157,32 +157,79 @@ def build_building_block(limit: int = 5) -> str:
 def build_header_svg() -> str:
     """A terminal-window header, hand-drawn — replaces a rented typing-SVG service.
 
-    Static text (no third-party render dependency, nothing to clip on a narrow
-    viewport) plus one SMIL-animated blinking cursor, which is well-supported even
-    inside an <img> embed.
+    Redesigned from a static two-liner into a short session transcript that
+    "types" itself out on a loop: each line has its own opacity keyframe
+    tied to a shared clock, so commands and their output appear staggered
+    (typed, then a beat, then the response) rather than all at once. Command
+    lines are syntax-split into a muted "$ " prompt + accent-colored command
+    text; responses stay in FG. Still zero JS — one shared SMIL clock per
+    line, same primitive as the blinking cursor, just applied to more of it.
     """
     width = 640
+    total_dur = 10.0
     lines = [
-        ("$ whoami", MUTED),
-        ("michael — telecom by day, AI orchestrator by night", FG),
+        ("$ whoami", True),
+        ("michael — telecom by day, AI orchestrator by night", False),
         ("", None),
-        ("$ history | tail -1", MUTED),
-        ("Everything here is self-hosted. So am I.", FG),
+        ("$ uptime", True),
+        ("up since mid-2025, no reboots planned", False),
+        ("", None),
+        ("$ nc -zv herakles.dev 443", True),
+        ("Connection succeeded.", False),
     ]
+
+    # Pacing: a command appears, then (after a short "reading" beat) its
+    # response, then a longer pause before the next command — mimics an
+    # actual work session rather than a metronome.
+    appear_times: list[float | None] = []
+    t = 0.4
+    for text, is_cmd in lines:
+        if text:
+            appear_times.append(t)
+            t += 0.35 if is_cmd else 1.15
+        else:
+            appear_times.append(None)
+
+    hold_until = 8.6  # everything stays up here; cursor blinks through this
+    fade_end = 9.5    # fully gone just before the loop wraps at total_dur
+    assert all(a is None or a < hold_until < fade_end < total_dur for a in appear_times)
+
+    def keyframe(appear: float) -> str:
+        a0 = max(0.0, appear - 0.12)
+        pts = [0.0, a0, appear, hold_until, fade_end, total_dur]
+        assert pts == sorted(pts), pts
+        return ";".join(f"{p / total_dur:.4f}" for p in pts)
+
     body_lines = []
     y = 66
-    for text, color in lines:
+    for (text, is_cmd), appear in zip(lines, appear_times):
         if text:
             esc = text.replace("&", "&amp;").replace("<", "&lt;")
-            body_lines.append(f'  <text x="24" y="{y}" font-size="15" fill="{color}">{esc}</text>')
+            if is_cmd:
+                content = f'<tspan fill="{MUTED}">$ </tspan><tspan fill="{ACCENT}">{esc[2:]}</tspan>'
+            else:
+                content = f'<tspan fill="{FG}">{esc}</tspan>'
+            body_lines.append(
+                f'  <text x="24" y="{y}" font-size="15" opacity="0">{content}'
+                f'<animate attributeName="opacity" values="0;0;1;1;0;0" '
+                f'keyTimes="{keyframe(appear)}" dur="{total_dur}s" '
+                f'repeatCount="indefinite" /></text>'
+            )
         y += 26
-    body_lines.append(f'  <text x="24" y="{y}" font-size="15" fill="{MUTED}">$</text>')
+
+    prompt_y = y
+    cursor_appear = hold_until - 0.3  # settle in just before the hold, not mid-typing
     body_lines.append(
-        f'  <rect x="40" y="{y - 15}" width="9" height="15" fill="{ACCENT}">'
+        f'  <g opacity="0"><text x="24" y="{prompt_y}" font-size="15" fill="{MUTED}">$</text>'
+        f'<rect x="40" y="{prompt_y - 15}" width="9" height="15" fill="{ACCENT}">'
         f'<animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.4;0.5;0.9;1" '
         f'dur="1.2s" repeatCount="indefinite" /></rect>'
+        f'<animate attributeName="opacity" values="0;0;1;1;0;0" '
+        f'keyTimes="{keyframe(cursor_appear)}" dur="{total_dur}s" '
+        f'repeatCount="indefinite" /></g>'
     )
-    height = y + 24  # bottom margin below the last (cursor) line
+
+    height = prompt_y + 24
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono',ui-monospace,monospace">
   <rect x="0.5" y="0.5" width="{width - 1}" height="{height - 1}" rx="10" \
