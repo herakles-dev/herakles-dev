@@ -54,27 +54,35 @@ workflow of mine into a 265k-star repository.
 
 ## 🛠️ What I'm building
 
-Spans more ground than one label covers — orchestration, a decade of telecom expertise turned into
-software, security research, formal math, a production SaaS with a real customer.
+Bare-metal infrastructure, RF hardware, telecom domain work, security research, formal math, a
+production SaaS with a real customer. Not a one-trick stack.
 
-- **[v11](https://github.com/herakles-dev/v11)** — spec-driven orchestration protocol for multi-agent
-  Claude Code work: task-as-truth state, write-gate hooks, adversarial review pairing. Installable.
+- **hekaton** — a Hetzner control plane driving an NVIDIA GH200 (624GB unified memory) over a
+  Rust/gRPC+TLS bridge I wrote myself: AES-256-GCM encrypted reporting, NUMA-pinned deploys, 3-4
+  quantized LLMs debating over ZeroMQ on one shared GPU pool. 20K lines of Rust, 2,757 passing
+  tests, GPU spend tracked against a budget I set myself. Got burned once by an untested vLLM
+  upgrade in prod — every version bump now ships with a documented rollback plan.
+- **herakles-linux-opus** — the software that runs my own server: tracks 130+ services, 93
+  containers, 71 nginx sites, 96 agents. It also embeds and clusters all 144 of my own repos
+  (pgvector + HDBSCAN) to catch duplicate code across my own sprawl before I write it twice.
+- **[v11](https://github.com/herakles-dev/v11)** — spec-driven orchestration protocol for
+  multi-agent Claude Code work: task-as-truth state, write-gate hooks, adversarial review pairing.
+- **SDR Command Center** — a Kotlin Android app bridging an RTL-SDR dongle over USB-C into a Pixel
+  6a, tunneled home over WireGuard: live FFT waterfall, multi-mode demodulation, remote scans
+  across four ISM bands.
 - **Fiber Tree v2** — FTTH network design software: spatial pathfinding, loss-budget calculation,
   splitter placement, 30 PostgreSQL tables with PostGIS. Ten years of telecom design work, encoded.
-- **H1 Security Lab** — a CLI-first bug bounty platform: scope enforcement, evidence-based
-  validation, a devil's-advocate pass before anything gets reported. Closing in on a first paid find.
 - **CK Reynolds Tax** — a live tax-prep SaaS with a real customer: Stripe, 2FA, IRS Pub 4557
   compliance. Not a demo — daily-use production software.
-- **[opensource-pipeline](https://github.com/herakles-dev/opensource-pipeline)** — `fork → sanitize →
-  package` a private repo for safe public release. Merged upstream into a 265k★ project.
-- **math-proof (Lean 4)** — an agentic theorem-proving swarm where the Lean kernel is the only arbiter
-  of truth. 48 machine-checked proofs in 8 days, zero `sorry`s. See
-  [erdos672-four-squares-lean](https://github.com/herakles-dev/erdos672-four-squares-lean).
-- **hekaton** — a Rust/gRPC + CUDA system I own outright and can deploy anywhere. I love Claude, but I
-  don't own Claude. I own this.
-- **keymakers.ai** — what I'm launching, now split into an org: `keymakers-core` (key duplication by
-  mail, computer vision doing the matching) and `keymakers-club` (membership platform for agentic
-  engineers). Work in progress, built the same way as everything else here.
+- **H1 Security Lab** — a CLI-first bug bounty platform: scope enforcement, evidence-based
+  validation, a devil's-advocate pass before anything gets reported.
+- **[opensource-pipeline](https://github.com/herakles-dev/opensource-pipeline) & math-proof** —
+  the two tools behind the merges above: a fork → sanitize → package pipeline, and a Lean 4
+  theorem-proving swarm where the kernel is the only arbiter of truth (48 proofs machine-checked
+  in 8 days, zero `sorry`s).
+- **keymakers.ai** — what I'm launching, now split into an org: `keymakers-core` (key duplication
+  by mail, computer vision doing the matching) and `keymakers-club` (membership platform for
+  agentic engineers). Work in progress, built the same way as everything else here.
 
 ## A few things that don't fit on a résumé
 
@@ -95,6 +103,7 @@ software, security research, formal math, a production SaaS with a real customer
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
 ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white)
 ![CUDA](https://img.shields.io/badge/CUDA-76B900?style=flat-square&logo=nvidia&logoColor=white)
+![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?style=flat-square&logo=kotlin&logoColor=white)
 ![Linux](https://img.shields.io/badge/Linux-FCC624?style=flat-square&logo=linux&logoColor=black)
 
 <div align="center">
