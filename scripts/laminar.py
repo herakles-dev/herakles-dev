@@ -44,7 +44,7 @@ HEADER_SEED = 0x574E4D7
 
 # title, subtitle, short label, count shown on the header, auto-updated?
 SECTIONS = [
-    ["Live right now", None, "LIVE", "2 SITES", False],
+    ["Live right now", None, "LIVE", "3 LIVE", False],
     ["Merged into the wild", None, "MERGED", "3 MERGES", True],
     ["What I'm building", None, "BUILDING", "9 PROJECTS", False],
     ["Zeus Terminal", "how all of this gets built", "ZEUS", "3 SESSIONS", False],

@@ -29,7 +29,7 @@
 
 <p align="left">
 <!--START_SECTION:contribs-->
-1,802 contributions in the last year
+1,804 contributions in the last year
 <!--END_SECTION:contribs-->
 </p>
 
@@ -64,6 +64,8 @@ plenty of code by hand. I don't ship demos.
   actually agreeing to. Runs on my own multi-provider LLM gateway, not a single rented API.
 - **[subfold.pro](https://subfold.pro)** — a music-reactive visual instrument: real-time 3D
   fractals that fold to the beat.
+- **[nightjar](https://github.com/herakles-dev/nightjar)** — an offline Android app that hides data in
+  sound and images, and ships the detectors that catch it. Open source, MIT.
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="assets/section-02-light.svg" />
@@ -100,8 +102,9 @@ clock — the description swaps in on a loop, staggered per card, no two flippin
 
 </div>
 
-[v11](https://github.com/herakles-dev/v11) and
-[typesafe-claude-kit](https://github.com/herakles-dev/typesafe-claude-kit) are public,
+[v11](https://github.com/herakles-dev/v11),
+[typesafe-claude-kit](https://github.com/herakles-dev/typesafe-claude-kit) and
+[nightjar](https://github.com/herakles-dev/nightjar) are public,
 [subfold.pro](https://subfold.pro) is live, and `math-proof` lives at
 [erdos672-four-squares-lean](https://github.com/herakles-dev/erdos672-four-squares-lean). The
 rest are private or local — ask if you want a look.
@@ -221,7 +224,7 @@ unlike everything else on this page):
   28KB APK, runs at 2-3% CPU, entirely pointless and I love it.
 - My grocery price tracker **bypasses Cloudflare** to watch 900+ items at the store down the
   street, because I got tired of guessing what's actually on sale.
-- A phone-to-phone **acoustic covert data channel**, with its own on-device detector, because I
+- A phone-to-phone **[acoustic covert data channel](https://github.com/herakles-dev/nightjar)**, with its own on-device detector, because I
   wondered if two phones could talk without a network.
 - My login page has **custom GLSL liquid shaders** for no reason other than it looked cool at
   2am and I didn't undo it.
@@ -263,11 +266,11 @@ the week I rebuilt this page. Zero left now.</i></sub>
 <sub><i>Auto-updated — my own repos, most recently pushed.</i></sub>
 
 <!--START_SECTION:building-->
+- **[nightjar](https://github.com/herakles-dev/nightjar)** — Offline Android app demonstrating covert data transmission (hiding data in sound and images) and the detection techniques that can catch it. Acoustic data-over-sound modem, image/audio steganography, passive detector.
 - **[typesafe-claude-kit](https://github.com/herakles-dev/typesafe-claude-kit)** `⭐ 1` — Claude Code kit for TypeSafe (Jev): agents, skill, client, calibration tools
 - **[herakles-daimon](https://github.com/herakles-dev/herakles-daimon)** — AI-curated, mood-responsive media platform built with the Gemini Live API
 - **[opensource-pipeline](https://github.com/herakles-dev/opensource-pipeline)** `⭐ 2` — Safely open-source any project with Claude Code. 3-agent pipeline that strips secrets, verifies sanitization, and generates professional docs. Just say /opensource fork my-project.
 - **[v11](https://github.com/herakles-dev/v11)** `⭐ 1` — Spec-driven orchestration protocol for reliable multi-agent Claude Code development — task-as-truth, write-gate hooks, adversarial review pairing, autonomy tracking. Installable.
-- **[claude-code-agents](https://github.com/herakles-dev/claude-code-agents)** `⭐ 1` — Curated, transferable Claude Code subagents in installable packages — orchestration, engineering, security, devops — plus a CLAUDE.md template for multi-agent projects.
 <!--END_SECTION:building-->
 
 <p align="center">

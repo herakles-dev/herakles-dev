@@ -450,13 +450,6 @@ def _icon_chip(cx: float, cy: float, c: str) -> str:
     return "".join(parts)
 
 
-def _icon_stack(cx: float, cy: float, c: str) -> str:
-    parts = []
-    for i, dy in enumerate((-10, 0, 10)):
-        parts.append(f'<rect x="{cx-13}" y="{cy+dy-4}" width="26" height="7" rx="2" fill="none" stroke="{c}" stroke-width="1.8" />')
-    return "".join(parts)
-
-
 def _icon_nodes(cx: float, cy: float, c: str) -> str:
     """The v11 icon — the one card in the grid where motion IS the meaning,
     not decoration: v11 is an orchestration protocol, so a packet actually
@@ -520,6 +513,17 @@ def _icon_fold(cx: float, cy: float, c: str) -> str:
     return "".join(parts)
 
 
+def _icon_jar(cx: float, cy: float, c: str) -> str:
+    """nightjar — its default UI is "Firefly Jar": a jar holding one glowing firefly."""
+    body = (f"M {cx-8},{cy-8} L {cx-8},{cy+8} Q {cx-8},{cy+12} {cx-4},{cy+12} L {cx+4},{cy+12} "
+            f"Q {cx+8},{cy+12} {cx+8},{cy+8} L {cx+8},{cy-8}")
+    return (f'<rect x="{cx-6}" y="{cy-13}" width="12" height="4" rx="1.2" fill="none" stroke="{c}" stroke-width="1.8" />'
+            f'<path d="{body}" fill="none" stroke="{c}" stroke-width="1.8" stroke-linejoin="round" />'
+            f'<circle cx="{cx+1}" cy="{cy+3}" r="4.5" fill="{c}" opacity="0.25" />'
+            f'<circle cx="{cx+1}" cy="{cy+3}" r="2" fill="{c}">'
+            f'<animate attributeName="opacity" values="1;0.35;1" dur="2.4s" repeatCount="indefinite" /></circle>')
+
+
 def _icon_key(cx: float, cy: float, c: str) -> str:
     parts = [f'<circle cx="{cx-7}" cy="{cy}" r="6" fill="none" stroke="{c}" stroke-width="2" />',
              f'<line x1="{cx-1}" y1="{cy}" x2="{cx+12}" y2="{cy}" stroke="{c}" stroke-width="2" />']
@@ -542,9 +546,9 @@ PROJECT_CARDS = [
     ("hekaton", _icon_chip, "GH200 · 624GB · Rust bridge",
      "NUMA-pinned deploys, 3-4 LLMs debating over ZeroMQ. One untested vLLM upgrade burned me — now every bump ships a rollback plan.",
      "amber"),
-    ("herakles-linux-opus", _icon_stack, "130+ services, 1 box",
-     "Also embeds and ranks all 144 of my own repos — a Venture Catalog telling me which are actually worth finishing.",
-     "purple"),
+    ("nightjar", _icon_jar, "Android · covert channels",
+     "Offline Android app that hides data in sound and images — and ships the detectors that catch it.",
+     "teal"),
     ("v11", _icon_nodes, "orchestration protocol",
      "Task-as-truth state, write-gate hooks, adversarial review pairing. Built to survive being rebuilt on itself.",
      "purple"),
