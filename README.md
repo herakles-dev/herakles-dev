@@ -131,7 +131,7 @@ the week I rebuilt this page.</i></sub>
 
 <div align="center">
 
-**I know I'm good. I want a company to see it too.**
+Still up at 3am most nights. Still shipping.
 
 **[herakles.dev](https://herakles.dev)** · **[keymakers.ai](https://keymakers.ai)** · [hello@herakles.dev](mailto:hello@herakles.dev)
 
