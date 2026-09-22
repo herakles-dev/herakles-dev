@@ -1,11 +1,5 @@
 <div align="center">
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/herakles-dev/herakles-dev/output/pacman-contribution-graph-dark.svg" />
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/herakles-dev/herakles-dev/output/pacman-contribution-graph.svg" />
-  <img alt="Pac-Man eating my contribution graph" src="https://raw.githubusercontent.com/herakles-dev/herakles-dev/output/pacman-contribution-graph.svg" />
-</picture>
-
 <a href="https://herakles.dev">
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="assets/masthead-light.svg" />
@@ -22,12 +16,23 @@
 ![Claude Code](https://img.shields.io/badge/built%20with-Claude%20Code-D97706?style=flat-square&logo=anthropic&logoColor=white)
 ![profile views](https://komarev.com/ghpvc/?username=herakles-dev&color=8E74F2&style=flat-square&label=profile+views)
 
+<p>
 <a href="https://herakles.dev">
   <picture>
     <source media="(prefers-color-scheme: light)" srcset="assets/header-light.svg" />
     <img src="assets/header.svg" alt="terminal: michael@herakles-dev" />
   </picture>
 </a>
+</p>
+
+<p>
+<br />
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/herakles-dev/herakles-dev/output/pacman-contribution-graph-dark.svg" />
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/herakles-dev/herakles-dev/output/pacman-contribution-graph.svg" />
+  <img alt="Pac-Man eating my contribution graph" src="https://raw.githubusercontent.com/herakles-dev/herakles-dev/output/pacman-contribution-graph.svg" />
+</picture>
+</p>
 
 </div>
 

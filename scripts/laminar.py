@@ -287,6 +287,41 @@ class CylinderField(Field):
         return (x - self.cx) ** 2 + (y - self.cy) ** 2 < (self.R + 3) ** 2 or super().inside(x, y)
 
 
+EDGE_RAMP = [(0, 0), (0.06, 1), (0.94, 1), (1, 0)]
+
+
+def _ramp_at(ramp, x):
+    for (x0, a0), (x1, a1) in zip(ramp, ramp[1:]):
+        if x0 <= x <= x1:
+            return a0 if x1 == x0 else a0 + (a1 - a0) * (x - x0) / (x1 - x0)
+    return ramp[-1][1]
+
+
+def _grad(gid, color_at, ramp):
+    """A full-width horizontal paint whose colour follows color_at(x) and whose
+    opacity follows the ramp — an edge fade with no mask."""
+    xs = sorted({round(k / 8, 4) for k in range(9)} | {round(x, 4) for x, _ in ramp})
+    stops = "".join(f'<stop offset="{x}" stop-color="{color_at(x)}" stop-opacity="{_ramp_at(ramp, x):.3f}"/>' for x in xs)
+    return f'<linearGradient id="{gid}" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="{W}" y2="0">{stops}</linearGradient>'
+
+
+def _particle_paths(buckets, paint, width, speed, periods, rates):
+    """One compound, dash-animated path per bucket: dozens of particles, one animation."""
+    out = []
+    for (sb, fo), ds in buckets.items():
+        per, rate = periods[sb], rates[sb]
+        out.append(f'<path d="{" ".join(ds)}" stroke="{paint}" stroke-width="{width}" stroke-linecap="round" '
+                   f'stroke-dasharray="0.1 {per}" opacity="{fo}">'
+                   f'<animate attributeName="stroke-dashoffset" values="0;-{per + 0.1}" dur="{per / rate / speed:.2f}s" repeatCount="indefinite"/></path>')
+    return out
+
+
+def _yfade(pts, H, edge=0.14):
+    """Opacity for a roughly-horizontal line from how close it runs to the top or bottom."""
+    ym = sum(q[1] for q in pts) / len(pts)
+    return max(0.0, min(1.0, min(ym, H - ym) / (edge * H)))
+
+
 def frange(a, b, s):
     while a < b:
         yield a
@@ -375,43 +410,48 @@ class Laminar:
 
     # ── shared rendering ────────────────────────────────────────────────
     def _defs(self, theme, gid, u0, u1, H, fn=temper):
-        stops = "".join(f'<stop offset="{k / 8:.3f}" stop-color="{fn(theme, u0 + (u1 - u0) * k / 8)}"/>' for k in range(9))
-        bloom = ('<filter id="bloom" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="1.7" result="b"/>'
-                 '<feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>')
-        return (f'<defs>{bloom}<linearGradient id="{gid}" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="{W}" y2="0">{stops}</linearGradient>'
-                f'<linearGradient id="fg" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/>'
-                f'<stop offset="0.06" stop-color="#fff"/><stop offset="0.94" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>'
-                f'<linearGradient id="fgy" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/>'
-                f'<stop offset="0.14" stop-color="#fff"/><stop offset="0.86" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>'
-                f'<mask id="fade" maskUnits="userSpaceOnUse" x="0" y="0" width="{W}" height="{H}"><rect width="{W}" height="{H}" fill="url(#fg)"/></mask>'
-                f'<mask id="fadey" maskUnits="userSpaceOnUse" x="0" y="0" width="{W}" height="{H}"><rect width="{W}" height="{H}" fill="url(#fgy)"/></mask></defs>')
+        """The streamline paint: the page gradient with the left/right edge fade
+        baked into its stop opacities. (Masks or filters over animated content
+        force a full offscreen re-render every frame; a paint server doesn't.)"""
+        return f'<defs>{_grad(gid, lambda x: fn(theme, u0 + (u1 - u0) * x), EDGE_RAMP)}</defs>'
+
+    # Particles lose the blur-filter bloom (a per-frame cost); a touch more weight
+    # on dark keeps their presence.
+    def _pw(self, theme, pw):
+        return pw + 0.35 if theme == "dark" else pw
 
     def _streams(self, field, H, y_lo, y_hi, dsep, rnd, gid, base_op=0.3, pw=2.1, speed=1.0, theme="dark",
-                 stroke=None, x_lo=0, x_hi=W):
-        """Two groups: hairline streamlines, then particles (bloomed on dark)."""
+                 stroke=None, x_lo=0, x_hi=W, particles=True):
+        """Hairline streamlines, then particles riding them.
+
+        Performance: particles are merged into a few compound paths (one per
+        speed x edge-fade bucket) with one dash animation each, instead of one
+        animated path per streamline. The dash pattern runs continuously across
+        subpaths, so phases still vary line to line. This took the masthead from
+        ~13 fps to 60 fps under 4x CPU throttle with no visible change. The
+        top/bottom fade is per-line opacity, not a mask."""
         paint = stroke or f"url(#{gid})"
-        lines_svg, parts_svg = [], []
+        statics, buckets = {}, {}
         lines = field.evenly_spaced(x_lo, x_hi, y_lo, y_hi, dsep, rnd)
-        for pts in lines:
+        for k, pts in enumerate(lines):
             pts = pts[::2] if len(pts) > 4 else pts
+            fy = _yfade(pts, H)
+            if fy < 0.04:
+                continue
             d = _path(pts)
-            L = _length(pts)
-            op = base_op * min(1.0, 0.45 + L / 500)
-            lines_svg.append(f'<path d="{d}" stroke="{paint}" stroke-width="1" opacity="{op:.2f}"/>')
-            period = rnd.uniform(40, 80)
-            dur = period / rnd.uniform(20, 38) / speed
-            o = rnd.uniform(0, period)
-            parts_svg.append(f'<path d="{d}" stroke="{paint}" stroke-width="{pw}" stroke-linecap="round" stroke-dasharray="0.1 {period:.1f}">'
-                             f'<animate attributeName="stroke-dashoffset" values="{o:.1f};{o - period - 0.1:.1f}" dur="{dur:.2f}s" repeatCount="indefinite"/></path>')
-        bloom = ' filter="url(#bloom)"' if theme == "dark" else ""
-        return (f'<g mask="url(#fadey)"><g fill="none" mask="url(#fade)">{"".join(lines_svg)}'
-                f'<g{bloom}>{"".join(parts_svg)}</g></g></g>'), len(lines)
+            op = base_op * min(1.0, 0.45 + _length(pts) / 500) * fy
+            statics.setdefault(round(op, 2), []).append(d)
+            if particles:
+                buckets.setdefault((k % 3, 1.0 if fy > 0.66 else 0.55), []).append(d)
+        out = [f'<path d="{" ".join(ds)}" stroke="{paint}" stroke-width="1" opacity="{op}"/>' for op, ds in statics.items()]
+        out += _particle_paths(buckets, paint, self._pw(theme, pw), speed, periods=(48, 62, 76), rates=(24, 30, 36))
+        return f'<g fill="none">{"".join(out)}</g>', len(lines)
 
     def _back(self, seed, obstacles, H, theme, gid, rnd):
         """Depth: a slower, larger-scale flow behind the main one."""
         back = Field(seed, amp=1.0, waves=5, scale=2.4)
         back.obstacles = list(obstacles)
-        g, _ = self._streams(back, H, 2, H - 2, 17, rnd, gid, base_op=0.13, pw=1.3, speed=0.5, theme=theme)
+        g, _ = self._streams(back, H, 2, H - 2, 17, rnd, gid, base_op=0.16, pw=1.3, speed=0.5, theme=theme, particles=False)
         return f'<g opacity="0.8">{g}</g>'
 
     def _rings(self, field, theme, gid, H, x_hi=W):
@@ -426,7 +466,7 @@ class Laminar:
                        f'stroke-width="0.9" stroke-dasharray="1.5 4" opacity="0.55">'
                        f'<animateTransform attributeName="transform" type="rotate" from="0" to="{spin}" dur="{9 + abs(1000 / (g or 1)) % 7:.1f}s" repeatCount="indefinite"/></circle>'
                        f'<circle r="1.4" fill="url(#{gid})" opacity="0.8"/></g>')
-        return f'<g mask="url(#fade)">{"".join(out)}</g>'
+        return "".join(out)
 
     # ── page primitives ─────────────────────────────────────────────────
     def masthead(self, theme):
@@ -484,7 +524,7 @@ class Laminar:
         H = 120
         n = len(SECTIONS)
         lo, hi = max(0.0, i / n - 0.05), min(1.0, (i + 1) / n + 0.05)
-        col = lambda u: temper(theme, lo + (hi - lo) * min(max(u, 0), 1))
+        raw = lambda u: temper(theme, lo + (hi - lo) * min(max(u, 0), 1))
         T = title.upper()
         subw = text_width("JetBrains Mono", 400, sub, 12) + 18 if sub else 0
         fs = fit_size("Anybody", 800, T, 560 - subw, 28)
@@ -495,25 +535,26 @@ class Laminar:
         ly = base - ch - 13
         ax0 = max(tw + subw + 40, 300)
         kind, caption = self.SECTION_ART[i]
+        # The art fades in under the end of the title. Each colour the art uses
+        # becomes a gradient paint with that fade in its stop opacities.
+        ramp = [(0, 0), (max(ax0 - 70, 0) / W, 0), ((ax0 + 30) / W, 1), (0.985, 1), (1, 0)]
+        paints = {}
+
+        def paint(color):
+            if color not in paints:
+                paints[color] = f"p{len(paints)}"
+            return f"url(#{paints[color]})"
+        self._paint, self._raw, self._H = paint, raw, H
+        col = lambda u: paint(raw(u))
         art = getattr(self, f"_art_{kind}")(theme, ax0, W, H, col, seed=HEADER_SEED + 131 * (i + 1))
-        stops = (f'<stop offset="0" stop-color="#fff" stop-opacity="0"/>'
-                 f'<stop offset="{max(ax0 - 70, 0) / W:.3f}" stop-color="#fff" stop-opacity="0"/>'
-                 f'<stop offset="{(ax0 + 30) / W:.3f}" stop-color="#fff"/>'
-                 f'<stop offset="0.985" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>')
-        p = [f'<defs><filter id="bloom" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="1.6" result="b"/>'
-             f'<feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>'
-             f'<linearGradient id="am" x1="0" x2="1">{stops}</linearGradient>'
-             f'<linearGradient id="amy" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/>'
-             f'<stop offset="0.1" stop-color="#fff"/><stop offset="0.9" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>'
-             f'<mask id="artm" maskUnits="userSpaceOnUse" x="0" y="0" width="{W}" height="{H}"><rect width="{W}" height="{H}" fill="url(#am)"/></mask>'
-             f'<mask id="artmy" maskUnits="userSpaceOnUse" x="0" y="0" width="{W}" height="{H}"><rect width="{W}" height="{H}" fill="url(#amy)"/></mask>'
-             f'<clipPath id="ac"><rect x="0" y="0" width="{W}" height="{H}"/></clipPath></defs>',
-             f'<g clip-path="url(#ac)"><g mask="url(#artmy)"><g mask="url(#artm)">{art}</g></g></g>']
-        p.append(f'<text x="0" y="{ly:.0f}" font-size="10" letter-spacing="0.6" fill="{col(0.5)}">{label}</text>')
+        defs = "".join(_grad(gid, lambda x, c=c: c, ramp) for c, gid in paints.items())
+        p = [f'<defs>{defs}<clipPath id="ac"><rect x="0" y="2" width="{W}" height="{H - 4}"/></clipPath></defs>',
+             f'<g clip-path="url(#ac)">{art}</g>']
+        p.append(f'<text x="0" y="{ly:.0f}" font-size="10" letter-spacing="0.6" fill="{raw(0.5)}">{label}</text>')
         p.append(f'<text x="0" y="{base}" font-family="Anybody" font-weight="800" font-size="{fs:.1f}" fill="{t["fg"]}">{escape(T)}</text>')
         if sub:
             p.append(f'<text x="{tw + 18:.0f}" y="{base}" font-size="12" fill="{t["muted"]}">{escape(sub)}</text>')
-        p.append(f'<line x1="0" y1="{base + 14}" x2="{min(tw + subw, 520):.0f}" y2="{base + 14}" stroke="{col(0.5)}" stroke-width="1" opacity="0.5"/>')
+        p.append(f'<line x1="0" y1="{base + 14}" x2="{min(tw + subw, 520):.0f}" y2="{base + 14}" stroke="{raw(0.5)}" stroke-width="1" opacity="0.5"/>')
         cw = len(caption) * 0.6 * 9 + 12
         p.append(f'<rect x="{W - cw:.0f}" y="{H - 17}" width="{cw:.0f}" height="15" rx="4" fill="{t["bg"]}" opacity="0.82"/>')
         p.append(f'<text x="{W - 6}" y="{H - 6}" font-size="9" fill="{t["muted"]}" text-anchor="end">{escape(caption)}</text>')
@@ -521,7 +562,7 @@ class Laminar:
 
     # ── section art: compact interludes drawn into a box, in the section's slice ──
     def _bloom(self, theme):
-        return ' filter="url(#bloom)"' if theme == "dark" else ""
+        return ""  # glow filters removed from animated art for frame rate
 
     def _art_kelvin(self, theme, ax0, ax1, H, col, seed):
         t = self.themes[theme]
@@ -557,7 +598,10 @@ class Laminar:
         flat = sorted(v for row in grid for v in row)
         lo, hi = flat[len(flat) // 40], flat[-len(flat) // 40]
         nlev = 24
-        out = []
+        out = [f'<defs><linearGradient id="isy" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/>'
+               f'<stop offset="0.12" stop-color="#fff"/><stop offset="0.88" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>'
+               f'<mask id="ism" maskUnits="userSpaceOnUse" x="0" y="0" width="{W}" height="{H}"><rect width="{W}" height="{H}" fill="url(#isy)"/></mask></defs>'
+               '<g mask="url(#ism)">']
         for k in range(nlev):
             lev = lo + (hi - lo) * (k + 0.5) / nlev
             ds = [_path(ln[::2] if len(ln) > 6 else ln) for ln in marching_squares(grid, gx0, 0, step, lev)
@@ -566,7 +610,7 @@ class Laminar:
                 major = k % 4 == 0
                 out.append(f'<path d="{" ".join(ds)}" fill="none" stroke="{col(k / (nlev - 1))}" '
                            f'stroke-width="{1.2 if major else 0.7}" opacity="{0.9 if major else 0.5}"/>')
-        return "".join(out)
+        return "".join(out) + "</g>"
 
     def _art_joukowski(self, theme, ax0, ax1, H, col, seed):
         t = self.themes[theme]
@@ -606,7 +650,7 @@ class Laminar:
             z = z + 1 / z
             foil.append((cxp + z.real * S, cyp - z.imag * S))
         return (self._flow_on(lines, cols, random.Random(seed), theme, width=0.8, op=0.5, pw=1.9)
-                + f'<path d="{_path(foil)} Z" fill="{t["bg"]}" stroke="{t["fg"]}" stroke-width="1.1"/>')
+                + f'<path d="{_path(foil)} Z" fill="{t["bg"]}" stroke="{self._paint(t["fg"])}" stroke-width="1.1"/>')
 
     def _art_convection(self, theme, ax0, ax1, H, col, seed):
         top, bot = 14, H - 14
@@ -667,7 +711,7 @@ class Laminar:
         pts = [(cx + x / mx * sx, cy + y / my * 42) for x, y in raw]
         L = _length(pts)
         d = _path(pts)
-        stops = "".join(f'<stop offset="{k / 4}" stop-color="{col(k / 4)}"/>' for k in range(5))
+        stops = "".join(f'<stop offset="{k / 4}" stop-color="{self._raw(k / 4)}"/>' for k in range(5))
         return (f'<defs><linearGradient id="hg" gradientUnits="userSpaceOnUse" x1="{cx - sx}" x2="{cx + sx}">{stops}</linearGradient></defs>'
                 f'<path d="{d}" fill="none" stroke="url(#hg)" stroke-width="0.5" opacity="0.2"/>'
                 f'<path d="{d}" fill="none" stroke="url(#hg)" stroke-width="0.7" opacity="0.9" stroke-dasharray="{L:.0f}" stroke-dashoffset="{L:.0f}">'
@@ -690,7 +734,7 @@ class Laminar:
                 if len(ln) > 4 and bbox_diag(ln) > 16:
                     lines.append(orient(ln, vel))
                     cols.append(col((E + 0.75) / 3.25))
-        sep = "".join(f'<path d="{_path(ln[::2])}" fill="none" stroke="{t["fg"]}" stroke-width="1.1" opacity="0.55"/>'
+        sep = "".join(f'<path d="{_path(ln[::2])}" fill="none" stroke="{self._paint(t["fg"])}" stroke-width="1.1" opacity="0.55"/>'
                       for ln in marching_squares(grid, gx0, 0, step, 1.0) if len(ln) > 4)
         return self._flow_on(lines, cols, random.Random(seed), theme, width=0.9, op=0.55, pw=1.9, speed=0.7) + sep
 
@@ -698,7 +742,8 @@ class Laminar:
         field = CylinderField(ax0 + 40, H / 2, 17, seed, a=96, n=9, gamma=46)
         field.waves = field.waves[:2]
         lines = field.evenly_spaced(max(ax0 - 60, 0), ax1, 3, H - 3, 7, random.Random(seed))
-        cols = [col(min(1, max(0, (sum(q[0] for q in ln) / len(ln) - ax0) / (ax1 - ax0)))) for ln in lines]
+        # Five colour bands, not one per line: fewer particle buckets, same look.
+        cols = [col(round(4 * min(1, max(0, (sum(q[0] for q in ln) / len(ln) - ax0) / (ax1 - ax0)))) / 4) for ln in lines]
         lines = [ln if ln[0][0] <= ln[-1][0] else ln[::-1] for ln in lines]
         t = self.themes[theme]
         rings = []
@@ -759,7 +804,7 @@ class Laminar:
         cy = H / 2
         stops = "".join(f'<stop offset="{k / 8:.3f}" stop-color="{temper(theme, k / 8)}"/>' for k in range(9))
         drops = [  # radius, keyframe x positions, duration
-            (7.5, "90;560;90", 13), (5.5, "790;260;790", 11), (9, "300;700;300", 17),
+            (7.5, "150;560;150", 13), (5.5, "730;260;730", 11), (9, "300;700;300", 17),
             (4.5, "440;120;600;440", 9), (6, "650;380;820;650", 15),
         ]
         circles = "".join(
@@ -771,11 +816,11 @@ class Laminar:
                 f'<feGaussianBlur in="SourceGraphic" stdDeviation="3.6" result="b"/>'
                 f'<feColorMatrix in="b" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -6.5" result="g"/>'
                 f'<feComposite in="SourceGraphic" in2="g" operator="atop"/></filter>'
-                f'<linearGradient id="dm" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="0.12" stop-color="#fff"/>'
-                f'<stop offset="0.88" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>'
-                f'<mask id="dmask" maskUnits="userSpaceOnUse" x="0" y="0" width="{W}" height="{H}"><rect width="{W}" height="{H}" fill="url(#dm)"/></mask></defs>'
-                f'<g mask="url(#dmask)"><g filter="url(#goo)" fill="url(#dg)">'
-                f'<rect x="40" y="{cy - 2.6}" width="{W - 80}" height="5.2" rx="2.6"/>{circles}</g></g>')
+                f'</defs>'
+                # The stream tapers to nothing at both ends, so the threshold
+                # dissolves it softly — no mask over the animated filter.
+                f'<g filter="url(#goo)" fill="url(#dg)">'
+                f'<polygon points="30,{cy} 170,{cy - 2.6} {W - 170},{cy - 2.6} {W - 30},{cy} {W - 170},{cy + 2.6} 170,{cy + 2.6}"/>{circles}</g>')
         return svg(W, H, body)
 
     # ── interludes ──────────────────────────────────────────────────────
@@ -790,30 +835,29 @@ class Laminar:
 
     # ── interludes, second set ──────────────────────────────────────────
     def _flow_on(self, lines, colors, rnd, theme, width=0.8, op=0.45, pw=1.8, speed=1.0, period=(30, 60)):
-        """Contour polylines as hairlines plus particles riding them (bloomed on dark)."""
-        base, parts = [], []
-        for ln, col in zip(lines, colors):
+        """Contour polylines as hairlines plus particles riding them, merged into
+        compound paths per colour x speed bucket (see _streams). Soft top and
+        bottom come from per-line opacity, not a mask."""
+        H = getattr(self, "_H", None)
+        statics, buckets = {}, {}
+        for k, (ln, col) in enumerate(zip(lines, colors)):
             pts = ln[::3] if len(ln) > 30 else (ln[::2] if len(ln) > 8 else ln)
+            fy = _yfade(pts, H, edge=0.12) if H else 1.0
+            if fy < 0.04:
+                continue
             d = _path(pts)
-            base.append(f'<path d="{d}" stroke="{col}" stroke-width="{width}" opacity="{op}"/>')
-            per = rnd.uniform(*period)
-            dur = per / rnd.uniform(18, 34) / speed
-            o = rnd.uniform(0, per)
-            parts.append(f'<path d="{d}" stroke="{col}" stroke-width="{pw}" stroke-linecap="round" stroke-dasharray="0.1 {per:.1f}">'
-                         f'<animate attributeName="stroke-dashoffset" values="{o:.1f};{o - per - 0.1:.1f}" dur="{dur:.2f}s" repeatCount="indefinite"/></path>')
-        bloom = ' filter="url(#bloom)"' if theme == "dark" else ""
-        return f'<g fill="none">{"".join(base)}<g{bloom}>{"".join(parts)}</g></g>'
+            statics.setdefault((col, round(op * fy, 2)), []).append(d)
+            buckets.setdefault((col, k % 2, 1.0 if fy > 0.66 else 0.55), []).append(d)
+        out = [f'<path d="{" ".join(ds)}" stroke="{c}" stroke-width="{width}" opacity="{o}"/>' for (c, o), ds in statics.items()]
+        lo, hi = period
+        for (c, sb, fo), ds in buckets.items():
+            per = (lo + hi) / 2 + (-6 if sb == 0 else 6)
+            dur = per / (24 if sb == 0 else 30) / speed
+            out.append(f'<path d="{" ".join(ds)}" stroke="{c}" stroke-width="{self._pw(theme, pw)}" stroke-linecap="round" '
+                       f'stroke-dasharray="0.1 {per:.1f}" opacity="{fo}">'
+                       f'<animate attributeName="stroke-dashoffset" values="0;-{per + 0.1:.1f}" dur="{dur:.2f}s" repeatCount="indefinite"/></path>')
+        return f'<g fill="none">{"".join(out)}</g>'
 
-
-
-
-
-
-
-
-    # ── the 3×3 project grid, Laminar layout ────────────────────────────
-
-    # ── page furniture: stack strip, coda, neofetch, live-card restyle ──
     def stack_strip(self, theme, tools):
         """The stack as chips, the whole page gradient running across them."""
         t = self.themes[theme]
@@ -840,7 +884,6 @@ class Laminar:
         t = self.themes[theme]
         H = 96
         n = 11
-        rnd = random.Random(3)
         paths, parts = [], []
         for k in range(n):
             y0 = 14 + k * (H - 28) / (n - 1)
@@ -849,14 +892,15 @@ class Laminar:
                 decay = math.exp(-i / 230)
                 pts.append((i, y0 + 7 * decay * math.sin(i / 34 + k * 0.9) * (1 - abs(k - n / 2) / n)))
             d = _path(pts)
-            paths.append(f'<path d="{d}" stroke="url(#g)" stroke-width="0.9" opacity="0.45"/>')
-            per = rnd.uniform(50, 90)
-            o = rnd.uniform(0, per)
-            parts.append(f'<path d="{d}" stroke="url(#g)" stroke-width="2" stroke-linecap="round" stroke-dasharray="0.1 {per:.1f}">'
-                         f'<animate attributeName="stroke-dashoffset" values="{o:.1f};{o - per - 0.1:.1f}" dur="{per / 30:.2f}s" repeatCount="indefinite"/></path>')
-        bloom = ' filter="url(#bloom)"' if theme == "dark" else ""
+            paths.append(d)
+            parts.append(d)
+        buckets = {}
+        for k, d in enumerate(parts):
+            buckets.setdefault((k % 3, 1.0), []).append(d)
         body = (self._defs(theme, "g", 0, 1, H)
-                + f'<g mask="url(#fade)" fill="none">{"".join(paths)}<g{bloom}>{"".join(parts)}</g></g>'
+                + f'<g fill="none"><path d="{" ".join(paths)}" stroke="url(#g)" stroke-width="0.9" opacity="0.45"/>'
+                + "".join(_particle_paths(buckets, "url(#g)", self._pw(theme, 2), 1.0, periods=(56, 70, 84), rates=(28, 30, 32)))
+                + '</g>'
                 + f'<rect x="{W - 150}" y="{H - 16}" width="150" height="15" rx="4" fill="{t["bg"]}" opacity="0.82"/>'
                 + f'<text x="{W - 6}" y="{H - 5}" font-size="9" fill="{t["muted"]}" text-anchor="end">laminar · Re &lt; 2300</text>')
         return svg(W, H, body)
