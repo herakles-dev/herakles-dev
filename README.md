@@ -182,8 +182,8 @@ recomputed on every fetch, straight off the same machine (no repo commit involve
 unlike everything else on this page):
 
 <p align="center">
-  <img src="assets/neofetch.svg" alt="neofetch: the box this all runs on" />
-  <img src="https://opus.herakles.dev/api/readme/hercules-status.svg" alt="live Hercules platform activity" />
+  <img src="assets/neofetch.svg" alt="neofetch: the box this all runs on" style="vertical-align:top" />
+  <img src="https://opus.herakles.dev/api/readme/hercules-status.svg" alt="live Hercules platform activity" style="vertical-align:top" />
 </p>
 
 ## 🎲 A few things that don't fit on a résumé
