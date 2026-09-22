@@ -38,7 +38,7 @@ BG = "#141321"
 BORDER = "#2d2b55"
 FG = "#c9c6f2"
 MUTED = "#8b88b8"
-ACCENT = "#a78bfa"
+ACCENT = "#7C3AED"  # matches every badge + the streak card — was drifting from #a78bfa
 
 # GitHub linguist colors for languages that actually show up on this account.
 # Anything not listed here falls back to ACCENT rather than guessing wrong.

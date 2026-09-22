@@ -84,7 +84,7 @@ context. My daily driver, not a side project.
 <sub><i>This README, the Actions that keep it updated, and everything else on this page were
 built from inside it.</i></sub>
 
-## A few things that don't fit on a résumé
+## 🎲 A few things that don't fit on a résumé
 
 - Built a **Pac-Man ghost AI** that lives on my Android homescreen and chases my taps around —
   28KB APK, runs at 2-3% CPU, entirely pointless and I love it.
@@ -95,7 +95,7 @@ built from inside it.</i></sub>
 - My login page has **custom GLSL liquid shaders** for no reason other than it looked cool at
   2am and I didn't undo it.
 
-## Stack
+## 🧰 Stack
 
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
@@ -109,6 +109,8 @@ built from inside it.</i></sub>
 ![CUDA](https://img.shields.io/badge/CUDA-76B900?style=flat-square&logo=nvidia&logoColor=white)
 ![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?style=flat-square&logo=kotlin&logoColor=white)
 ![Linux](https://img.shields.io/badge/Linux-FCC624?style=flat-square&logo=linux&logoColor=black)
+
+## 📊 By the numbers
 
 <div align="center">
 
