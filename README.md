@@ -18,7 +18,10 @@
 ![profile views](https://komarev.com/ghpvc/?username=herakles-dev&color=7C3AED&style=flat-square&label=profile+views)
 
 <a href="https://herakles.dev">
-  <img src="assets/header.svg" alt="terminal: michael@herakles-dev" />
+  <picture>
+    <source media="(prefers-color-scheme: light)" srcset="assets/header-light.svg" />
+    <img src="assets/header.svg" alt="terminal: michael@herakles-dev" />
+  </picture>
 </a>
 
 </div>
@@ -64,7 +67,10 @@ clock — the description swaps in on a loop, staggered per card, no two flippin
 
 <div align="center">
 
-<img src="assets/project-cards.svg" alt="nine self-animating project cards" />
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="assets/project-cards-light.svg" />
+  <img src="assets/project-cards.svg" alt="nine self-animating project cards" />
+</picture>
 
 </div>
 
@@ -73,6 +79,42 @@ Full writeups for two of these — [v11](https://github.com/herakles-dev/v11) an
 opensource-pipeline story is the merge in the section above. `math-proof` lives at
 [erdos672-four-squares-lean](https://github.com/herakles-dev/erdos672-four-squares-lean). The
 rest are private or local — ask if you want a look.
+
+<details>
+<summary><b>How v11 actually enforces itself</b> — task-as-truth, write-gate hooks, adversarial review pairing, autonomy</summary>
+
+A raw write from an agent doesn't just land — it has to clear a gate first, and every gate outcome feeds back into how much autonomy that agent earns next time.
+
+```mermaid
+flowchart LR
+    T[Task created] --> W{Write-gate hook}
+    W -->|blocks until reviewed| I[Agent implements]
+    I --> R[Adversarial review pairing]
+    R -->|FAIL| I
+    R -->|PASS| C[Task marked complete]
+    C --> A[Autonomy tracking]
+    A -.->|earns trust over time| W
+```
+
+Tasks are the single source of truth for what's actually done — not a status the agent reports about itself. The write-gate hook is what makes that real: it intercepts writes before they land and blocks anything that hasn't gone through review. Autonomy is earned, not granted up front — a project starts at the most-supervised level and only escalates after a track record.
+
+</details>
+
+<details>
+<summary><b>Hekaton</b> — the vLLM upgrade that taught me to always ship a rollback plan</summary>
+
+Hekaton bridges two machines: a local box running orchestration and a rented GH200 (624GB unified memory) running inference, talking over a Rust ZeroMQ bridge with NUMA-pinned deploys so 3-4 LLMs can actually debate each other without fighting over memory bandwidth.
+
+I bumped vLLM by one version with no rollback path. It broke multi-model serving on the GH200 mid-session, and I had no fast way back to the last-known-good state — just a slow rebuild. Every dependency bump on that machine now ships with a tested rollback plan before it goes anywhere near the rented hardware. Expensive lesson, cheap fix.
+
+</details>
+
+<details>
+<summary><b>math-proof</b> — 48 machine-checked Lean proofs in 8 days, two closing real Erdős problems</summary>
+
+Formal math was new territory for me going in. `math-proof` produced 48 Lean 4 proofs with zero `sorry`s — every one machine-verified, not just "looks right." Two of them closed actual open problems in Google DeepMind's `formal-conjectures` repo: [erdos_399.variants.cambie](https://github.com/google-deepmind/formal-conjectures/pull/5425) (an elementary mod-8 argument) and [erdos_672.variants.euler](https://github.com/google-deepmind/formal-conjectures/pull/5481), which links out to a standalone proof repo, [erdos672-four-squares-lean](https://github.com/herakles-dev/erdos672-four-squares-lean). Both merged.
+
+</details>
 
 ## 🖥️ Zeus Terminal — how all of this gets built
 
@@ -83,10 +125,24 @@ session multiplexer — every project gets its own window, several Claude Code a
 parallel, and a `/handoff` command lets me spin up a fresh session mid-task without losing
 context. My daily driver, not a side project.
 
-<p align="center"><img src="assets/sessions.svg" alt="Zeus Terminal: four parallel sessions" /></p>
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: light)" srcset="assets/sessions-light.svg" />
+    <img src="assets/sessions.svg" alt="Zeus Terminal: four parallel sessions" />
+  </picture>
+</p>
 
 <sub><i>This README, the Actions that keep it updated, and everything else on this page were
 built from inside it.</i></sub>
+
+And the box underneath all of it — plus what it's actually doing right now, live,
+recomputed on every fetch, straight off the same machine (no repo commit involved,
+unlike everything else on this page):
+
+<p align="center">
+  <img src="assets/neofetch.svg" alt="neofetch: the box this all runs on" />
+  <img src="https://opus.herakles.dev/api/readme/hercules-status.svg" alt="live Hercules platform activity" />
+</p>
 
 ## 🎲 A few things that don't fit on a résumé
 
@@ -118,13 +174,13 @@ built from inside it.</i></sub>
 
 <div align="center">
 
-<sub><i>The two cards below are generated by my own script, not a third-party render
+<sub><i>All three cards below are generated by my own script, not a third-party render
 service — <a href="scripts/update_readme.py">source</a>. The last one that wasn't broke
-the week I rebuilt this page.</i></sub>
+the week I rebuilt this page. Zero left now.</i></sub>
 
 <img src="assets/stats.svg" alt="stats" />
 <img src="assets/langs.svg" alt="top languages" />
-<img height="165" src="https://streak-stats.demolab.com?user=herakles-dev&theme=tokyonight&hide_border=true&ring=7C3AED&fire=7C3AED&currStreakLabel=7C3AED" alt="streak" />
+<img src="assets/streak.svg" alt="contribution streak" />
 
 </div>
 
