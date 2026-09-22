@@ -853,30 +853,57 @@ NEOFETCH_FACTS = [
 ]
 
 
+def _h_monogram(cx: float, cy: float, size: float, c: str) -> list[str]:
+    """An original geometric "H" monogram in a ring — the classic neofetch
+    logo-on-the-left convention, without reproducing any real distro's
+    actual logo (deliberately avoided; this is a drawn original mark, same
+    "draw the shape, don't borrow one" discipline as every other icon on
+    this page)."""
+    r = size / 2
+    bar_w = size * 0.13
+    left_x = cx - size * 0.22
+    right_x = cx + size * 0.22
+    top_y = cy - size * 0.3
+    bot_y = cy + size * 0.3
+    return [
+        f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="{c}" stroke-width="1.6" opacity="0.45" />',
+        f'<rect x="{left_x - bar_w / 2:.1f}" y="{top_y:.1f}" width="{bar_w:.1f}" height="{bot_y - top_y:.1f}" rx="1.5" fill="{c}" />',
+        f'<rect x="{right_x - bar_w / 2:.1f}" y="{top_y:.1f}" width="{bar_w:.1f}" height="{bot_y - top_y:.1f}" rx="1.5" fill="{c}" />',
+        f'<rect x="{left_x - bar_w / 2:.1f}" y="{cy - bar_w / 2:.1f}" width="{right_x - left_x + bar_w:.1f}" height="{bar_w:.1f}" rx="1.5" fill="{c}" />',
+    ]
+
+
 def build_neofetch_svg() -> str:
-    """A real `neofetch --off`-style readout (key:value, no ascii logo — most
-    of neofetch's actual daily use looks exactly like this) instead of a
-    plain markdown code fence, to match the page's established "hand-drawn
-    terminal card" language rather than switching visual vocabulary for one
-    section."""
-    width = 320
+    """neofetch's actual convention (logo left, key:value list right) —
+    upgraded from a plain list after that flat layout drew a fair "boring"
+    call: it looked identical to stats.svg/langs.svg with nothing to
+    distinguish it. The logo is an original drawn mark, not a real distro's
+    logo (see _h_monogram)."""
+    width = 420
+    logo_col = 120
     row_h = 22
     top = 50
     height = top + len(NEOFETCH_FACTS) * row_h + 14
+
     body_lines = []
+    label_x = logo_col + 16
     for i, (label, value) in enumerate(NEOFETCH_FACTS):
         y = top + i * row_h
         body_lines.append(
-            f'  <text x="20" y="{y}" font-size="12.5" font-weight="700" fill="{ACCENT}">{label}</text>'
+            f'  <text x="{label_x}" y="{y}" font-size="12.5" font-weight="700" fill="{ACCENT}">{label}</text>'
             f'  <text x="{width - 20}" y="{y}" font-size="12.5" fill="{FG}" text-anchor="end">{value}</text>'
         )
-    # Short title on purpose: at this card's 320px width, the full
+    logo = _h_monogram(logo_col / 2, top + (height - top) / 2 - 7, 76, ACCENT)
+    body_lines.append(f'  <line x1="{logo_col}" y1="{top - 10}" x2="{logo_col}" y2="{height - 10}" stroke="{BORDER}" />')
+
+    # Short title on purpose: at this card's width, the full
     # "michael@herakles-dev — neofetch" label — fine on header.svg's 640px
     # card — centers close enough to collide with the dots. Caught in preview.
     chrome = card_chrome(width, height, THEMES["dark"], dots=True, title="neofetch", divider_y=40)
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
 xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono',ui-monospace,monospace">
   {chr(10).join(chrome)}
+  {chr(10).join(logo)}
 {chr(10).join(body_lines)}
 </svg>"""
 

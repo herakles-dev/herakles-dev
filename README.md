@@ -86,6 +86,20 @@ rest are private or local — ask if you want a look.
 A raw write from an agent doesn't just land — it has to clear a gate first, and every gate outcome feeds back into how much autonomy that agent earns next time.
 
 ```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#1e1b3a',
+  'primaryTextColor': '#c9c6f2',
+  'primaryBorderColor': '#7C3AED',
+  'lineColor': '#7C3AED',
+  'secondaryColor': '#141321',
+  'tertiaryColor': '#141321',
+  'background': '#141321',
+  'mainBkg': '#1e1b3a',
+  'nodeBorder': '#7C3AED',
+  'clusterBkg': '#141321',
+  'edgeLabelBackground': '#141321',
+  'fontFamily': 'JetBrains Mono, ui-monospace, monospace'
+}}}%%
 flowchart LR
     T[Task created] --> W{Write-gate hook}
     W -->|blocks until reviewed| I[Agent implements]

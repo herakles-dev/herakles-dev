@@ -1,7 +1,7 @@
 <svg width="250" height="124" viewBox="0 0 250 124" xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono',ui-monospace,monospace">
   <rect x="0.5" y="0.5" width="249" height="123" rx="10" fill="#141321" stroke="#2d2b55" />
 <text x="20" y="32" font-size="14" font-weight="700" fill="#7C3AED">herakles-dev · streak</text>
-  <text x="20" y="56" font-size="13" fill="#8b88b8">Total contributions</text>  <text x="230" y="56" font-size="13" font-weight="700" fill="#c9c6f2" text-anchor="end">1,591</text>
+  <text x="20" y="56" font-size="13" fill="#8b88b8">Total contributions</text>  <text x="230" y="56" font-size="13" font-weight="700" fill="#c9c6f2" text-anchor="end">1,592</text>
   <text x="20" y="80" font-size="13" fill="#8b88b8">Current streak</text>  <text x="230" y="80" font-size="13" font-weight="700" fill="#c9c6f2" text-anchor="end">2 days</text>
   <text x="20" y="104" font-size="13" fill="#8b88b8">Longest streak</text>  <text x="230" y="104" font-size="13" font-weight="700" fill="#c9c6f2" text-anchor="end">20 days</text>
 </svg>
