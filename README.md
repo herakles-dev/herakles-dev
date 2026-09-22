@@ -1,7 +1,7 @@
 <div align="center">
 
 <a href="https://herakles.dev">
-  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=20&duration=3000&pause=800&color=7C3AED&center=true&vCenter=true&width=600&height=50&lines=Telecom+by+day.+AI+orchestrator+by+night.;I+self-host+everything.;If+it+compiles%2C+it's+true.;No+plausible-but-wrong.;Too+many+Docker+containers.+On+purpose." alt="typing intro" style="max-width: 100%;" />
+  <img src="assets/header.svg" alt="terminal: mike@herakles-dev" />
 </a>
 
 # Michael Piscitelli · `herakles-dev`
@@ -17,7 +17,7 @@
 
 </div>
 
----
+<p align="center"><img src="assets/divider.svg" alt="" width="100%" height="12" /></p>
 
 I'm Mike. Fiber-optic network designer by day, and since mid-2025 a self-taught AI-agentic
 engineer by night — building my own orchestration engine one 3am session at a time. The
@@ -74,8 +74,9 @@ production SaaS with a real customer. Not a one-trick stack.
   splitter placement, 30 PostgreSQL tables with PostGIS. Ten years of telecom design work, encoded.
 - **CK Reynolds Tax** — a live tax-prep SaaS with a real customer: Stripe, 2FA, IRS Pub 4557
   compliance. Not a demo — daily-use production software.
-- **H1 Security Lab** — a CLI-first bug bounty platform: scope enforcement, evidence-based
-  validation, a devil's-advocate pass before anything gets reported.
+- **Reticulum** — a sovereign, off-grid mesh network on my own protocol stack (RNS + LXMF): a
+  live D3.js orbital visualization of the mesh, routing tables I inspect by hand, a Raspberry Pi
+  node running 24/7, LoRa hardware next on the list. Nobody assigned this one.
 - **[opensource-pipeline](https://github.com/herakles-dev/opensource-pipeline) & math-proof** —
   the two tools behind the merges above: a fork → sanitize → package pipeline, and a Lean 4
   theorem-proving swarm where the kernel is the only arbiter of truth (48 proofs machine-checked
@@ -86,10 +87,14 @@ production SaaS with a real customer. Not a one-trick stack.
 
 ## A few things that don't fit on a résumé
 
-- A phone-to-phone **acoustic covert data channel** — with its own on-device detector — running on a physical Pixel 6a.
-- An app that IDs a live concert recording from a **photo of the ticket stub**.
-- My Authelia login page has **custom GLSL liquid shaders**, because why not.
-- A 2GB SQLite database of my own Claude Code history with a **3D neural visualization** on top.
+- Built a **Pac-Man ghost AI** that lives on my Android homescreen and chases my taps around —
+  28KB APK, runs at 2-3% CPU, entirely pointless and I love it.
+- My grocery price tracker **bypasses Cloudflare** to watch 900+ items at the store down the
+  street, because I got tired of guessing what's actually on sale.
+- A phone-to-phone **acoustic covert data channel**, with its own on-device detector, because I
+  wondered if two phones could talk without a network.
+- My login page has **custom GLSL liquid shaders** for no reason other than it looked cool at
+  2am and I didn't undo it.
 
 ## Stack
 
@@ -122,13 +127,6 @@ the week I rebuilt this page.</i></sub>
   <img alt="contribution snake" src="https://raw.githubusercontent.com/herakles-dev/herakles-dev/output/github-snake.svg" />
 </picture>
 
-<sub><i>My commits as a candlestick chart — old habit from the trading platforms I built.</i></sub>
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="kline/kline-dark.svg" />
-  <img alt="contributions as a candlestick chart" src="kline/kline-light.svg" />
-</picture>
-
 </div>
 
 ## 🌱 Latest pushes
@@ -138,12 +136,12 @@ the week I rebuilt this page.</i></sub>
 <!--START_SECTION:building-->
 - **[typesafe-claude-kit](https://github.com/herakles-dev/typesafe-claude-kit)** `⭐ 1` — Claude Code kit for TypeSafe (Jev): agents, skill, client, calibration tools
 - **[herakles-daimon](https://github.com/herakles-dev/herakles-daimon)** — AI-curated, mood-responsive media platform built with the Gemini Live API
-- **[nova-forge](https://github.com/herakles-dev/nova-forge)** `⭐ 1` — Open-source agent orchestration framework. V11's proven patterns, any LLM, pure Python.
 - **[opensource-pipeline](https://github.com/herakles-dev/opensource-pipeline)** `⭐ 2` — Safely open-source any project with Claude Code. 3-agent pipeline that strips secrets, verifies sanitization, and generates professional docs. Just say /opensource fork my-project.
 - **[v11](https://github.com/herakles-dev/v11)** `⭐ 1` — Spec-driven orchestration protocol for reliable multi-agent Claude Code development — task-as-truth, write-gate hooks, adversarial review pairing, autonomy tracking. Installable.
+- **[claude-code-agents](https://github.com/herakles-dev/claude-code-agents)** `⭐ 1` — Curated, transferable Claude Code subagents in installable packages — orchestration, engineering, security, devops — plus a CLAUDE.md template for multi-agent projects.
 <!--END_SECTION:building-->
 
----
+<p align="center"><img src="assets/divider.svg" alt="" width="100%" height="12" /></p>
 
 <div align="center">
 

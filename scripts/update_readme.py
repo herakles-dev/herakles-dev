@@ -127,12 +127,20 @@ def build_merges_block() -> str:
     return "\n".join(line for _, line in rows)
 
 
+# Repos deliberately left out of the "latest pushes" feed — not a quality
+# judgment, just kept off the profile page by request.
+EXCLUDE_FROM_BUILDING = {"nova-forge"}
+
+
 def build_building_block(limit: int = 5) -> str:
     repos = api(f"/users/{USER}/repos", {"per_page": 100, "sort": "pushed"})
     own = [
         r
         for r in repos
-        if not r["fork"] and not r["archived"] and r["name"] != USER
+        if not r["fork"]
+        and not r["archived"]
+        and r["name"] != USER
+        and r["name"] not in EXCLUDE_FROM_BUILDING
     ]
     own.sort(key=lambda r: r["pushed_at"], reverse=True)
     lines = []
@@ -142,6 +150,64 @@ def build_building_block(limit: int = 5) -> str:
         star = f" `⭐ {humanize_stars(stars)}`" if stars else ""
         lines.append(f"- **[{r['name']}]({r['html_url']})**{star} — {desc}")
     return "\n".join(lines) if lines else "_No repos found._"
+
+
+def build_header_svg() -> str:
+    """A terminal-window header, hand-drawn — replaces a rented typing-SVG service.
+
+    Static text (no third-party render dependency, nothing to clip on a narrow
+    viewport) plus one SMIL-animated blinking cursor, which is well-supported even
+    inside an <img> embed.
+    """
+    width = 640
+    lines = [
+        ("$ whoami", MUTED),
+        ("mike — telecom by day, AI orchestrator by night", FG),
+        ("", None),
+        ("$ history | tail -1", MUTED),
+        ("The engineering mindset stuck. The credential didn't.", FG),
+    ]
+    body_lines = []
+    y = 66
+    for text, color in lines:
+        if text:
+            esc = text.replace("&", "&amp;").replace("<", "&lt;")
+            body_lines.append(f'  <text x="24" y="{y}" font-size="15" fill="{color}">{esc}</text>')
+        y += 26
+    body_lines.append(f'  <text x="24" y="{y}" font-size="15" fill="{MUTED}">$</text>')
+    body_lines.append(
+        f'  <rect x="40" y="{y - 15}" width="9" height="15" fill="{ACCENT}">'
+        f'<animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.4;0.5;0.9;1" '
+        f'dur="1.2s" repeatCount="indefinite" /></rect>'
+    )
+    height = y + 24  # bottom margin below the last (cursor) line
+    return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
+xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono',ui-monospace,monospace">
+  <rect x="0.5" y="0.5" width="{width - 1}" height="{height - 1}" rx="10" \
+fill="{BG}" stroke="{BORDER}" />
+  <circle cx="24" cy="24" r="5" fill="{BORDER}" />
+  <circle cx="42" cy="24" r="5" fill="{BORDER}" />
+  <circle cx="60" cy="24" r="5" fill="{BORDER}" />
+  <text x="{width / 2}" y="28" font-size="12" fill="{MUTED}" text-anchor="middle">mike@herakles-dev: ~</text>
+  <line x1="0" y1="40" x2="{width}" y2="40" stroke="{BORDER}" />
+{chr(10).join(body_lines)}
+</svg>"""
+
+
+def build_divider_svg() -> str:
+    width, height = 640, 12
+    return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" \
+xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="fade" x1="0" x2="1">
+      <stop offset="0%" stop-color="{ACCENT}" stop-opacity="0" />
+      <stop offset="50%" stop-color="{ACCENT}" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="{ACCENT}" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+  <circle cx="{width / 2}" cy="{height / 2}" r="3" fill="{ACCENT}" />
+  <rect x="0" y="{height / 2 - 0.75}" width="{width}" height="1.5" fill="url(#fade)" />
+</svg>"""
 
 
 def card_shell(width: int, height: int, title: str, body: str) -> str:
@@ -242,6 +308,8 @@ def main() -> int:
     else:
         print("No README changes.")
 
+    write_svg("header.svg", build_header_svg())
+    write_svg("divider.svg", build_divider_svg())
     write_svg("stats.svg", build_stats_svg())
     write_svg("langs.svg", build_langs_svg())
     return 0
