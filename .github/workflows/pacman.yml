@@ -1,4 +1,4 @@
-name: Contribution snake
+name: Contribution Pac-Man
 
 on:
   schedule:
@@ -9,25 +9,22 @@ permissions:
   contents: write
 
 concurrency:
-  group: contribution-snake
+  group: contribution-pacman
   cancel-in-progress: true
 
 jobs:
-  snake:
+  pacman:
     runs-on: ubuntu-latest
     steps:
-      - uses: Platane/snk@v3
-        id: snake
+      - uses: abozanona/pacman-contribution-graph@main
         with:
           github_user_name: ${{ github.repository_owner }}
-          outputs: |
-            dist/github-snake.svg
-            dist/github-snake-dark.svg?palette=github-dark
+          games: pacman
 
       - name: Publish dist/ to the output branch
         run: |
-          # Platane/snk runs in a container and leaves dist/ owned by root;
-          # reclaim it before writing .git inside it as the runner user.
+          # Same container-leaves-dist-root-owned quirk as the previous
+          # snake action; reclaim ownership before writing .git inside it.
           sudo chown -R "$(id -u):$(id -g)" dist
           cd dist
           git init -q
@@ -35,7 +32,7 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -q -m "chore: refresh contribution snake"
+          git commit -q -m "chore: refresh contribution pac-man"
           git push --force "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" output:output
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
