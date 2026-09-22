@@ -37,14 +37,23 @@ TOKEN = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN") or ""
 # variants instead of being dark-mode-only islands on a light-mode profile.
 # ACCENT is identical in both — matches every badge on the page and has
 # enough contrast against both a near-black and a near-white background.
+#
+# bg/border/fg/muted are true neutral gray (S 5-8%), NOT a tint of ACCENT.
+# The previous values (#141321/#2d2b55/#c9c6f2/#8b88b8, and the light-theme
+# equivalents) measured H=243-250 S=17-65% — a desaturated/lightened purple
+# sitting only ~20 deg from ACCENT's H=262, so every card background, border,
+# and line of body text on the page read purple-ish no matter how many accent
+# colors sat on top of it (see CARD_COLORS below). Verify with
+# colorsys.rgb_to_hls before ever touching these again — "looks gray enough"
+# is exactly how the old values passed review the first time.
 THEMES = {
     "dark": {
-        "bg": "#141321", "border": "#2d2b55", "fg": "#c9c6f2",
-        "muted": "#8b88b8", "accent": "#7C3AED",
+        "bg": "#17171b", "border": "#3a3a42", "fg": "#e4e4e7",
+        "muted": "#9a9aa5", "accent": "#7C3AED",
     },
     "light": {
-        "bg": "#ffffff", "border": "#ded9f7", "fg": "#241f3d",
-        "muted": "#6b6690", "accent": "#7C3AED",
+        "bg": "#ffffff", "border": "#dcdce1", "fg": "#1c1c1f",
+        "muted": "#6b6b76", "accent": "#7C3AED",
     },
 }
 # Back-compat module-level aliases for cards not yet theme-parameterized
@@ -232,9 +241,16 @@ def card_chrome(width: int, height: int, t: dict, *, dots: bool = False,
                 f"card_chrome: title {title!r} (~{text_w:.0f}px from x={title_x}) likely "
                 f"overruns a {width}px-wide card — shorten it or widen the card"
             )
+            # Neutral, not ACCENT: a left-aligned chrome title is chrome/label
+            # text, not an icon or a data value — GUIDE.md #4b's rule ("accent
+            # on icon and border only, body text stays neutral") applies here
+            # too. This one line was the single biggest source of gratuitous
+            # purple on the page: it hit every left-titled card (sessions.svg/
+            # zeus terminal, stats.svg, langs.svg, streak.svg) regardless of
+            # what that card's own content already used for color.
             parts.append(
                 f'<text x="{title_x}" y="{label_y + 2}" font-size="{font_size}" font-weight="700" '
-                f'fill="{t["accent"]}">{title}</text>'
+                f'fill="{t["fg"]}">{title}</text>'
             )
     if subtitle:
         parts.append(

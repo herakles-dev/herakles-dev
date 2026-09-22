@@ -88,16 +88,16 @@ A raw write from an agent doesn't just land — it has to clear a gate first, an
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': {
   'primaryColor': '#1e1b3a',
-  'primaryTextColor': '#c9c6f2',
+  'primaryTextColor': '#e4e4e7',
   'primaryBorderColor': '#7C3AED',
   'lineColor': '#7C3AED',
-  'secondaryColor': '#141321',
-  'tertiaryColor': '#141321',
-  'background': '#141321',
+  'secondaryColor': '#17171b',
+  'tertiaryColor': '#17171b',
+  'background': '#17171b',
   'mainBkg': '#1e1b3a',
   'nodeBorder': '#7C3AED',
-  'clusterBkg': '#141321',
-  'edgeLabelBackground': '#141321',
+  'clusterBkg': '#17171b',
+  'edgeLabelBackground': '#17171b',
   'fontFamily': 'JetBrains Mono, ui-monospace, monospace'
 }}}%%
 flowchart LR

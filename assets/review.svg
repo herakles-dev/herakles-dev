@@ -1,9 +1,9 @@
 <svg width="428" height="722" viewBox="0 0 428 722" xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono',ui-monospace,monospace">
-  <rect x="0.5" y="0.5" width="427" height="721" rx="10" fill="#141321" stroke="#2d2b55" />
-<circle cx="24" cy="24" r="5" fill="#2d2b55" />
-<circle cx="42" cy="24" r="5" fill="#2d2b55" />
-<circle cx="60" cy="24" r="5" fill="#2d2b55" />
-<text x="214.0" y="28" font-size="12" fill="#8b88b8" text-anchor="middle">reviews — hercules-platform</text>
+  <rect x="0.5" y="0.5" width="427" height="721" rx="10" fill="#17171b" stroke="#3a3a42" />
+<circle cx="24" cy="24" r="5" fill="#3a3a42" />
+<circle cx="42" cy="24" r="5" fill="#3a3a42" />
+<circle cx="60" cy="24" r="5" fill="#3a3a42" />
+<text x="214.0" y="28" font-size="12" fill="#9a9aa5" text-anchor="middle">reviews — hercules-platform</text>
   <g transform="translate(14,34)" font-family="Arial, Helvetica, sans-serif">
     <rect x="0.5" y="0.5" width="399" height="673" rx="12" fill="#ffffff" stroke="#dadce0" />
   <text x="20" y="24" font-size="16" font-weight="700" fill="#202124">Hercules Platform</text>

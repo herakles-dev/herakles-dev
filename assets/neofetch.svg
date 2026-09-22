@@ -1,21 +1,21 @@
 <svg width="420" height="240" viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono',ui-monospace,monospace">
-  <rect x="0.5" y="0.5" width="419" height="239" rx="10" fill="#141321" stroke="#2d2b55" />
-<circle cx="24" cy="24" r="5" fill="#2d2b55" />
-<circle cx="42" cy="24" r="5" fill="#2d2b55" />
-<circle cx="60" cy="24" r="5" fill="#2d2b55" />
-<text x="210.0" y="28" font-size="12" fill="#8b88b8" text-anchor="middle">neofetch</text>
-<line x1="0" y1="40" x2="420" y2="40" stroke="#2d2b55" />
+  <rect x="0.5" y="0.5" width="419" height="239" rx="10" fill="#17171b" stroke="#3a3a42" />
+<circle cx="24" cy="24" r="5" fill="#3a3a42" />
+<circle cx="42" cy="24" r="5" fill="#3a3a42" />
+<circle cx="60" cy="24" r="5" fill="#3a3a42" />
+<text x="210.0" y="28" font-size="12" fill="#9a9aa5" text-anchor="middle">neofetch</text>
+<line x1="0" y1="40" x2="420" y2="40" stroke="#3a3a42" />
   <circle cx="60.0" cy="138.0" r="38.0" fill="none" stroke="#7C3AED" stroke-width="1.6" opacity="0.45" />
 <rect x="38.3" y="115.2" width="9.9" height="45.6" rx="1.5" fill="#7C3AED" />
 <rect x="71.8" y="115.2" width="9.9" height="45.6" rx="1.5" fill="#7C3AED" />
 <rect x="38.3" y="133.1" width="43.3" height="9.9" rx="1.5" fill="#7C3AED" />
-  <text x="136" y="50" font-size="12.5" font-weight="700" fill="#7C3AED">OS</text>  <text x="400" y="50" font-size="12.5" fill="#c9c6f2" text-anchor="end">Debian 12 (bookworm)</text>
-  <text x="136" y="72" font-size="12.5" font-weight="700" fill="#7C3AED">Uptime</text>  <text x="400" y="72" font-size="12.5" fill="#c9c6f2" text-anchor="end">61 days</text>
-  <text x="136" y="94" font-size="12.5" font-weight="700" fill="#7C3AED">Shell</text>  <text x="400" y="94" font-size="12.5" fill="#c9c6f2" text-anchor="end">bash</text>
-  <text x="136" y="116" font-size="12.5" font-weight="700" fill="#22D3EE">Agents</text>  <text x="400" y="116" font-size="12.5" fill="#c9c6f2" text-anchor="end">102</text>
-  <text x="136" y="138" font-size="12.5" font-weight="700" fill="#22D3EE">Services</text>  <text x="400" y="138" font-size="12.5" fill="#c9c6f2" text-anchor="end">130+</text>
-  <text x="136" y="160" font-size="12.5" font-weight="700" fill="#22D3EE">Containers</text>  <text x="400" y="160" font-size="12.5" fill="#c9c6f2" text-anchor="end">125</text>
-  <text x="136" y="182" font-size="12.5" font-weight="700" fill="#22D3EE">Nginx sites</text>  <text x="400" y="182" font-size="12.5" fill="#c9c6f2" text-anchor="end">105</text>
-  <text x="136" y="204" font-size="12.5" font-weight="700" fill="#FBBF24">Catalog</text>  <text x="400" y="204" font-size="12.5" fill="#c9c6f2" text-anchor="end">290 ventures ranked</text>
-  <line x1="120" y1="40" x2="120" y2="230" stroke="#2d2b55" />
+  <text x="136" y="50" font-size="12.5" font-weight="700" fill="#7C3AED">OS</text>  <text x="400" y="50" font-size="12.5" fill="#e4e4e7" text-anchor="end">Debian 12 (bookworm)</text>
+  <text x="136" y="72" font-size="12.5" font-weight="700" fill="#7C3AED">Uptime</text>  <text x="400" y="72" font-size="12.5" fill="#e4e4e7" text-anchor="end">61 days</text>
+  <text x="136" y="94" font-size="12.5" font-weight="700" fill="#7C3AED">Shell</text>  <text x="400" y="94" font-size="12.5" fill="#e4e4e7" text-anchor="end">bash</text>
+  <text x="136" y="116" font-size="12.5" font-weight="700" fill="#22D3EE">Agents</text>  <text x="400" y="116" font-size="12.5" fill="#e4e4e7" text-anchor="end">102</text>
+  <text x="136" y="138" font-size="12.5" font-weight="700" fill="#22D3EE">Services</text>  <text x="400" y="138" font-size="12.5" fill="#e4e4e7" text-anchor="end">130+</text>
+  <text x="136" y="160" font-size="12.5" font-weight="700" fill="#22D3EE">Containers</text>  <text x="400" y="160" font-size="12.5" fill="#e4e4e7" text-anchor="end">125</text>
+  <text x="136" y="182" font-size="12.5" font-weight="700" fill="#22D3EE">Nginx sites</text>  <text x="400" y="182" font-size="12.5" fill="#e4e4e7" text-anchor="end">105</text>
+  <text x="136" y="204" font-size="12.5" font-weight="700" fill="#FBBF24">Catalog</text>  <text x="400" y="204" font-size="12.5" fill="#e4e4e7" text-anchor="end">290 ventures ranked</text>
+  <line x1="120" y1="40" x2="120" y2="230" stroke="#3a3a42" />
 </svg>
