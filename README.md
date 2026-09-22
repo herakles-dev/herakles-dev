@@ -62,9 +62,12 @@ production SaaS with a real customer. Not a one-trick stack.
   quantized LLMs debating over ZeroMQ on one shared GPU pool. 20K lines of Rust, 2,757 passing
   tests, GPU spend tracked against a budget I set myself. Got burned once by an untested vLLM
   upgrade in prod — every version bump now ships with a documented rollback plan.
-- **herakles-linux-opus** — the software that runs my own server: tracks 130+ services, 93
-  containers, 71 nginx sites, 96 agents. It also embeds and clusters all 144 of my own repos
-  (pgvector + HDBSCAN) to catch duplicate code across my own sprawl before I write it twice.
+- **herakles-linux-opus** — how I actually run this box: source of truth for 130+ services, 93
+  containers, 71 nginx sites, 96 agents, running health checks, backups, and security scans on an
+  11-job cron schedule, all exposed through 112 REST routes and a 22-tool MCP server so both I and
+  my agents can query and act on it. It doesn't stop at monitoring — it also watches my own code:
+  embeds and clusters all 144 of my repos to map what exists, finds duplicate code across my own
+  sprawl, and ranks 290 of my own projects by how worth turning into a real product they are.
 - **[v11](https://github.com/herakles-dev/v11)** — spec-driven orchestration protocol for
   multi-agent Claude Code work: task-as-truth state, write-gate hooks, adversarial review pairing.
 - **SDR Command Center** — a Kotlin Android app bridging an RTL-SDR dongle over USB-C into a Pixel
