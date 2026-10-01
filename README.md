@@ -45,8 +45,7 @@
 </div>
 
 I'm Michael — Herakles. Fiber-optic network designer by day, and since mid-2025 a self-taught AI-agentic
-engineer by night — building my own orchestration engine one 3am session at a time. The
-engineering mindset stuck. The credential didn't.
+engineer by night — building my own orchestration engine one 3am session at a time. 
 
 The origin story is dumb and true: I automated my telecom crew's grunt work so well that we
 out-earned the managers. So the company cut our per-foot rate and kept the difference. That's
