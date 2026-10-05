@@ -30,7 +30,7 @@
 
 <p align="left">
 <!--START_SECTION:contribs-->
-2,270 contributions in the last year
+2,618 contributions in the last year
 <!--END_SECTION:contribs-->
 </p>
 
@@ -77,7 +77,7 @@ plenty of code by hand. I don't ship demos.
 <!--START_SECTION:merges-->
 - **[google-deepmind/formal-conjectures#5481](https://github.com/google-deepmind/formal-conjectures/pull/5481)** &nbsp;`⭐ 1.3k` — feat(ErdosProblems/672): link an external Lean proof of erdos_672.variants.euler · `2026-09-18`
 - **[google-deepmind/formal-conjectures#5425](https://github.com/google-deepmind/formal-conjectures/pull/5425)** &nbsp;`⭐ 1.3k` — feat(ErdosProblems/399): prove erdos_399.variants.cambie · `2026-09-18`
-- **[affaan-m/ECC#1036](https://github.com/affaan-m/ECC/pull/1036)** &nbsp;`⭐ 269k` — feat(agents,skills): add opensource-pipeline — 3-agent workflow for safe public releases · `2026-03-31`
+- **[affaan-m/ECC#1036](https://github.com/affaan-m/ECC/pull/1036)** &nbsp;`⭐ 273k` — feat(agents,skills): add opensource-pipeline — 3-agent workflow for safe public releases · `2026-03-31`
 <!--END_SECTION:merges-->
 
 Two of those are original Lean 4 proofs closing Erdős problems in Google DeepMind's
@@ -266,11 +266,11 @@ the week I rebuilt this page. Zero left now.</i></sub>
 <sub><i>Auto-updated — my own repos, most recently pushed.</i></sub>
 
 <!--START_SECTION:building-->
+- **[nightjar](https://github.com/herakles-dev/nightjar)** `⭐ 1` — Offline Android app demonstrating covert data transmission (hiding data in sound and images) and the detection techniques that can catch it. Acoustic data-over-sound modem, image/audio steganography, passive detector.
 - **[anvil](https://github.com/herakles-dev/anvil)** `⭐ 1` — Application writing forge — guided writing environment for fellowships, grants, and jobs. Designed for use alongside CLI-based LLMs.
 - **[ansi-stream-guard](https://github.com/herakles-dev/ansi-stream-guard)** `⭐ 1` — Hold back incomplete ANSI escape sequences across chunk boundaries and strip alt-screen toggles, so tmux / Claude Code / Ink output renders faithfully in a browser terminal.
 - **[v11](https://github.com/herakles-dev/v11)** `⭐ 1` — Spec-driven orchestration protocol for reliable multi-agent Claude Code development — task-as-truth, write-gate hooks, adversarial review pairing, autonomy tracking. Installable.
 - **[opensource-pipeline](https://github.com/herakles-dev/opensource-pipeline)** `⭐ 2` — Safely open-source any project with Claude Code. 3-agent pipeline that strips secrets, verifies sanitization, and generates professional docs. Just say /opensource fork my-project.
-- **[herakles-daimon](https://github.com/herakles-dev/herakles-daimon)** — AI-curated, mood-responsive media platform built with the Gemini Live API
 <!--END_SECTION:building-->
 
 <p align="center">
