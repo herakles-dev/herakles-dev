@@ -31,7 +31,7 @@ I run an agentic development practice at
 
 <p align="left">
 <!--START_SECTION:contribs-->
-2,730 contributions in the last year
+2,733 contributions in the last year
 <!--END_SECTION:contribs-->
 </p>
 
@@ -282,11 +282,11 @@ the week I rebuilt this page. Zero left now.</i></sub>
 <sub><i>Auto-updated — my own repos, most recently pushed.</i></sub>
 
 <!--START_SECTION:building-->
+- **[claude-code-agents](https://github.com/herakles-dev/claude-code-agents)** `⭐ 1` — Curated, transferable Claude Code subagents in installable packages — orchestration, engineering, security, devops — plus a CLAUDE.md template for multi-agent projects.
+- **[herakles-github-agent](https://github.com/herakles-dev/herakles-github-agent)** `⭐ 1` — Human-supervised agentic architecture for rigorous open source contributions
 - **[safexl](https://github.com/herakles-dev/safexl)** — Edit Excel workbooks from an AI agent without re-saving the whole file. CLI, MCP server, Claude Code plugin, benchmark kit.
 - **[claude-plugins](https://github.com/herakles-dev/claude-plugins)** — Claude Code plugin marketplace for herakles.dev tools (opensource-pipeline, typesafe-claude-kit)
 - **[nightjar](https://github.com/herakles-dev/nightjar)** `⭐ 1` — Offline Android app demonstrating covert data transmission (hiding data in sound and images) and the detection techniques that can catch it. Acoustic data-over-sound modem, image/audio steganography, passive detector.
-- **[anvil](https://github.com/herakles-dev/anvil)** `⭐ 1` — Application writing forge — guided writing environment for fellowships, grants, and jobs. Designed for use alongside CLI-based LLMs.
-- **[ansi-stream-guard](https://github.com/herakles-dev/ansi-stream-guard)** `⭐ 1` — Hold back incomplete ANSI escape sequences across chunk boundaries and strip alt-screen toggles, so tmux / Claude Code / Ink output renders faithfully in a browser terminal.
 <!--END_SECTION:building-->
 
 <p align="center">
