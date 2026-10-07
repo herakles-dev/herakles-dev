@@ -556,7 +556,7 @@ PROJECT_CARDS = [
      "CLI-first bug-bounty harness: 90+ tools with JSON output, chained by an agent. Rule one: prove it or kill it.",
      "teal"),
     ("CK Reynolds Tax", _icon_doc, "real customer, real IRS",
-     "Stripe, 2FA, IRS Pub 4557 compliance. Not a demo — daily-use production software.",
+     "Square payments, 2FA, virus-scanned uploads. Live at ckreynolds.com since March 2026.",
      "blue"),
     ("subfold.pro", _icon_fold, "WebGPU · audio-reactive",
      "Real-time 3D fractals and 25+ manifold surfaces on WGSL compute shaders, folding to the beat.",
@@ -761,12 +761,12 @@ def build_streak_svg() -> str:
 # the live card's "all-time" milestone tile.
 NEOFETCH_FACTS = [
     ("OS", "Debian 12 (bookworm)", "purple"),
-    ("Uptime", "61 days", "purple"),
+    ("Uptime", "76 days", "purple"),
     ("Shell", "bash", "purple"),
-    ("Agents", "102", "teal"),
+    ("Agents", "105", "teal"),
     ("Services", "130+", "teal"),
-    ("Containers", "125", "teal"),
-    ("Nginx sites", "105", "teal"),
+    ("Containers", "129", "teal"),
+    ("Nginx sites", "108", "teal"),
     ("Catalog", "290 ventures ranked", "gold"),
 ]
 

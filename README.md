@@ -7,12 +7,13 @@
 </picture>
 </a>
 
-**Solo builder shipping complex, cross-platform systems | Linux | ANDROID | Windows 
-** I run an agentic development practice at
-[**herakles.dev**](https://herakles.dev) and I'm launching [**keymakers.ai**](https://keymakers.ai).
+**Solo builder shipping complex, cross-platform systems | Linux | ANDROID | Windows**
+
+I run an agentic development practice at
+[**herakles.dev**](https://herakles.dev) and I'm launching **keymakers.ai**.
 
 [![herakles.dev](https://img.shields.io/badge/herakles.dev-8E74F2?style=flat-square&logo=firefox&logoColor=white)](https://herakles.dev)
-[![keymakers.ai](https://img.shields.io/badge/launching-keymakers.ai-111111?style=flat-square&logo=rocket&logoColor=white)](https://keymakers.ai)
+![keymakers.ai](https://img.shields.io/badge/launching-keymakers.ai-111111?style=flat-square&logo=rocket&logoColor=white)
 ![Chicago](https://img.shields.io/badge/Chicago,%20IL-1F2937?style=flat-square&logo=googlemaps&logoColor=white)
 ![Claude Code](https://img.shields.io/badge/built%20with-Claude%20Code-D97706?style=flat-square&logo=anthropic&logoColor=white)
 ![profile views](https://komarev.com/ghpvc/?username=herakles-dev&color=8E74F2&style=flat-square&label=profile+views)
@@ -30,7 +31,7 @@
 
 <p align="left">
 <!--START_SECTION:contribs-->
-2,618 contributions in the last year
+2,730 contributions in the last year
 <!--END_SECTION:contribs-->
 </p>
 
@@ -62,8 +63,22 @@ plenty of code by hand. I don't ship demos.
 
 - **[fine-print.org](https://fine-print.org)** — paste a Terms of Service, get back what you're
   actually agreeing to. Runs on my own multi-provider LLM gateway, not a single rented API.
+- **[ckreynolds.com](https://ckreynolds.com)** — a working tax practice's site and client portal:
+  document upload with malware scanning, appointments, Square payments, two-factor login. A real
+  client, in production since March 2026.
 - **[subfold.pro](https://subfold.pro)** — a music-reactive visual instrument: real-time 3D
   fractals that fold to the beat.
+- **[stepstube](https://stepstube.keymakers.ai)** — turns any YouTube home-repair tutorial into a
+  numbered guide with the tool list, parts, torque specs and safety flags, plus hands-free voice
+  control for when your hands are full.
+- **[Three actors on the Apify Store](https://apify.com/herakles-dev)** — pay-per-use tools that
+  other people's agents can call.
+  [SafeXL](https://apify.com/herakles-dev/safexl-workbook) edits Excel workbooks and hands back a
+  receipt showing the macros, charts and pivots are still there.
+  [Lean 4 Proof Checker](https://apify.com/herakles-dev/lean-proof-check) runs a proof through
+  Lean's own kernel: no `sorry`, no extra axioms.
+  [Invoice Extractor](https://apify.com/herakles-dev/invoice-extractor) turns invoice PDFs into
+  JSON, with every field agreed by two independent readers or flagged for a person.
 - **[nightjar](https://github.com/herakles-dev/nightjar)** — an offline Android app that hides data in
   sound and images, and ships the detectors that catch it. Open source, MIT.
 
@@ -77,12 +92,12 @@ plenty of code by hand. I don't ship demos.
 <!--START_SECTION:merges-->
 - **[google-deepmind/formal-conjectures#5481](https://github.com/google-deepmind/formal-conjectures/pull/5481)** &nbsp;`⭐ 1.3k` — feat(ErdosProblems/672): link an external Lean proof of erdos_672.variants.euler · `2026-09-18`
 - **[google-deepmind/formal-conjectures#5425](https://github.com/google-deepmind/formal-conjectures/pull/5425)** &nbsp;`⭐ 1.3k` — feat(ErdosProblems/399): prove erdos_399.variants.cambie · `2026-09-18`
-- **[affaan-m/ECC#1036](https://github.com/affaan-m/ECC/pull/1036)** &nbsp;`⭐ 273k` — feat(agents,skills): add opensource-pipeline — 3-agent workflow for safe public releases · `2026-03-31`
+- **[affaan-m/ECC#1036](https://github.com/affaan-m/ECC/pull/1036)** &nbsp;`⭐ 275k` — feat(agents,skills): add opensource-pipeline — 3-agent workflow for safe public releases · `2026-03-31`
 <!--END_SECTION:merges-->
 
 Two of those are original Lean 4 proofs closing Erdős problems in Google DeepMind's
 `formal-conjectures` — one of them fills a real gap in Mathlib. The third put a Claude Code
-workflow of mine into a 265k-star repository.
+workflow of mine into a repository with more than a quarter-million stars.
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="assets/section-03-light.svg" />
@@ -105,7 +120,8 @@ clock — the description swaps in on a loop, staggered per card, no two flippin
 [v11](https://github.com/herakles-dev/v11),
 [typesafe-claude-kit](https://github.com/herakles-dev/typesafe-claude-kit) and
 [nightjar](https://github.com/herakles-dev/nightjar) are public,
-[subfold.pro](https://subfold.pro) is live, and `math-proof` lives at
+[subfold.pro](https://subfold.pro) and [ckreynolds.com](https://ckreynolds.com) are live, and
+`math-proof` lives at
 [erdos672-four-squares-lean](https://github.com/herakles-dev/erdos672-four-squares-lean). The
 rest are private or local — ask if you want a look.
 
@@ -266,11 +282,11 @@ the week I rebuilt this page. Zero left now.</i></sub>
 <sub><i>Auto-updated — my own repos, most recently pushed.</i></sub>
 
 <!--START_SECTION:building-->
+- **[safexl](https://github.com/herakles-dev/safexl)** — Edit Excel workbooks from an AI agent without re-saving the whole file. CLI, MCP server, Claude Code plugin, benchmark kit.
+- **[claude-plugins](https://github.com/herakles-dev/claude-plugins)** — Claude Code plugin marketplace for herakles.dev tools (opensource-pipeline, typesafe-claude-kit)
 - **[nightjar](https://github.com/herakles-dev/nightjar)** `⭐ 1` — Offline Android app demonstrating covert data transmission (hiding data in sound and images) and the detection techniques that can catch it. Acoustic data-over-sound modem, image/audio steganography, passive detector.
 - **[anvil](https://github.com/herakles-dev/anvil)** `⭐ 1` — Application writing forge — guided writing environment for fellowships, grants, and jobs. Designed for use alongside CLI-based LLMs.
 - **[ansi-stream-guard](https://github.com/herakles-dev/ansi-stream-guard)** `⭐ 1` — Hold back incomplete ANSI escape sequences across chunk boundaries and strip alt-screen toggles, so tmux / Claude Code / Ink output renders faithfully in a browser terminal.
-- **[v11](https://github.com/herakles-dev/v11)** `⭐ 1` — Spec-driven orchestration protocol for reliable multi-agent Claude Code development — task-as-truth, write-gate hooks, adversarial review pairing, autonomy tracking. Installable.
-- **[opensource-pipeline](https://github.com/herakles-dev/opensource-pipeline)** `⭐ 2` — Safely open-source any project with Claude Code. 3-agent pipeline that strips secrets, verifies sanitization, and generates professional docs. Just say /opensource fork my-project.
 <!--END_SECTION:building-->
 
 <p align="center">
@@ -297,8 +313,8 @@ One more thing — Claude left a review.
 
 <div align="center">
 
-Still up late most nights. Still shipping (just watch) If you've made it this far, FOLLOW ME!
+Still up late most nights. Still shipping (just watch). If you've made it this far, FOLLOW ME!
 
-**[herakles.dev](https://herakles.dev)** · **[keymakers.ai](https://keymakers.ai)** · [hello@herakles.dev](mailto:hello@herakles.dev)
+**[herakles.dev](https://herakles.dev)** · **keymakers.ai** · [hello@herakles.dev](mailto:hello@herakles.dev)
 
 </div>
