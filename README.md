@@ -43,17 +43,6 @@ I run an agentic development practice at
 </picture>
 </p>
 
-<p>
-<picture>
-  <source media="(prefers-color-scheme: light)" srcset="assets/ecc-stars-light.svg" />
-  <img src="assets/ecc-stars.svg" alt="Line chart of GitHub stars on affaan-m/ECC since January 2026, climbing past a quarter-million, with a gold star on March 31, 2026, the day my pull request merged" />
-</picture>
-</p>
-
-<!--START_SECTION:ecc-->
-<sub><i>Stars on <a href="https://github.com/affaan-m/ECC">affaan-m/ECC</a> since it launched in January 2026. The gold star is the day <a href="https://github.com/affaan-m/ECC/pull/1036">my open-source pipeline</a> merged. Three of the repo's 68 agents are mine. History sampled from <a href="https://www.star-history.com/affaan-m/ecc">star-history.com</a>.</i></sub>
-<!--END_SECTION:ecc-->
-
 </div>
 
 I'm Michael — Herakles. Fiber-optic network designer by day, and since mid-2025 a self-taught AI-agentic
@@ -109,6 +98,19 @@ plenty of code by hand. I don't ship demos.
 Two of those are original Lean 4 proofs closing Erdős problems in Google DeepMind's
 `formal-conjectures` — one of them fills a real gap in Mathlib. The third put a Claude Code
 workflow of mine into a repository with more than a quarter-million stars.
+
+<div align="center">
+
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="assets/ecc-stars-light.svg" />
+  <img src="assets/ecc-stars.svg" alt="Line chart of GitHub stars on affaan-m/ECC since January 2026, climbing past a quarter-million, with a gold star on March 31, 2026, the day my pull request merged" />
+</picture>
+
+<!--START_SECTION:ecc-->
+<sub><i>Stars on <a href="https://github.com/affaan-m/ECC">affaan-m/ECC</a> since it launched in January 2026. The gold star is the day <a href="https://github.com/affaan-m/ECC/pull/1036">my open-source pipeline</a> merged. Three of the repo's 68 agents are mine. History sampled from <a href="https://www.star-history.com/affaan-m/ecc">star-history.com</a>.</i></sub>
+<!--END_SECTION:ecc-->
+
+</div>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="assets/section-03-light.svg" />
