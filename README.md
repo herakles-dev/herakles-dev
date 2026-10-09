@@ -31,7 +31,7 @@ I run an agentic development practice at
 
 <p align="left">
 <!--START_SECTION:contribs-->
-2,733 contributions in the last year
+2,741 contributions in the last year
 <!--END_SECTION:contribs-->
 </p>
 
@@ -42,6 +42,17 @@ I run an agentic development practice at
   <img alt="Pac-Man eating my contribution graph" src="https://raw.githubusercontent.com/herakles-dev/herakles-dev/output/pacman-contribution-graph.svg" />
 </picture>
 </p>
+
+<p>
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="assets/ecc-stars-light.svg" />
+  <img src="assets/ecc-stars.svg" alt="Line chart of GitHub stars on affaan-m/ECC since January 2026, climbing past a quarter-million, with a gold star on March 31, 2026, the day my pull request merged" />
+</picture>
+</p>
+
+<!--START_SECTION:ecc-->
+<sub><i>Stars on <a href="https://github.com/affaan-m/ECC">affaan-m/ECC</a> since it launched in January 2026. The gold star is the day <a href="https://github.com/affaan-m/ECC/pull/1036">my open-source pipeline</a> merged. Three of the repo's 68 agents are mine. History sampled from <a href="https://www.star-history.com/affaan-m/ecc">star-history.com</a>.</i></sub>
+<!--END_SECTION:ecc-->
 
 </div>
 
@@ -282,11 +293,11 @@ the week I rebuilt this page. Zero left now.</i></sub>
 <sub><i>Auto-updated — my own repos, most recently pushed.</i></sub>
 
 <!--START_SECTION:building-->
+- **[h1-security-lab-showcase](https://github.com/herakles-dev/h1-security-lab-showcase)** — AI-orchestrated bug bounty hunting system — architecture, methodology, and honest case studies from 22 real HackerOne hunts
 - **[claude-code-agents](https://github.com/herakles-dev/claude-code-agents)** `⭐ 1` — Curated, transferable Claude Code subagents in installable packages — orchestration, engineering, security, devops — plus a CLAUDE.md template for multi-agent projects.
 - **[herakles-github-agent](https://github.com/herakles-dev/herakles-github-agent)** `⭐ 1` — Human-supervised agentic architecture for rigorous open source contributions
 - **[safexl](https://github.com/herakles-dev/safexl)** — Edit Excel workbooks from an AI agent without re-saving the whole file. CLI, MCP server, Claude Code plugin, benchmark kit.
 - **[claude-plugins](https://github.com/herakles-dev/claude-plugins)** — Claude Code plugin marketplace for herakles.dev tools (opensource-pipeline, typesafe-claude-kit)
-- **[nightjar](https://github.com/herakles-dev/nightjar)** `⭐ 1` — Offline Android app demonstrating covert data transmission (hiding data in sound and images) and the detection techniques that can catch it. Acoustic data-over-sound modem, image/audio steganography, passive detector.
 <!--END_SECTION:building-->
 
 <p align="center">

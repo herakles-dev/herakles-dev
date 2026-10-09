@@ -20,6 +20,7 @@ fontkit.py). Auth via GITHUB_TOKEN (or GH_TOKEN).
 """
 from __future__ import annotations
 
+import datetime
 import json
 import math
 import os
@@ -802,6 +803,138 @@ STACK_TOOLS = ["Python", "TypeScript", "Rust", "Lean 4", "Bash", "Docker",
                "PostgreSQL", "FastAPI", "Next.js", "CUDA", "Kotlin", "Linux"]
 
 
+# --- ECC star history ---------------------------------------------------------
+# Stars on affaan-m/ECC over time, with the day PR #1036 merged marked. GitHub
+# does not expose another owner's stargazer list, so the history up to
+# 2026-10-08 is sampled from star-history.com's chart. Every run after that
+# records the live count in assets/ecc-stars.json, so the curve keeps growing
+# on real numbers instead of a straight line to "today".
+ECC_REPO = "affaan-m/ECC"
+ECC_PR = 1036
+ECC_MERGED = "2026-03-31"
+ECC_MY_AGENTS = ("opensource-forker.md", "opensource-packager.md", "opensource-sanitizer.md")
+ECC_STAR_SAMPLES = [
+    ("2026-01-18", 0), ("2026-02-02", 35900), ("2026-02-18", 45800), ("2026-03-05", 58600),
+    ("2026-03-21", 88400), ("2026-04-05", 134400), ("2026-04-21", 158300), ("2026-05-06", 170100),
+    ("2026-05-22", 184400), ("2026-06-06", 205100), ("2026-06-22", 216400), ("2026-07-07", 224000),
+    ("2026-07-23", 229900), ("2026-08-07", 236400), ("2026-08-23", 240700), ("2026-09-07", 250700),
+    ("2026-09-23", 265100), ("2026-10-08", 275500),
+]
+ECC_POINTS_FILE = os.path.join(ASSETS, "ecc-stars.json")
+# The merge marker wears the page's milestone gold. That gold is too pale to
+# read on a white surface, so the light theme takes a darker step of the hue.
+ECC_STAR_FILL = {"dark": CARD_COLORS["gold"], "light": "#A97A1C"}
+
+
+def _day(iso: str) -> int:
+    return datetime.date.fromisoformat(iso).toordinal()
+
+
+def ecc_star_series() -> list[tuple[str, int]]:
+    """The sampled history, then one live point per run (today's included)."""
+    last_sample = ECC_STAR_SAMPLES[-1][0]
+    live: dict[str, int] = {}
+    if os.path.exists(ECC_POINTS_FILE):
+        with open(ECC_POINTS_FILE, encoding="utf-8") as fh:
+            live = {d: int(n) for d, n in json.load(fh) if d > last_sample}
+    today = datetime.datetime.now(datetime.timezone.utc).date().isoformat()
+    if today > last_sample:
+        live[today] = int(api(f"/repos/{ECC_REPO}")["stargazers_count"])
+    os.makedirs(ASSETS, exist_ok=True)
+    with open(ECC_POINTS_FILE, "w", encoding="utf-8") as fh:
+        json.dump(sorted(live.items()), fh, indent=1)
+        fh.write("\n")
+    return ECC_STAR_SAMPLES + sorted(live.items())
+
+
+def ecc_agent_share() -> tuple[int, int]:
+    """(mine, total) agent files in ECC's agents/ directory, read from the repo."""
+    names = {e["name"] for e in api(f"/repos/{ECC_REPO}/contents/agents") if e["name"].endswith(".md")}
+    return sum(n in names for n in ECC_MY_AGENTS), len(names)
+
+
+def _stars_on(series: list[tuple[str, int]], iso: str) -> float:
+    """Star count on a date, interpolated between the two nearest points."""
+    day = _day(iso)
+    for (d0, n0), (d1, n1) in zip(series, series[1:]):
+        a, b = _day(d0), _day(d1)
+        if a <= day <= b:
+            return n0 + (n1 - n0) * (day - a) / (b - a)
+    return float(series[-1][1])
+
+
+def build_ecc_stars_svg(theme: str, series: list[tuple[str, int]], mine: int, total: int) -> str:
+    t = THEMES[theme]
+    width, height = 720, 300
+    x0, x1, y0, y1 = 58, width - 62, 66, height - 36  # plot box
+    d0, d1 = _day(series[0][0]), _day(series[-1][0])
+    top = math.ceil(max(n for _, n in series) / 100_000) * 100_000
+
+    def px(day: int) -> float:
+        return x0 + (x1 - x0) * (day - d0) / (d1 - d0)
+
+    def py(n: float) -> float:
+        return y1 - (y1 - y0) * n / top
+
+    subtitle = f"{mine} of {total} agents are mine" if mine == len(ECC_MY_AGENTS) else None
+    p = card_chrome(width, height, t, title=f"{ECC_REPO} · GitHub stars", title_align="left", subtitle=subtitle)
+
+    # Recessive scaffolding: hairline gridlines at round numbers, month labels.
+    for n in range(0, top + 1, 100_000):
+        y = py(n)
+        p.append(f'<line x1="{x0}" y1="{y:.1f}" x2="{x1}" y2="{y:.1f}" stroke="{t["border"]}" stroke-width="1"/>')
+        p.append(f'<text x="{x0 - 8}" y="{y + 3.5:.1f}" font-size="10" fill="{t["muted"]}" text-anchor="end">'
+                 f'{humanize_stars(n) if n else "0"}</text>')
+    first = datetime.date.fromordinal(d0)
+    month = datetime.date(first.year + first.month // 12, first.month % 12 + 1, 1)
+    while month.toordinal() <= d1:
+        p.append(f'<text x="{px(month.toordinal()):.1f}" y="{y1 + 17}" font-size="10" fill="{t["muted"]}" '
+                 f'text-anchor="middle">{month.strftime("%b")}</text>')
+        month = datetime.date(month.year + month.month // 12, month.month % 12 + 1, 1)
+
+    pts = [(px(_day(d)), py(n)) for d, n in series]
+    path = " ".join(f"{x:.1f},{y:.1f}" for x, y in pts)
+    p.append(f'<polygon points="{x0},{y1} {path} {pts[-1][0]:.1f},{y1}" fill="{t["accent"]}" opacity="0.10"/>')
+    p.append(f'<polyline points="{path}" fill="none" stroke="{t["accent"]}" stroke-width="2" '
+             f'stroke-linejoin="round" stroke-linecap="round"/>')
+
+    # End of the line: where the repo is today.
+    ex, ey = pts[-1]
+    p.append(f'<circle cx="{ex:.1f}" cy="{ey:.1f}" r="4" fill="{t["accent"]}" stroke="{t["bg"]}" stroke-width="2"/>')
+    p.append(f'<text x="{ex + 10:.1f}" y="{ey + 4:.1f}" font-size="12" font-weight="700" fill="{t["fg"]}">'
+             f'{humanize_stars(series[-1][1])}</text>')
+
+    # The merge: a flag line up to its label, and a star sitting on the curve.
+    merged_n = _stars_on(series, ECC_MERGED)
+    mx, my = px(_day(ECC_MERGED)), py(merged_n)
+    gold = ECC_STAR_FILL[theme]
+    when = datetime.date.fromisoformat(ECC_MERGED)
+    p.append(f'<line x1="{mx:.1f}" y1="{y0 + 4}" x2="{mx:.1f}" y2="{my - 17:.1f}" stroke="{t["muted"]}" stroke-width="1"/>')
+    p.append(f'<text x="{mx + 8:.1f}" y="{y0 + 13}" font-size="12" font-weight="700" fill="{t["fg"]}">'
+             f'PR #{ECC_PR} merged</text>')
+    p.append(f'<text x="{mx + 8:.1f}" y="{y0 + 28}" font-size="11" fill="{t["muted"]}">'
+             f'{when.strftime("%b")} {when.day}, {when.year} · about {humanize_stars(round(merged_n, -4))} stars</text>')
+    p.append(f'<circle cx="{mx:.1f}" cy="{my:.1f}" r="14" fill="none" stroke="{gold}" stroke-width="1.5">'
+             f'<animate attributeName="r" values="14;25" dur="2.4s" repeatCount="indefinite"/>'
+             f'<animate attributeName="opacity" values="0.7;0" dur="2.4s" repeatCount="indefinite"/></circle>')
+    star = " ".join(
+        f"{mx + r * math.sin(k * math.pi / 5):.1f},{my - r * math.cos(k * math.pi / 5):.1f}"
+        for k, r in ((k, 11.5 if k % 2 == 0 else 4.8) for k in range(10))
+    )
+    p.append(f'<polygon points="{star}" fill="{gold}" stroke="{t["bg"]}" stroke-width="2" stroke-linejoin="round"/>')
+    return laminar.svg(width, height, "".join(p))
+
+
+def build_ecc_caption(mine: int, total: int) -> str:
+    share = f" Three of the repo's {total} agents are mine." if mine == len(ECC_MY_AGENTS) == 3 else ""
+    return (
+        f'<sub><i>Stars on <a href="https://github.com/{ECC_REPO}">{ECC_REPO}</a> since it launched in January 2026. '
+        f'The gold star is the day <a href="https://github.com/{ECC_REPO}/pull/{ECC_PR}">my open-source pipeline</a> '
+        f"merged.{share} History sampled from "
+        f'<a href="https://www.star-history.com/affaan-m/ecc">star-history.com</a>.</i></sub>'
+    )
+
+
 def write_svg(name: str, svg: str) -> None:
     os.makedirs(ASSETS, exist_ok=True)
     path = os.path.join(ASSETS, name)
@@ -835,6 +968,9 @@ def main() -> int:
     text = replace_block(text, "building", building)
     # Same figure (and same wording) as the header on GitHub's own contribution calendar.
     text = replace_block(text, "contribs", f"{contrib_total:,} contributions in the last year")
+    ecc_series = ecc_star_series()
+    ecc_mine, ecc_total = ecc_agent_share()
+    text = replace_block(text, "ecc", build_ecc_caption(ecc_mine, ecc_total))
     if text != original:
         with open(path, "w", encoding="utf-8") as fh:
             fh.write(text)
@@ -863,6 +999,8 @@ def main() -> int:
     LAM.section = -1
     write_svg("header.svg", build_header_svg("dark"))
     write_svg("header-light.svg", build_header_svg("light"))
+    write_svg("ecc-stars.svg", build_ecc_stars_svg("dark", ecc_series, ecc_mine, ecc_total))
+    write_svg("ecc-stars-light.svg", build_ecc_stars_svg("light", ecc_series, ecc_mine, ecc_total))
     LAM.section = 2
     write_svg("project-cards.svg", build_project_cards_svg("dark"))
     write_svg("project-cards-light.svg", build_project_cards_svg("light"))
