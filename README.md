@@ -31,7 +31,7 @@ I run an agentic development practice at
 
 <p align="left">
 <!--START_SECTION:contribs-->
-2,923 contributions in the last year
+2,969 contributions in the last year
 <!--END_SECTION:contribs-->
 </p>
 
@@ -90,10 +90,10 @@ plenty of code by hand. I don't ship demos.
 <sub><i>Auto-updated weekly by a GitHub Action I own — external PRs that maintainers merged, newest first. No hand-editing.</i></sub>
 
 <!--START_SECTION:merges-->
-- **[affaan-m/ECC#2966](https://github.com/affaan-m/ECC/pull/2966)** &nbsp;`⭐ 284k` — fix(agents): list files the sanitizer cannot read · `2026-10-11`
+- **[affaan-m/ECC#2966](https://github.com/affaan-m/ECC/pull/2966)** &nbsp;`⭐ 289k` — fix(agents): list files the sanitizer cannot read · `2026-10-11`
 - **[google-deepmind/formal-conjectures#5481](https://github.com/google-deepmind/formal-conjectures/pull/5481)** &nbsp;`⭐ 1.3k` — feat(ErdosProblems/672): link an external Lean proof of erdos_672.variants.euler · `2026-09-18`
 - **[google-deepmind/formal-conjectures#5425](https://github.com/google-deepmind/formal-conjectures/pull/5425)** &nbsp;`⭐ 1.3k` — feat(ErdosProblems/399): prove erdos_399.variants.cambie · `2026-09-18`
-- **[affaan-m/ECC#1036](https://github.com/affaan-m/ECC/pull/1036)** &nbsp;`⭐ 284k` — feat(agents,skills): add opensource-pipeline — 3-agent workflow for safe public releases · `2026-03-31`
+- **[affaan-m/ECC#1036](https://github.com/affaan-m/ECC/pull/1036)** &nbsp;`⭐ 289k` — feat(agents,skills): add opensource-pipeline — 3-agent workflow for safe public releases · `2026-03-31`
 <!--END_SECTION:merges-->
 
 Two of those are original Lean 4 proofs closing Erdős problems in Google DeepMind's
@@ -296,8 +296,8 @@ the week I rebuilt this page. Zero left now.</i></sub>
 <sub><i>Auto-updated — my own repos, most recently pushed.</i></sub>
 
 <!--START_SECTION:building-->
-- **[nightjar](https://github.com/herakles-dev/nightjar)** `⭐ 1` — Offline Android app demonstrating covert data transmission (hiding data in sound and images) and the detection techniques that can catch it. Acoustic data-over-sound modem, image/audio steganography, passive detector.
 - **[v11](https://github.com/herakles-dev/v11)** `⭐ 1` — Spec-driven orchestration protocol for reliable multi-agent Claude Code development — task-as-truth, write-gate hooks, adversarial review pairing, autonomy tracking. Installable.
+- **[nightjar](https://github.com/herakles-dev/nightjar)** `⭐ 1` — Offline Android app demonstrating covert data transmission (hiding data in sound and images) and the detection techniques that can catch it. Acoustic data-over-sound modem, image/audio steganography, passive detector.
 - **[lean-proof-agents](https://github.com/herakles-dev/lean-proof-agents)** — Machine-checked Lean 4 + Mathlib proofs, and the Claude Code agent system that writes and audits them. Lean's kernel is the only judge.
 - **[h1-security-lab-showcase](https://github.com/herakles-dev/h1-security-lab-showcase)** `⭐ 1` — AI-orchestrated bug bounty hunting system - architecture, methodology, and honest case studies from 22 real HackerOne hunts
 - **[claude-code-agents](https://github.com/herakles-dev/claude-code-agents)** `⭐ 1` — Curated, transferable Claude Code subagents in installable packages — orchestration, engineering, security, devops — plus a CLAUDE.md template for multi-agent projects.
