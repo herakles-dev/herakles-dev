@@ -31,7 +31,7 @@ I run an agentic development practice at
 
 <p align="left">
 <!--START_SECTION:contribs-->
-3,040 contributions in the last year
+3,153 contributions in the last year
 <!--END_SECTION:contribs-->
 </p>
 
@@ -90,10 +90,16 @@ plenty of code by hand. I don't ship demos.
 <sub><i>Auto-updated weekly by a GitHub Action I own — external PRs that maintainers merged, newest first. No hand-editing.</i></sub>
 
 <!--START_SECTION:merges-->
-- **[affaan-m/ECC#2966](https://github.com/affaan-m/ECC/pull/2966)** &nbsp;`⭐ 304k` — fix(agents): list files the sanitizer cannot read · `2026-10-11`
+- **[MisterMcFlyXXVI/Zodiac#8](https://github.com/MisterMcFlyXXVI/Zodiac/pull/8)** &nbsp;`⭐ 0` — Research: 9,000 pre-registered Z13 phrases (0 fits), evidence map, key habits, glyphs · `2026-11-23`
+- **[MisterMcFlyXXVI/Zodiac#7](https://github.com/MisterMcFlyXXVI/Zodiac/pull/7)** &nbsp;`⭐ 0` — Pre-registration gate + stricter exploration pilot + pause switch · `2026-11-23`
+- **[MisterMcFlyXXVI/Zodiac#5](https://github.com/MisterMcFlyXXVI/Zodiac/pull/5)** &nbsp;`⭐ 0` — Value-of-information calculator (scripts/voi.py) · `2026-11-23`
+- **[MisterMcFlyXXVI/Zodiac#4](https://github.com/MisterMcFlyXXVI/Zodiac/pull/4)** &nbsp;`⭐ 0` — Research log: Z32 radians & inches reading (map channel not feasible) · `2026-11-23`
+- **[MisterMcFlyXXVI/Zodiac#2](https://github.com/MisterMcFlyXXVI/Zodiac/pull/2)** &nbsp;`⭐ 0` — Refuse badly typed queue files instead of crashing every run · `2026-11-23`
+- **[MisterMcFlyXXVI/Zodiac#1](https://github.com/MisterMcFlyXXVI/Zodiac/pull/1)** &nbsp;`⭐ 0` — Stop the empty-run loop (explorer scan + idle runs don't chain) · `2026-11-23`
+- **[affaan-m/ECC#2966](https://github.com/affaan-m/ECC/pull/2966)** &nbsp;`⭐ 309k` — fix(agents): list files the sanitizer cannot read · `2026-10-11`
 - **[google-deepmind/formal-conjectures#5481](https://github.com/google-deepmind/formal-conjectures/pull/5481)** &nbsp;`⭐ 1.4k` — feat(ErdosProblems/672): link an external Lean proof of erdos_672.variants.euler · `2026-09-18`
 - **[google-deepmind/formal-conjectures#5425](https://github.com/google-deepmind/formal-conjectures/pull/5425)** &nbsp;`⭐ 1.4k` — feat(ErdosProblems/399): prove erdos_399.variants.cambie · `2026-09-18`
-- **[affaan-m/ECC#1036](https://github.com/affaan-m/ECC/pull/1036)** &nbsp;`⭐ 304k` — feat(agents,skills): add opensource-pipeline — 3-agent workflow for safe public releases · `2026-03-31`
+- **[affaan-m/ECC#1036](https://github.com/affaan-m/ECC/pull/1036)** &nbsp;`⭐ 309k` — feat(agents,skills): add opensource-pipeline — 3-agent workflow for safe public releases · `2026-03-31`
 <!--END_SECTION:merges-->
 
 Two of those are original Lean 4 proofs closing Erdős problems in Google DeepMind's
@@ -108,7 +114,7 @@ workflow of mine into a repository with more than a quarter-million stars.
 </picture>
 
 <!--START_SECTION:ecc-->
-<sub><i>Stars on <a href="https://github.com/affaan-m/ECC">affaan-m/ECC</a> since it launched in January 2026. The gold star is the day <a href="https://github.com/affaan-m/ECC/pull/1036">my open-source pipeline</a> merged. Three of the repo's 71 agents are mine. History sampled from <a href="https://www.star-history.com/affaan-m/ecc">star-history.com</a>.</i></sub>
+<sub><i>Stars on <a href="https://github.com/affaan-m/ECC">affaan-m/ECC</a> since it launched in January 2026. The gold star is the day <a href="https://github.com/affaan-m/ECC/pull/1036">my open-source pipeline</a> merged. Three of the repo's 72 agents are mine. History sampled from <a href="https://www.star-history.com/affaan-m/ecc">star-history.com</a>.</i></sub>
 <!--END_SECTION:ecc-->
 
 </div>
